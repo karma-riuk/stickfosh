@@ -1,0 +1,3 @@
+# Stickfosh
+
+> Stockfish, but worse :)
