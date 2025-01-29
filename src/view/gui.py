@@ -20,7 +20,7 @@ class GUI(View):
 
         self.state = {"selected_piece": None, "legal_moves": []}
 
-        self.canvas.bind("<Button-1>", lambda event: self._on_canvas_click(event))
+        self.canvas.bind("<Button-1>", self._on_canvas_click)
         self._draw_chess_board()
 
 
@@ -30,6 +30,9 @@ class GUI(View):
         for y in range(8):
             for x in range(8):
                 colour = colours[(x + y) % 2]
+                if self.state["selected_piece"] and Position(x, 7-y) in self.state["legal_moves"]:
+                    colour = "#ADD8E6"  # Highlight legal moves
+
                 self.canvas.create_rectangle(
                     x * self.tile_size, 
                     y * self.tile_size, 
@@ -38,13 +41,10 @@ class GUI(View):
                     fill=colour
                 )
 
-                piece = self.board.piece_at(x, y)
-
-                if self.state["selected_piece"] and Position(x, y) in self.state["legal_moves"]:
-                    colour = "#ADD8E6"  # Highlight legal moves
+                piece = self.board.piece_at(x, 7-y)
 
                 if piece:
-                    text_colour = "black" if piece.colour == Piece.WHITE else "white"
+                    text_colour = "white" if piece.colour == Piece.WHITE else "black"
                     self.canvas.create_text(
                         (x + 0.5) * self.tile_size, 
                         (y + 0.5) * self.tile_size, 
@@ -76,6 +76,7 @@ class GUI(View):
 
     def _on_canvas_click(self, event):
         x, y = event.x // self.tile_size, event.y // self.tile_size
+        y = 7 - y
         piece = self.board.piece_at(x, y)
         print(f"Clicked on {x, y}, {piece = }")
 
