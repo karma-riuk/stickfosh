@@ -37,6 +37,16 @@ class Board:
             self._white[pos_w_piece] = piece(pos_w_piece, Piece.WHITE)
             self._black[pos_b_piece] = piece(pos_b_piece, Piece.BLACK)
 
+    def piece_at(self, x: int, y: int) -> Piece | None:
+        pos = Position(x, y)
+        white_piece = self._white.get(pos, None)
+        black_piece = self._black.get(pos, None)
+
+        assert white_piece == None or black_piece == None, f"There are two pieces at the same position {pos}, this shouldn't happen!"
+
+        if white_piece != None:
+            return white_piece
+        return black_piece
 
 def create_board():
     return Board()
