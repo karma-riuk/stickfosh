@@ -7,35 +7,100 @@ from logic.pieces.pawn import Pawn
 from logic.pieces.piece import Piece
 from logic.position import Position
 
+from typing import Type
+
 class Board:
+    KING_SIDE_CASTLE = "king side castle"
+    QUEEN_SIDE_CASTLE = "queen side castle"
     def __init__(self) -> None:
         self._white: dict[Position, Piece] = {}
         self._black: dict[Position, Piece] = {}
+        self._turn = None
+        self._white_castling_write = set()
+        self._black_castling_write = set()
+        self._en_passant_target = None
 
-        for x in range(8):
-            pos_w_pawn = Position(x, 1)
-            pos_b_pawn = Position(x, 6)
+    @staticmethod
+    def _piece_class_from_char(c: str) -> Type[Piece]:
+        assert len(c) == 1, f"The piece {c} isn't denoted by 1 character"
+        c = c.lower()
+        if c == "p":
+            return Pawn
+        if c == "r":
+            return Rook
+        if c == "n":
+            return Knight
+        if c == "b":
+            return Bishop
+        if c == "q":
+            return Queen
+        if c == "k":
+            return King
+        raise ValueError(f"Unknown piece '{c}'")
 
-            self._white[pos_w_pawn] = Pawn(pos_w_pawn, Piece.WHITE)
-            self._black[pos_b_pawn] = Pawn(pos_b_pawn, Piece.BLACK)
+    @staticmethod
+    def setup_FEN_position(position: str) -> "Board":
+        ret = Board()
 
-            pos_w_piece = Position(x, 0)
-            pos_b_piece = Position(x, 7)
+        # -- Pieces
+        pieces = "prnbqk" # possible pieces
+        numbers = "12345678" # possible number of empty squares
 
-            piece = None
-            if x == 0 or x == 7:
-                piece = Rook
-            elif x == 1 or x == 6:
-                piece = Knight
-            elif x == 2 or x == 5:
-                piece = Bishop
-            elif x == 3:
-                piece = Queen
-            elif x == 4:
-                piece = King
-            assert piece != None, f"Didn't know which piece to assign for {x = }"
-            self._white[pos_w_piece] = piece(pos_w_piece, Piece.WHITE)
-            self._black[pos_b_piece] = piece(pos_b_piece, Piece.BLACK)
+        x = 0
+        y = 7 # FEN starts from the top left, so 8th rank
+        for c in position:
+            if c == " ":
+                break
+            if c in pieces or c in pieces.upper():
+                pos = Position(x, y)
+                piece = Board._piece_class_from_char(c)
+                if c.isupper():
+                    ret._white[pos] = piece(pos, Piece.WHITE)
+                else:
+                    ret._black[pos] = piece(pos, Piece.BLACK)
+
+                x += 1
+                continue
+            if c in numbers:
+                x += int(c)
+            if c == '/':
+                x = 0
+                y -= 1
+
+
+        # -- Active colour
+        index = position.find(" ") # find the first space
+        index += 1
+        if position[index] == "w":
+            ret._turn = Piece.WHITE
+        elif position[index] == "b":
+            ret._turn = Piece.BLACK
+        else:
+            raise ValueError(f"The FEN position is malformed, the active colour should be either 'w' or 'b', but is '{position[index]}'")
+
+
+        # -- Castling Rights
+        for c in position:
+            if c == "-" or c == " ":
+                break
+
+            sides = "kq"
+            assert c in sides or c in sides.upper(), f"The FEN position is malformed, the castling rights should be either k or q (both either lower- or upper-case), instead is '{c}'"
+            if c == "K":
+                ret._white_castling_write.add(Board.KING_SIDE_CASTLE)
+            if c == "Q":
+                ret._white_castling_write.add(Board.QUEEN_SIDE_CASTLE)
+            if c == "k":
+                ret._black_castling_write.add(Board.KING_SIDE_CASTLE)
+            if c == "q":
+                ret._black_castling_write.add(Board.QUEEN_SIDE_CASTLE)
+
+        # -- En passant target
+        index = position.find(" ", index + 1)
+        if position[index] != "-":
+            ret._en_passant_target = position[index:index+2]
+
+        return ret
 
     def piece_at(self, x: int, y: int) -> Piece | None:
         pos = Position(x, y)
@@ -47,6 +112,3 @@ class Board:
         if white_piece != None:
             return white_piece
         return black_piece
-
-def create_board():
-    return Board()
