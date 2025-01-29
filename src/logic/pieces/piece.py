@@ -2,8 +2,13 @@ from logic.position import Position
 
 
 class Piece:
-    def __init__(self, pos) -> None:
+    WHITE = 0
+    BLACK = 1
+
+    def __init__(self, pos, colour) -> None:
         self.pos = pos
+        assert colour == self.WHITE or colour == self.BLACK, "The colour of the piece must be either Piece.WHITE or Piece.BLACK"
+        self.colour = colour
 
     def position(self) -> Position:
         return self.pos

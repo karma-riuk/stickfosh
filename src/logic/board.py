@@ -16,8 +16,8 @@ class Board:
             pos_w_pawn = Position(x, 1)
             pos_b_pawn = Position(x, 6)
 
-            self._white[pos_w_pawn] = Pawn(pos_w_pawn)
-            self._black[pos_b_pawn] = Pawn(pos_b_pawn)
+            self._white[pos_w_pawn] = Pawn(pos_w_pawn, Piece.WHITE)
+            self._black[pos_b_pawn] = Pawn(pos_b_pawn, Piece.BLACK)
 
             pos_w_piece = Position(x, 0)
             pos_b_piece = Position(x, 7)
@@ -34,8 +34,8 @@ class Board:
             elif x == 4:
                 piece = King
             assert piece != None, f"Didn't know which piece to assign for {x = }"
-            self._white[pos_w_piece] = piece(pos_w_piece)
-            self._black[pos_b_piece] = piece(pos_b_piece)
+            self._white[pos_w_piece] = piece(pos_w_piece, Piece.WHITE)
+            self._black[pos_b_piece] = piece(pos_b_piece, Piece.BLACK)
 
 
 def create_board():
