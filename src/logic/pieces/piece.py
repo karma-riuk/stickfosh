@@ -2,8 +2,8 @@ from logic.position import Position
 
 
 class Piece:
-    WHITE = 0
-    BLACK = 1
+    WHITE = "white"
+    BLACK = "black"
 
     def __init__(self, pos, colour) -> None:
         self.pos = pos
