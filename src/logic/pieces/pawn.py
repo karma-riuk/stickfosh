@@ -23,9 +23,17 @@ class Pawn(Piece):
             if capturable_piece.colour != self.colour:
                 ret.append(capturable_piece.pos)
 
-        for dy in range(1, 3 if self.pos.y == 1 else 2):
-            if self.pos.y + dy > 7 or board.piece_at(self.pos.x, self.pos.y + dy):
-                break
-            ret.append(Position(self.pos.x, self.pos.y + dy))
+        if self.colour == Piece.WHITE:
+            for dy in range(1, 3 if self.pos.y == 1 else 2):
+                if self.pos.y + dy > 7 or board.piece_at(self.pos.x, self.pos.y + dy):
+                    break
+                ret.append(Position(self.pos.x, self.pos.y + dy))
+        else:
+            for dy in range(1, 3 if self.pos.y == 6 else 2):
+                if self.pos.y - dy < 0 or board.piece_at(self.pos.x, self.pos.y - dy):
+                    break
+                ret.append(Position(self.pos.x, self.pos.y - dy))
 
+
+        print(ret)
         return ret
