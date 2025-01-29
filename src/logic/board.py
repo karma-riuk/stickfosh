@@ -41,6 +41,7 @@ class Board:
     @staticmethod
     def setup_FEN_position(position: str) -> "Board":
         ret = Board()
+        index = 0
 
         # -- Pieces
         pieces = "prnbqk" # possible pieces
@@ -49,6 +50,7 @@ class Board:
         x = 0
         y = 7 # FEN starts from the top left, so 8th rank
         for c in position:
+            index += 1
             if c == " ":
                 break
             if c in pieces or c in pieces.upper():
@@ -69,18 +71,18 @@ class Board:
 
 
         # -- Active colour
-        index = position.find(" ") # find the first space
-        index += 1
         if position[index] == "w":
             ret._turn = Piece.WHITE
         elif position[index] == "b":
             ret._turn = Piece.BLACK
         else:
             raise ValueError(f"The FEN position is malformed, the active colour should be either 'w' or 'b', but is '{position[index]}'")
+        index += 1
 
 
         # -- Castling Rights
-        for c in position:
+        for c in position[index:]:
+            index += 1
             if c == "-" or c == " ":
                 break
 
@@ -96,7 +98,6 @@ class Board:
                 ret._black_castling_write.add(Board.QUEEN_SIDE_CASTLE)
 
         # -- En passant target
-        index = position.find(" ", index + 1)
         if position[index] != "-":
             ret._en_passant_target = position[index:index+2]
 
