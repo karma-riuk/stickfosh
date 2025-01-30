@@ -3,6 +3,9 @@ from logic.position import Position
 from enum import Enum
 
 class Move:
+    def __init__(self, is_capturing: bool) -> None:
+        self.is_capturing = is_capturing
+
     def to_algebraic(self) -> str:
         raise NotImplementedError("The move can't be translated to algbraic notation, as it was not implemented")
 
@@ -13,11 +16,10 @@ class Move:
 
 class PieceMove(Move):
     def __init__(self, piece: Piece, pos: Position,/, is_capturing: bool = False) -> None:
-        super().__init__()
+        super().__init__(is_capturing)
         self.piece = piece
         self.pos = pos
-        self.is_capturing = is_capturing
 
 class Castle(Move, Enum):
-    KING_SIDE_CASTLE = "O-O"
-    QUEEN_SIDE_CASTLE = "O-O-O"
+    KING_SIDE_CASTLE = False
+    QUEEN_SIDE_CASTLE = False

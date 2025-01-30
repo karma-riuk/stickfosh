@@ -9,6 +9,12 @@ class Position:
         self.x = x
         self.y = y
 
+    @staticmethod
+    def is_within_bounds(x: int, y: int) -> bool:
+        return x >= Position._MIN_POS and x <= Position._MAX_POS \
+            and y >= Position._MIN_POS and y <= Position._MAX_POS
+
+
     def __eq__(self, value: object, /) -> bool:
         if type(value) != type(self):
             return False
