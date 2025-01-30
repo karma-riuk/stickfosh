@@ -10,8 +10,6 @@ from logic.position import Position
 from typing import Type
 
 class Board:
-    KING_SIDE_CASTLE = "king side castle"
-    QUEEN_SIDE_CASTLE = "queen side castle"
     def __init__(self) -> None:
         self._white: dict[Position, Piece] = {}
         self._black: dict[Position, Piece] = {}
