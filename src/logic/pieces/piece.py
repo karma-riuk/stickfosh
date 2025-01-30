@@ -1,4 +1,5 @@
 from logic.position import Position
+from logic.move import Move
 
 
 class Piece:
@@ -13,5 +14,5 @@ class Piece:
     def position(self) -> Position:
         return self.pos
 
-    def legal_moves(self, board) -> list[Position]:
+    def legal_moves(self, board) -> list[Move]:
         raise NotImplementedError(f"Can't say what the legal moves are for {type(self).__name__}, the method hasn't been implemented yet")

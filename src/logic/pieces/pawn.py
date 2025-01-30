@@ -1,8 +1,8 @@
-from logic.position import Position
+from logic.move import Move
 from logic.pieces.piece import Piece
 
 class Pawn(Piece):
-    def legal_moves(self, board) -> list[Position]:
+    def legal_moves(self, board) -> list[Move]:
         ret = []
 
         # can we capture to the left?
