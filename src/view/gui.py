@@ -1,7 +1,7 @@
 import tkinter as tk
 
 from logic.board import Board
-from logic.pieces.piece import Piece
+from logic.pieces.piece import Colour, Piece
 from logic.position import Position
 from view.view import View
 
