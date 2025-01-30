@@ -1,14 +1,17 @@
 from logic.position import Position
 from logic.move import Move
+from enum import Enum
 
 
-class Piece:
+class Colour(Enum):
     WHITE = "white"
     BLACK = "black"
 
-    def __init__(self, pos, colour) -> None:
+class Piece:
+
+    def __init__(self, pos: Position, colour: Colour) -> None:
         self.pos = pos
-        assert colour == self.WHITE or colour == self.BLACK, "The colour of the piece must be either Piece.WHITE or Piece.BLACK"
+        assert colour == Colour.WHITE or colour == Colour.BLACK, "The colour of the piece must be either Piece.WHITE or Piece.BLACK"
         self.colour = colour
 
     def position(self) -> Position:
