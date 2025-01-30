@@ -30,21 +30,24 @@ class GUI(View):
         for y in range(8):
             for x in range(8):
                 colour = colours[(x + y) % 2]
-                if self.state["selected_piece"] and Position(x, 7-y) in self.state["legal_moves"]:
-                    colour = "#ADD8E6"  # Highlight legal moves
+                if self.state["selected_piece"]:
+                    possible_positions = [move.pos for move in self.state["legal_moves"]] 
+                    if Position(x, 7-y) in possible_positions:
+                        colour = "#ADD8E6"  # Highlight legal moves
 
                 self.canvas.create_rectangle(
                     x * self.tile_size, 
                     y * self.tile_size, 
                     (x + 1) * self.tile_size, 
                     (y + 1) * self.tile_size, 
-                    fill=colour
+                    fill=colour,
+                    outline=colour,
                 )
 
                 piece = self.board.piece_at(x, 7-y)
 
                 if piece:
-                    text_colour = "white" if piece.colour == Piece.WHITE else "black"
+                    text_colour = "white" if piece.colour == Colour.WHITE else "black"
                     self.canvas.create_text(
                         (x + 0.5) * self.tile_size, 
                         (y + 0.5) * self.tile_size, 

@@ -4,7 +4,7 @@ from logic.pieces.knight import Knight
 from logic.pieces.queen import Queen
 from logic.pieces.rook import Rook
 from logic.pieces.pawn import Pawn
-from logic.pieces.piece import Piece
+from logic.pieces.piece import Colour, Piece
 from logic.position import Position
 
 from typing import Type
@@ -55,9 +55,9 @@ class Board:
                 pos = Position(x, y)
                 piece = Board._piece_class_from_char(c)
                 if c.isupper():
-                    ret._white[pos] = piece(pos, Piece.WHITE)
+                    ret._white[pos] = piece(pos, Colour.WHITE)
                 else:
-                    ret._black[pos] = piece(pos, Piece.BLACK)
+                    ret._black[pos] = piece(pos, Colour.BLACK)
 
                 x += 1
                 continue
@@ -70,9 +70,9 @@ class Board:
 
         # -- Active colour
         if position[index] == "w":
-            ret._turn = Piece.WHITE
+            ret._turn = Colour.WHITE
         elif position[index] == "b":
-            ret._turn = Piece.BLACK
+            ret._turn = Colour.BLACK
         else:
             raise ValueError(f"The FEN position is malformed, the active colour should be either 'w' or 'b', but is '{position[index]}'")
         index += 1
