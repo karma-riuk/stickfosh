@@ -1,3 +1,4 @@
+from logic.board import Board
 from logic.position import Position
 from logic.move import Move
 from enum import Enum
@@ -17,5 +18,5 @@ class Piece:
     def position(self) -> Position:
         return self.pos
 
-    def legal_moves(self, board) -> list[Move]:
+    def legal_moves(self, board: Board) -> list[Move]:
         raise NotImplementedError(f"Can't say what the legal moves are for {type(self).__name__}, the method hasn't been implemented yet")
