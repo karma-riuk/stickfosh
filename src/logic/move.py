@@ -12,7 +12,7 @@ class Move:
 
 
 class PieceMove(Move):
-    def __init__(self, piece: Piece, pos: Position, is_capturing: bool) -> None:
+    def __init__(self, piece: Piece, pos: Position,/, is_capturing: bool = False) -> None:
         super().__init__()
         self.piece = piece
         self.pos = pos
