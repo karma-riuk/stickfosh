@@ -1,4 +1,4 @@
-from logic.pieces.piece import Piece
+# from logic.pieces.piece import Piece
 from logic.position import Position
 from enum import Enum
 
@@ -15,7 +15,7 @@ class Move:
 
 
 class PieceMove(Move):
-    def __init__(self, piece: Piece, pos: Position,/, is_capturing: bool = False) -> None:
+    def __init__(self, piece: "Piece", pos: Position,/, is_capturing: bool = False) -> None:
         super().__init__(is_capturing)
         self.piece = piece
         self.pos = pos
