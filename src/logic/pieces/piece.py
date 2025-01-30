@@ -13,6 +13,21 @@ class Piece:
         assert colour == Colour.WHITE or colour == Colour.BLACK, "The colour of the piece must be either Piece.WHITE or Piece.BLACK"
         self.colour = colour
 
+    def _look_direction(self, board: "Board", mult_dx: int, mult_dy: int):
+        ret = []
+        for d in range(1, 8):
+            dx = mult_dx * d
+            dy = mult_dy * d
+
+            move = self._move_for_position(board, self.pos.x + dx, self.pos.y + dy)
+            if move is None:
+                break
+            ret.append(move)
+            if move.is_capturing:
+                break
+
+        return ret
+
     def _move_for_position(self, board: "Board", x: int, y: int) -> Move | None:
         if not Position.is_within_bounds(x, y):
             return None
