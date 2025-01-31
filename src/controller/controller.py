@@ -40,11 +40,11 @@ class Controller:
 
     def on_tile_selected(self, x: int, y: int) -> None:
         pos = Position(x, y)
-        print(f"Clicked on {pos.to_algebraic()}")
 
         piece = self._board.piece_at(x, y)
 
-        if self._selected_piece is None or (piece is not None and piece != self._selected_piece):
+        if self._selected_piece is None \
+            or (piece is not None and piece != self._selected_piece and piece.colour == self._selected_piece.colour):
             self._show_legal_moves(pos)
         else:
             legal_moves_positions = [move for move in self._legal_moves if move.pos == pos]
