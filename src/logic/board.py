@@ -1,3 +1,4 @@
+from logic.move import Move
 from logic.pieces.bishop import Bishop
 from logic.pieces.king import King
 from logic.pieces.knight import Knight
@@ -111,3 +112,32 @@ class Board:
         if white_piece != None:
             return white_piece
         return black_piece
+
+    def make_move(self, move: Move) -> "Board":
+        dest_piece = self.piece_at(move.pos.x, move.pos.y) 
+
+        if dest_piece:
+            assert dest_piece.colour != move.piece.colour, "A piece cannot cannot eat another piece of the same colour"
+
+        ret = Board()
+        ret._white = self._white.copy()
+        ret._black = self._black.copy()
+        ret._turn = Colour.WHITE if self._turn == Colour.BLACK else Colour.BLACK
+        ret._white_castling_write = self._white_castling_write.copy()
+        ret._black_castling_write = self._black_castling_write.copy()
+        ret._en_passant_target = self._en_passant_target
+
+        piece = move.piece
+
+        if piece.colour == Colour.WHITE:
+            del ret._white[piece.pos]
+            ret._white[move.pos] = piece.move_to(move.pos)
+            if move.pos in ret._black:
+                del ret._black[move.pos]
+        else:
+            del ret._black[piece.pos]
+            ret._black[move.pos] = piece.move_to(move.pos)
+            if move.pos in ret._white:
+                del ret._white[move.pos]
+
+        return ret

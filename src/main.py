@@ -1,4 +1,4 @@
-from controller.gui_controller import GuiController
+from controller.controller import Controller
 from logic.board import Board
 from view.gui import GUI
 from view.tui import TUI
@@ -9,6 +9,6 @@ if __name__ == "__main__":
 
     view = GUI()
 
-    controller = GuiController(board, view)
+    controller = Controller(board, view)
 
     view.show()

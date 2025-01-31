@@ -1,4 +1,7 @@
 class Position:
+    _RANKS = range(1, 9)
+    _FILES = "abcdefgh"
+
     _MIN_POS = 0
     _MAX_POS = 7
 
@@ -14,6 +17,8 @@ class Position:
         return x >= Position._MIN_POS and x <= Position._MAX_POS \
             and y >= Position._MIN_POS and y <= Position._MAX_POS
 
+    def to_algebraic(self) -> str:
+        return f"{Position._FILES[self.x]}{Position._RANKS[self.y]}"
 
     def __eq__(self, value: object, /) -> bool:
         if type(value) != type(self):

@@ -37,6 +37,4 @@ class Pawn(Piece):
                 pos = Position(self.pos.x, self.pos.y - dy)
                 ret.append(PieceMove(self, pos))
 
-
-        print(ret)
         return ret

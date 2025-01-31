@@ -43,5 +43,9 @@ class Piece:
     def position(self) -> Position:
         return self.pos
 
+    def move_to(self, pos: Position) -> "Piece":
+        ret = type(self)(pos, self.colour)
+        return ret
+
     def legal_moves(self, board: "Board") -> list["Move"]:
         raise NotImplementedError(f"Can't say what the legal moves are for {type(self).__name__}, the method hasn't been implemented yet")
