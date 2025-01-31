@@ -136,6 +136,9 @@ class Board:
                 return True
         return False
 
+    def castling_writes_for(self, colour: Colour) -> set[CastleSide]:
+        return self._white_castling_write if colour == Colour.WHITE else self._black_castling_write
+
     def make_move(self, move: Move) -> "Board":
         dest_piece = self.piece_at(move.pos.x, move.pos.y) 
 
@@ -151,16 +154,45 @@ class Board:
         ret._en_passant_target = self._en_passant_target
 
         piece = move.piece
+        pieces_moving, other_pieces = (ret._white, ret._black) if piece.colour == Colour.WHITE else (ret._black, ret._white)
+
+        del pieces_moving[piece.pos]
+        pieces_moving[move.pos] = piece.move_to(move.pos)
+        if move.pos in other_pieces:
+            del other_pieces[move.pos]
+
+        if move.castle_side == CastleSide.King:
+            rook_pos = Position(7, piece.pos.y)
+            assert rook_pos in pieces_moving and type(pieces_moving[rook_pos]) == Rook, "Either rook is absent from the king side or you are trying to castle with something else than a rook..."
+            del pieces_moving[rook_pos]
+            new_rook_pos = Position(5, piece.pos.y)
+            pieces_moving[new_rook_pos] = Rook(new_rook_pos, piece.colour)
+
+        elif move.castle_side == CastleSide.Queen:
+            rook_pos = Position(0, piece.pos.y)
+            assert rook_pos in pieces_moving and type(pieces_moving[rook_pos]) == Rook, "Either rook is absent from the queen side or you are trying to castle with something else than a rook..."
+            del pieces_moving[rook_pos]
+            new_rook_pos = Position(3, piece.pos.y)
+            pieces_moving[new_rook_pos] = Rook(new_rook_pos, piece.colour)
 
         if piece.colour == Colour.WHITE:
-            del ret._white[piece.pos]
-            ret._white[move.pos] = piece.move_to(move.pos)
-            if move.pos in ret._black:
-                del ret._black[move.pos]
+            if type(piece) == King:
+                ret._white_castling_write = set()
+
+            if type(piece) == Rook:
+                if piece.pos.x == 0 and CastleSide.Queen in ret._white_castling_write:
+                    ret._white_castling_write.remove(CastleSide.Queen)
+                elif piece.pos.x == 7 and CastleSide.King in ret._white_castling_write:
+                    ret._white_castling_write.remove(CastleSide.King)
         else:
-            del ret._black[piece.pos]
-            ret._black[move.pos] = piece.move_to(move.pos)
-            if move.pos in ret._white:
-                del ret._white[move.pos]
+            if type(piece) == King:
+                ret._black_castling_write = set()
+
+            if type(piece) == Rook:
+                if piece.pos.x == 0 and CastleSide.Queen in ret._black_castling_write:
+                    ret._black_castling_write.remove(CastleSide.Queen)
+                elif piece.pos.x == 7 and CastleSide.King in ret._black_castling_write:
+                    ret._black_castling_write.remove(CastleSide.King)
+
 
         return ret
