@@ -161,15 +161,21 @@ class Board:
         if dest_piece:
             assert dest_piece.colour != move.piece.colour, "A piece cannot cannot eat another piece of the same colour"
 
+        # -- Copy current state
         ret = Board()
         ret._white = self._white.copy()
         ret._black = self._black.copy()
         ret._turn = Colour.WHITE if self._turn == Colour.BLACK else Colour.BLACK
         ret._white_castling_write = self._white_castling_write.copy()
         ret._black_castling_write = self._black_castling_write.copy()
-        ret._en_passant_target = self._en_passant_target
+
 
         piece = move.piece
+
+        # -- Set en passant target if needed
+        ret._en_passant_target = self._en_passant_target
+
+        # -- Actually make the move
         pieces_moving, other_pieces = (ret._white, ret._black) if piece.colour == Colour.WHITE else (ret._black, ret._white)
 
         del pieces_moving[piece.pos]
@@ -177,6 +183,7 @@ class Board:
         if move.pos in other_pieces:
             del other_pieces[move.pos]
 
+        # -- Handle castling (just move the rook over)
         if move.castle_side == CastleSide.King:
             rook_pos = Position(7, piece.pos.y)
             assert rook_pos in pieces_moving and type(pieces_moving[rook_pos]) == Rook, "Either rook is absent from the king side or you are trying to castle with something else than a rook..."
@@ -191,6 +198,7 @@ class Board:
             new_rook_pos = Position(3, piece.pos.y)
             pieces_moving[new_rook_pos] = Rook(new_rook_pos, piece.colour)
 
+        # -- Check for castling rights
         if piece.colour == Colour.WHITE:
             if type(piece) == King:
                 ret._white_castling_write = set()
