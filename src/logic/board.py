@@ -1,4 +1,4 @@
-from logic.move import Move
+from logic.move import CastleSide, Move
 from logic.pieces.bishop import Bishop
 from logic.pieces.king import King
 from logic.pieces.knight import Knight
@@ -76,7 +76,7 @@ class Board:
             ret._turn = Colour.BLACK
         else:
             raise ValueError(f"The FEN position is malformed, the active colour should be either 'w' or 'b', but is '{position[index]}'")
-        index += 1
+        index += 2
 
 
         # -- Castling Rights
@@ -88,13 +88,13 @@ class Board:
             sides = "kq"
             assert c in sides or c in sides.upper(), f"The FEN position is malformed, the castling rights should be either k or q (both either lower- or upper-case), instead is '{c}'"
             if c == "K":
-                ret._white_castling_write.add(Board.KING_SIDE_CASTLE)
+                ret._white_castling_write.add(CastleSide.King)
             if c == "Q":
-                ret._white_castling_write.add(Board.QUEEN_SIDE_CASTLE)
+                ret._white_castling_write.add(CastleSide.Queen)
             if c == "k":
-                ret._black_castling_write.add(Board.KING_SIDE_CASTLE)
+                ret._black_castling_write.add(CastleSide.King)
             if c == "q":
-                ret._black_castling_write.add(Board.QUEEN_SIDE_CASTLE)
+                ret._black_castling_write.add(CastleSide.Queen)
 
         # -- En passant target
         if position[index] != "-":
