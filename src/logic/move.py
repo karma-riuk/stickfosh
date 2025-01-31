@@ -2,9 +2,17 @@
 from logic.position import Position
 from enum import Enum
 
+class CastleSide(Enum):
+    Neither = ""
+    King = "O-O"
+    Queen = "O-O-O"
+
 class Move:
-    def __init__(self, is_capturing: bool) -> None:
+    def __init__(self, piece: "Piece", pos: Position,/, is_capturing: bool = False, castle_side: CastleSide = CastleSide.Neither) -> None:
+        self.piece = piece
+        self.pos = pos
         self.is_capturing = is_capturing
+        self.castle_side = castle_side
 
     def to_algebraic(self) -> str:
         raise NotImplementedError("The move can't be translated to algbraic notation, as it was not implemented")
@@ -13,13 +21,18 @@ class Move:
     def from_algebraic(move: str) -> "Move":
         raise NotImplementedError("The move can't be translated from algbraic notation, as it was not implemented")
 
+    def __str__(self) -> str:
+        if self.castle_side == CastleSide.King:
+            return "O-O"
+        if self.castle_side == CastleSide.Queen:
+            return "O-O-O"
 
-class PieceMove(Move):
-    def __init__(self, piece: "Piece", pos: Position,/, is_capturing: bool = False) -> None:
-        super().__init__(is_capturing)
-        self.piece = piece
-        self.pos = pos
+        ret = ""
+        if type(self.piece).__name__ != "Pawn":
+            ret += self.piece.letter().upper()
 
-class Castle(Move, Enum):
-    KING_SIDE_CASTLE = False
-    QUEEN_SIDE_CASTLE = False
+        ret += str(self.pos)
+        return ret
+    
+    def __repr__(self) -> str:
+        return str(self)

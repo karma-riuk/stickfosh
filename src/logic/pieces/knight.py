@@ -1,6 +1,9 @@
 from .piece import Piece
 
 class Knight(Piece):
+    def letter(self):
+        return "n"
+
     def legal_moves(self, board: "Board") -> list["Move"]:
         ret = []
         for dx, dy in [

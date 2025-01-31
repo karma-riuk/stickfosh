@@ -1,4 +1,4 @@
-from logic.move import Move, PieceMove
+from logic.move import Move
 from logic.position import Position
 from enum import Enum
 
@@ -12,6 +12,9 @@ class Piece:
         self.pos = pos
         assert colour == Colour.WHITE or colour == Colour.BLACK, "The colour of the piece must be either Piece.WHITE or Piece.BLACK"
         self.colour = colour
+
+    def letter(self):
+        return type(self).__name__[0].lower()
 
     def _look_direction(self, board: "Board", mult_dx: int, mult_dy: int):
         ret = []
@@ -34,10 +37,10 @@ class Piece:
         piece = board.piece_at(x, y) 
 
         if piece is None:
-            return PieceMove(self, Position(x, y))
+            return Move(self, Position(x, y))
 
         if piece.colour != self.colour:
-            return PieceMove(self, Position(x, y), is_capturing=True)
+            return Move(self, Position(x, y), is_capturing=True)
         return None
 
     def position(self) -> Position:

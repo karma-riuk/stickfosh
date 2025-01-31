@@ -29,8 +29,7 @@ class Position:
         return hash((self.x, self.y))
 
     def __str__(self) -> str:
-        return f"{self.x, self.y}"
+        return f"{Position._FILES[self.x]}{Position._RANKS[self.y]}"
 
     def __repr__(self) -> str:
         return str(self)
-
