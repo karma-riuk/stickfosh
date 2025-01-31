@@ -19,11 +19,13 @@ class King(Piece):
                     if not board_after_move.is_check_for(self.colour):
                         ret.append(move)
 
+        if board.is_check_for(self.colour):
+            return self.keep_only_blocking(ret, board)
+
         # -- Castles
         castling_writes = board.castling_writes_for(self.colour)
         if len(castling_writes) == 0:
             return ret
-        print(castling_writes)
 
         if CastleSide.King in castling_writes:
             clear = True
@@ -61,8 +63,6 @@ class King(Piece):
 
             if clear:
                 ret.append(Move(self, Position(2, self.pos.y), castle_side=CastleSide.Queen))
-
-        print(ret)
 
         return ret
 

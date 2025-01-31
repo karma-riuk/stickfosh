@@ -55,3 +55,9 @@ class Controller:
             else:
                 move = legal_moves_positions[0]
                 self._make_move(move)
+
+        if self._board.is_checkmate_for(self._board._turn):
+            self._view.notify_checkmate(self._board._turn)
+            
+        if self._board.is_stalemate_for(self._board._turn):
+            self._view.notify_stalemate(self._board._turn)

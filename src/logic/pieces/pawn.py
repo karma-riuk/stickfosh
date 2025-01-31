@@ -3,7 +3,7 @@ from logic.pieces.piece import Colour, Piece
 from logic.position import Position
 
 class Pawn(Piece):
-    def legal_moves(self, board) -> list[Move]:
+    def legal_moves(self, board, / , looking_for_check = False) -> list[Move]:
         ret = []
 
         # can we capture to the left?
@@ -36,5 +36,8 @@ class Pawn(Piece):
                     break
                 pos = Position(self.pos.x, self.pos.y - dy)
                 ret.append(Move(self, pos))
+
+        if not looking_for_check and board.is_check_for(self.colour):
+            return self.keep_only_blocking(ret, board)
 
         return ret

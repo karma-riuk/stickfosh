@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import messagebox
 from typing import Type
 from PIL import ImageTk, Image
 import os
@@ -60,6 +61,12 @@ class GUI(View):
 
         self._controller.on_tile_selected(x, y)
 
+    def notify_checkmate(self, colour: Colour) -> None:
+        messagebox.showinfo("Checkmate",  f"{colour} is currently checkmated") 
+        
+    def notify_stalemate(self, colour: Colour) -> None:
+        messagebox.showinfo("Stalemate",  f"{colour} is currently stalemated") 
+        
 
     def update_board(self, board: Board, selected_piece: Piece, legal_moves: list[Move]) -> None:
         self.canvas.delete("all")

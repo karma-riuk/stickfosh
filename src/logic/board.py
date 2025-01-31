@@ -131,10 +131,26 @@ class Board:
                         if Position.is_within_bounds(x, y):
                             possible_pos.append(Position(x, y))
             else:
-                possible_pos += [move.pos for move in piece.legal_moves(self)]
+                possible_pos += [move.pos for move in piece.legal_moves(self, looking_for_check=True)]
             if king.pos in possible_pos:
                 return True
         return False
+
+    def is_checkmate_for(self, colour: Colour) -> bool:
+        """ Is it checkmate for the defending colour passed as parameter """
+        return self.is_check_for(colour) and self._no_legal_moves_for(colour)
+
+    def is_stalemate_for(self, colour: Colour) -> bool:
+        """ Is it stalemate for the defending colour passed as parameter """
+        return not self.is_check_for(colour) and self._no_legal_moves_for(colour)
+
+    def _no_legal_moves_for(self, colour: Colour) -> bool:
+        """ Return true if there are indeed no legal moves for the given colour (for checkmate or stalemate)"""
+        pieces = self._white if colour == Colour.WHITE else self._black
+        for piece in pieces.values():
+            if len(piece.legal_moves(self)) > 0:
+                return False
+        return True
 
     def castling_writes_for(self, colour: Colour) -> set[CastleSide]:
         return self._white_castling_write if colour == Colour.WHITE else self._black_castling_write

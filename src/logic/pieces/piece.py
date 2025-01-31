@@ -7,6 +7,9 @@ class Colour(Enum):
     WHITE = "white"
     BLACK = "black"
 
+    def __str__(self) -> str:
+        return self.value
+
 class Piece:
     def __init__(self, pos: Position, colour: Colour) -> None:
         self.pos = pos
@@ -15,6 +18,14 @@ class Piece:
 
     def letter(self):
         return type(self).__name__[0].lower()
+
+    def keep_only_blocking(self, candidates: list[Move], board: "Board") -> list[Move]:
+        ret = []
+        for move in candidates:
+            board_after_move = board.make_move(move)
+            if not board_after_move.is_check_for(self.colour):
+                ret.append(move)
+        return ret
 
     def _look_direction(self, board: "Board", mult_dx: int, mult_dy: int):
         ret = []
@@ -50,5 +61,5 @@ class Piece:
         ret = type(self)(pos, self.colour)
         return ret
 
-    def legal_moves(self, board: "Board") -> list["Move"]:
+    def legal_moves(self, board: "Board", / , looking_for_check = False) -> list["Move"]:
         raise NotImplementedError(f"Can't say what the legal moves are for {type(self).__name__}, the method hasn't been implemented yet")
