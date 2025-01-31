@@ -15,8 +15,8 @@ class Board:
         self._white: dict[Position, Piece] = {}
         self._black: dict[Position, Piece] = {}
         self._turn = None
-        self._white_castling_write = set()
-        self._black_castling_write = set()
+        self._white_castling_rights = set()
+        self._black_castling_rights = set()
         self._en_passant_target = None
 
     @staticmethod
@@ -88,13 +88,13 @@ class Board:
             sides = "kq"
             assert c in sides or c in sides.upper(), f"The FEN position is malformed, the castling rights should be either k or q (both either lower- or upper-case), instead is '{c}'"
             if c == "K":
-                ret._white_castling_write.add(CastleSide.King)
+                ret._white_castling_rights.add(CastleSide.King)
             if c == "Q":
-                ret._white_castling_write.add(CastleSide.Queen)
+                ret._white_castling_rights.add(CastleSide.Queen)
             if c == "k":
-                ret._black_castling_write.add(CastleSide.King)
+                ret._black_castling_rights.add(CastleSide.King)
             if c == "q":
-                ret._black_castling_write.add(CastleSide.Queen)
+                ret._black_castling_rights.add(CastleSide.Queen)
 
         # -- En passant target
         if position[index] != "-":
@@ -152,8 +152,8 @@ class Board:
                 return False
         return True
 
-    def castling_writes_for(self, colour: Colour) -> set[CastleSide]:
-        return self._white_castling_write if colour == Colour.WHITE else self._black_castling_write
+    def castling_rights_for(self, colour: Colour) -> set[CastleSide]:
+        return self._white_castling_rights if colour == Colour.WHITE else self._black_castling_rights
 
     def make_move(self, move: Move) -> "Board":
         dest_piece = self.piece_at(move.pos.x, move.pos.y) 
@@ -166,8 +166,8 @@ class Board:
         ret._white = self._white.copy()
         ret._black = self._black.copy()
         ret._turn = Colour.WHITE if self._turn == Colour.BLACK else Colour.BLACK
-        ret._white_castling_write = self._white_castling_write.copy()
-        ret._black_castling_write = self._black_castling_write.copy()
+        ret._white_castling_rights = self._white_castling_rights.copy()
+        ret._black_castling_rights = self._black_castling_rights.copy()
 
 
         piece = move.piece
@@ -201,22 +201,22 @@ class Board:
         # -- Check for castling rights
         if piece.colour == Colour.WHITE:
             if type(piece) == King:
-                ret._white_castling_write = set()
+                ret._white_castling_rights = set()
 
             if type(piece) == Rook:
-                if piece.pos.x == 0 and CastleSide.Queen in ret._white_castling_write:
-                    ret._white_castling_write.remove(CastleSide.Queen)
-                elif piece.pos.x == 7 and CastleSide.King in ret._white_castling_write:
-                    ret._white_castling_write.remove(CastleSide.King)
+                if piece.pos.x == 0 and CastleSide.Queen in ret._white_castling_rights:
+                    ret._white_castling_rights.remove(CastleSide.Queen)
+                elif piece.pos.x == 7 and CastleSide.King in ret._white_castling_rights:
+                    ret._white_castling_rights.remove(CastleSide.King)
         else:
             if type(piece) == King:
-                ret._black_castling_write = set()
+                ret._black_castling_rights = set()
 
             if type(piece) == Rook:
-                if piece.pos.x == 0 and CastleSide.Queen in ret._black_castling_write:
-                    ret._black_castling_write.remove(CastleSide.Queen)
-                elif piece.pos.x == 7 and CastleSide.King in ret._black_castling_write:
-                    ret._black_castling_write.remove(CastleSide.King)
+                if piece.pos.x == 0 and CastleSide.Queen in ret._black_castling_rights:
+                    ret._black_castling_rights.remove(CastleSide.Queen)
+                elif piece.pos.x == 7 and CastleSide.King in ret._black_castling_rights:
+                    ret._black_castling_rights.remove(CastleSide.King)
 
 
         return ret
