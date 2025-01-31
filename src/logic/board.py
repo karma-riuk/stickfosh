@@ -172,9 +172,6 @@ class Board:
 
         piece = move.piece
 
-        # -- Set en passant target if needed
-        ret._en_passant_target = self._en_passant_target
-
         # -- Actually make the move
         pieces_moving, other_pieces = (ret._white, ret._black) if piece.colour == Colour.WHITE else (ret._black, ret._white)
 
@@ -182,6 +179,16 @@ class Board:
         pieces_moving[move.pos] = piece.move_to(move.pos)
         if move.pos in other_pieces:
             del other_pieces[move.pos]
+
+        if move.en_passant:
+            pos_to_remove = Position(move.pos.x, move.pos.y + (1 if self._turn == Colour.BLACK else -1))
+            del other_pieces[pos_to_remove]
+
+        # -- Set en passant target if needed
+        if move.becomes_en_passant_target:
+            ret._en_passant_target = pieces_moving[move.pos]
+        else:
+            ret._en_passant_target = None
 
         # -- Handle castling (just move the rook over)
         if move.castle_side == CastleSide.King:
