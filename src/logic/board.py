@@ -113,6 +113,29 @@ class Board:
             return white_piece
         return black_piece
 
+    def is_check_for(self, colour: Colour) -> bool:
+        """ Is it check for the defending colour passed as parameter """
+        defending_pieces, attacking_pieces = (self._white, self._black) if colour == Colour.WHITE else (self._black, self._white)
+
+        kings = [piece for piece in defending_pieces.values() if type(piece) == King]
+        assert len(kings) == 1, f"We have more than one king for {colour}, that is no buono..."
+        king = kings[0]
+
+        for piece in attacking_pieces.values():
+            possible_pos = []
+            if type(piece) == King: 
+                # special case for the king, because it creates infinite recursion (since he looks if he's walking into a check)
+                for dx in [-1, 0, 1]:
+                    for dy in [-1, 0, 1]:
+                        x, y = piece.pos.x + dx, piece.pos.y + dy
+                        if Position.is_within_bounds(x, y):
+                            possible_pos.append(Position(x, y))
+            else:
+                possible_pos += [move.pos for move in piece.legal_moves(self)]
+            if king.pos in possible_pos:
+                return True
+        return False
+
     def make_move(self, move: Move) -> "Board":
         dest_piece = self.piece_at(move.pos.x, move.pos.y) 
 
