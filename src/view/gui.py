@@ -37,8 +37,6 @@ class GUI(View):
 
         path = os.path.join(root, f"{"white" if colour == Colour.WHITE else "black"}-{piece_name}.png")
         img = Image.open(path)
-        size = int(self.tile_size * .85)
-        # img = img.resize((size, size))
 
         if img.mode == "LA":
             img = img.convert(mode="RGBA")
