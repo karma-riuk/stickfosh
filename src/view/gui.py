@@ -90,17 +90,29 @@ class GUI(View):
                 if selected_piece is not None:
                     possible_positions = [move.pos for move in legal_moves] 
                     if pos in possible_positions:
-                        radius = .15 * self.tile_size
                         colour = circle_colours[(x + y) % 2]
-                        self.canvas.create_oval(
-                            (x + .5) * self.tile_size - radius,
-                            (y + .5) * self.tile_size - radius,
-                            (x + .5) * self.tile_size + radius,
-                            (y + .5) * self.tile_size + radius,
-                            fill=colour,
-                            outline=colour,
-                        )
-
+                        move = [move for move in legal_moves if move.pos == pos][0]
+                        if move.is_capturing:
+                            radius = .40 * self.tile_size
+                            self.canvas.create_oval(
+                                (x + .5) * self.tile_size - radius,
+                                (y + .5) * self.tile_size - radius,
+                                (x + .5) * self.tile_size + radius,
+                                (y + .5) * self.tile_size + radius,
+                                fill="",
+                                outline=colour,
+                                width=.075 * self.tile_size,
+                            )
+                        else:
+                            radius = .15 * self.tile_size
+                            self.canvas.create_oval(
+                                (x + .5) * self.tile_size - radius,
+                                (y + .5) * self.tile_size - radius,
+                                (x + .5) * self.tile_size + radius,
+                                (y + .5) * self.tile_size + radius,
+                                fill=colour,
+                                outline=colour,
+                            )
 
                 piece = board.piece_at(x, 7-y)
 
