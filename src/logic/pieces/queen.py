@@ -1,3 +1,4 @@
+from logic.move import Move
 from .piece import Piece
 
 class Queen(Piece):
