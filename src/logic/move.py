@@ -1,4 +1,5 @@
 # from logic.pieces.piece import Piece
+from typing import Type
 from logic.position import Position
 from enum import Enum
 
@@ -8,13 +9,14 @@ class CastleSide(Enum):
     Queen = "O-O-O"
 
 class Move:
-    def __init__(self, piece: "Piece", pos: Position,/, is_capturing: bool = False, castle_side: CastleSide = CastleSide.Neither, en_passant: bool = False, becomes_en_passant_target: bool = False) -> None:
+    def __init__(self, piece: "Piece", pos: Position,/, is_capturing: bool = False, castle_side: CastleSide = CastleSide.Neither, en_passant: bool = False, becomes_en_passant_target: bool = False, promotes_to: Type["Piece"] = None) -> None:
         self.piece = piece
         self.pos = pos
         self.is_capturing = is_capturing
         self.castle_side = castle_side
         self.becomes_en_passant_target = becomes_en_passant_target
         self.en_passant = en_passant
+        self.promotes_to = promotes_to
 
     def to_algebraic(self) -> str:
         raise NotImplementedError("The move can't be translated to algbraic notation, as it was not implemented")

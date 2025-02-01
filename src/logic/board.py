@@ -184,6 +184,10 @@ class Board:
             pos_to_remove = Position(move.pos.x, move.pos.y + (1 if self._turn == Colour.BLACK else -1))
             del other_pieces[pos_to_remove]
 
+        if move.promotes_to is not None:
+            assert type(piece) == Pawn, "Trying to promote something that is not a pawn: not good!"
+            pieces_moving[move.pos] = move.promotes_to(move.pos, piece.colour)
+
         # -- Set en passant target if needed
         if move.becomes_en_passant_target:
             ret._en_passant_target = pieces_moving[move.pos]
