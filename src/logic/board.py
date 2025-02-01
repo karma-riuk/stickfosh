@@ -227,3 +227,5 @@ class Board:
 
 
         return ret
+
+INITIAL_BOARD = Board.setup_FEN_position("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
