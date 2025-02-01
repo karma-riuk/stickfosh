@@ -18,6 +18,8 @@ class Board:
         self._white_castling_rights = set()
         self._black_castling_rights = set()
         self._en_passant_target = None
+        self._n_moves = 0
+        self._n_half_moves = 0
 
     @staticmethod
     def _piece_class_from_char(c: str) -> Type[Piece]:
@@ -83,6 +85,8 @@ class Board:
         for c in position[index:]:
             index += 1
             if c == "-" or c == " ":
+                if c == "-":
+                    index += 1
                 break
 
             sides = "kq"
@@ -98,7 +102,24 @@ class Board:
 
         # -- En passant target
         if position[index] != "-":
-            ret._en_passant_target = position[index:index+2]
+            pos = Position.from_algebraic(position[index:index+2]) 
+            index += 2
+            if pos.y == 2:
+                pos.y += 1
+                assert pos in ret._white, "En passant target is not in the position"
+                ret._en_passant_target = ret._white[pos]
+            elif pos.y == 5:
+                pos.y -= 1
+                assert pos in ret._black, "En passant target is not in the position"
+                ret._en_passant_target = ret._black[pos]
+            else:
+                raise ValueError("You can't have a en passant target that is not on the third or sixth rank")
+        else:
+            index += 1
+        index += 1
+
+        ret._n_half_moves = int(position[index:position.find(" ", index + 1)])
+        ret._n_moves = int(position[position.find(" ", index)+1:])
 
         return ret
 
@@ -180,6 +201,14 @@ class Board:
         if move.pos in other_pieces:
             del other_pieces[move.pos]
 
+        if piece.colour == Colour.BLACK:
+            ret._n_moves = self._n_moves + 1
+
+        if move.is_capturing or type(piece) == Pawn:
+            ret._n_half_moves = 0
+        else:
+            ret._n_half_moves = self._n_half_moves + 1
+
         if move.en_passant:
             pos_to_remove = Position(move.pos.x, move.pos.y + (1 if self._turn == Colour.BLACK else -1))
             del other_pieces[pos_to_remove]
@@ -232,4 +261,67 @@ class Board:
 
         return ret
 
-INITIAL_BOARD = Board.setup_FEN_position("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
+    def to_fen_string(self):
+        ret = ""
+        for y in range(7, -1, -1):
+            empty_cell_counter = 0
+            for x in range(8):
+                pos = Position(x, y)
+
+                piece = None
+                if pos in self._white:
+                    piece = self._white[pos]
+                elif pos in self._black:
+                    piece = self._black[pos]
+
+                if piece is None:
+                    empty_cell_counter += 1
+                    continue
+
+                if empty_cell_counter > 0:
+                    ret += str(empty_cell_counter)
+                    empty_cell_counter = 0
+                letter = piece.letter()
+                ret += letter.lower() if piece.colour == Colour.BLACK else letter.upper()
+
+            if empty_cell_counter > 0:
+                ret += str(empty_cell_counter)
+
+            if y > 0:
+                ret += "/"
+        ret += " "
+
+        ret += "w" if self._turn == Colour.WHITE else "b"
+        ret += " "
+
+        if len(self._white_castling_rights) == 0 and len(self._black_castling_rights) == 0:
+            ret += "-"
+        else: 
+            if CastleSide.King in self._white_castling_rights:
+                ret += "K"
+            if CastleSide.Queen in self._white_castling_rights:
+                ret += "Q"
+
+            if CastleSide.King in self._black_castling_rights:
+                ret += "k"
+            if CastleSide.Queen in self._black_castling_rights:
+                ret += "q"
+        ret += " "
+
+        if self._en_passant_target is not None:
+            pos = self._en_passant_target.pos
+            pos.y += -1 if self._en_passant_target.colour == Colour.WHITE else 1
+            ret += pos.to_algebraic()
+        else:
+            ret += "-"
+        ret += " "
+
+        ret += str(self._n_half_moves)
+        ret += " "
+        ret += str(self._n_moves)
+
+        return ret
+
+_fen_pos = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+_fen_pos = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+INITIAL_BOARD = Board.setup_FEN_position(_fen_pos)

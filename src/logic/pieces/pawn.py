@@ -75,3 +75,6 @@ class Pawn(Piece):
             return self.keep_only_blocking(ret, board)
 
         return ret
+
+    def letter(self):
+        return "p"

@@ -17,6 +17,14 @@ class Position:
         return x >= Position._MIN_POS and x <= Position._MAX_POS \
             and y >= Position._MIN_POS and y <= Position._MAX_POS
 
+    @staticmethod
+    def from_algebraic(square: str) -> "Position":
+        assert len(square) == 2, f"'{square}' is malformed"
+        x = Position._FILES.index(square[0])
+        y = Position._RANKS.index(int(square[1]))
+
+        return Position(x, y)
+
     def to_algebraic(self) -> str:
         return f"{Position._FILES[self.x]}{Position._RANKS[self.y]}"
 
