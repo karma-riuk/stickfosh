@@ -63,9 +63,7 @@ std::string Board::to_fen() const {
 
             int full_piece = this->squares[rank * 8 + file];
             char piece = p2c[full_piece & 0b111];
-            Colour colour = (full_piece & 0b11000) == Colour::White
-                              ? Colour::White
-                              : Colour::Black;
+            int8_t colour = colour_at({file, rank});
 
             if (empty_cell_counter > 0) {
                 ret += std::to_string(empty_cell_counter);

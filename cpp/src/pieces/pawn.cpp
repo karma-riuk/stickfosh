@@ -5,8 +5,7 @@
 
 std::vector<Move> pawn_moves(const Board& b, const Coords xy) {
     std::vector<Move> ret{};
-    int8_t me = b.squares[xy.to_index()];
-    int8_t my_colour = me & 0b11000;
+    int8_t my_colour = b.colour_at(xy);
 
     // -- Capture to the left
     if (xy.x > 0) {
@@ -14,7 +13,7 @@ std::vector<Move> pawn_moves(const Board& b, const Coords xy) {
         Coords left{xy.x - 1, xy.y + dy};
         int8_t capturable_piece = b.squares[left.to_index()];
         if (capturable_piece != 0) {
-            if (my_colour != (capturable_piece & 0b11000))
+            if (my_colour != b.colour_at(left))
                 ret.push_back(Move{xy.to_index(), left.to_index()});
         }
     }
@@ -25,7 +24,7 @@ std::vector<Move> pawn_moves(const Board& b, const Coords xy) {
         Coords right{xy.x + 1, xy.y + dy};
         int8_t capturable_piece = b.squares[right.to_index()];
         if (capturable_piece != 0) {
-            if (my_colour != (capturable_piece & 0b11000))
+            if (my_colour != b.colour_at(right))
                 ret.push_back(Move{xy.to_index(), right.to_index()});
         }
     }
