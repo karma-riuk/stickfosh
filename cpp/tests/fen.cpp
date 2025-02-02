@@ -1,20 +1,5 @@
 #include "../board.cpp"
-
-#define IS_TRUE(x)                                                             \
-    {                                                                          \
-        if (!(x))                                                              \
-            std::cout << __FUNCTION__ << " failed on line " << __LINE__        \
-                      << std::endl;                                            \
-    }
-
-#define ASSERT_EQUALS(expected, actual)                                        \
-    {                                                                          \
-        if (expected != actual)                                                \
-            std::cout << "Expected: " << std::endl                             \
-                      << '\t' << expected << std::endl                         \
-                      << "Got: " << std::endl                                  \
-                      << '\t' << actual << std::endl;                          \
-    }
+#include "lib.cpp"
 
 int main() {
     std::string pos = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
