@@ -184,6 +184,10 @@ Board Board::make_move(Move move) const {
     // -- Handle en passant target being eaten
     if (move.en_passant)
         ret.squares[move.target_square - 8] = Piece::None;
+
+    // -- Handle promotion
+    if (move.promoting_to != 0)
+        ret.squares[move.target_square] = move.promoting_to;
     return ret;
 }
 
