@@ -29,11 +29,11 @@ struct Board {
     std::vector<Move> all_legal_moves() const;
 
     bool is_checkmate_for(int8_t colour) const {
-        return is_checkmate_for(colour) && no_legal_moves_for(colour);
+        return is_check_for(colour) && no_legal_moves_for(colour);
     }
 
     bool is_stalemate_for(int8_t colour) const {
-        return !is_checkmate_for(colour) && no_legal_moves_for(colour);
+        return !is_check_for(colour) && no_legal_moves_for(colour);
     }
 
     bool is_terminal() const {
