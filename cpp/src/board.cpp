@@ -3,8 +3,8 @@
 #include <cctype>
 #include <map>
 
-Board* Board::setup_fen_position(std::string fen) {
-    Board* board = new Board();
+Board Board::setup_fen_position(std::string fen) {
+    Board board;
     std::map<char, Piece> c2p{
         {'k', Piece::King},
         {'p', Piece::Pawn},
@@ -30,7 +30,7 @@ Board* Board::setup_fen_position(std::string fen) {
                 std::isupper(symbol) ? Colour::White : Colour::Black;
 
             Piece piece = c2p[std::tolower(symbol)];
-            board->squares[rank * 8 + file] = colour | piece;
+            board.squares[rank * 8 + file] = colour | piece;
             file++;
         }
     }
@@ -73,5 +73,26 @@ std::string Board::to_fen() {
         if (rank > 0)
             ret += "/";
     }
+    return ret;
+}
+
+Board Board::make_move(Move move) {
+    int8_t dest_piece = this->squares[move.target_square];
+
+    Board ret;
+    std::copy(
+        std::begin(this->squares),
+        std::end(this->squares),
+        std::begin(ret.squares)
+    );
+    ret.white_to_play = !this->white_to_play;
+
+    // -- Actually make the move
+    ret.squares[move.source_square] = Piece::None;
+    ret.squares[move.target_square] = this->squares[move.source_square];
+
+    // -- Handle en passant target being eaten
+    if (move.en_passant)
+        ret.squares[move.target_square - 8] = Piece::None;
     return ret;
 }
