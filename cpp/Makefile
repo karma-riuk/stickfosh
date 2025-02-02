@@ -1,32 +1,32 @@
-# Compiler flags (add -O2 for optimization, -g for debugging, etc.)
-CXXFLAGS = -Wall -O3
+# Add .d to Make's recognized suffixes.
+SUFFIXES += .d
 
-# Name of the final executable
-TARGET = stickfosh
+#We don't need to clean up when we're making these targets
+NODEPS:=clean tags svn
+#Find all the C++ files in the src/ directory
+SOURCES:=$(shell find src/ -name "*.cpp")
+OBJFILES := $(patsubst src/%.cpp,obj/%.o,$(SOURCES))
+#These are the dependency files, which make will clean up after it creates them
+DEPFILES:=$(patsubst %.cpp,%.d,$(SOURCES))
 
-# List of source files
-SRCS = main.cpp board.cpp
+#Don't create dependencies when we're cleaning, for instance
+ifeq (0, $(words $(findstring $(MAKECMDGOALS), $(NODEPS))))
+	#Chances are, these files don't exist.  GMake will create them and
+	#clean up automatically afterwards
+	-include $(DEPFILES)
+endif
 
-# Automatically generate object file names from source file names
-OBJS = $(SRCS:.cpp=.o)
+#This is the rule for creating the dependency files
+src/%.d: src/%.cpp
+	$(CXX) $(CXXFLAGS) -MM -MT '$(patsubst src/%.cpp,obj/%.o,$<)' $< -MF $@
 
-# Default rule: build the target executable
-all: $(TARGET)
+#This rule does the compilation
+obj/%.o:
+	@mkdir -p $(dir $@)
+	$(CXX) $(CXXFLAGS) -o $@ -c $<
 
-# Link the object files into the final executable
-$(TARGET): $(OBJS)
-	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJS)
+main: $(OBJFILES)
+	$(CXX) $(LDFLAGS) $(OBJFILES) $(LOADLIBES) $(LDLIBS) -o main
 
-# Pattern rule: compile each .cpp file to a .o file
-%.o: %.cpp %.hpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-main.o: board.o
-stickfosh: main.o board.o
-
-# Clean rule to remove built files
 clean:
-	rm -f $(TARGET) $(OBJS)
-
-# Optional: a rule to rebuild everything from scratch
-rebuild: clean all
+	rm -rf obj/* $(DEPFILES)

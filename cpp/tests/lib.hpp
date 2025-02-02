@@ -1,5 +1,7 @@
 #pragma once
 
+#include <iostream>
+
 #define ASSERT_EQUALS(expected, actual)                                        \
     {                                                                          \
         if (expected != actual)                                                \
