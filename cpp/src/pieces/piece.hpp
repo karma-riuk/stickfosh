@@ -3,6 +3,7 @@
 #include "../move.hpp"
 
 #include <cstdint>
+#include <optional>
 #include <vector>
 
 enum Piece : int8_t {
@@ -25,6 +26,8 @@ struct Coords;
 
 std::vector<Move> legal_moves(int8_t, const Board&, const Coords, bool);
 std::vector<Move> keep_only_blocking(const std::vector<Move>, const Board&);
+std::optional<Move> move_for_position(const Board&, const Coords, const Coords);
+std::vector<Move> look_direction(const Board&, const Coords, int, int);
 
 std::vector<Move> pawn_moves(const Board&, const Coords);
 std::vector<Move> rook_moves(const Board&, const Coords);

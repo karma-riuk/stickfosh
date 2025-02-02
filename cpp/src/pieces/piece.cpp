@@ -36,3 +36,37 @@ std::vector<Move> legal_moves(
 
     return {};
 }
+
+std::optional<Move>
+move_for_position(const Board& board, const Coords source, const Coords dest) {
+    if (dest.is_within_bounds())
+        return {};
+
+    int8_t piece = board.squares[dest.to_index()];
+    if (piece == Piece::None)
+        return Move{source.to_index(), dest.to_index()};
+
+    int8_t source_colour = board.squares[source.to_index()] & 0b11000;
+    int8_t dest_colour = piece & 0b11000;
+    if (source_colour != dest_colour)
+        return Move{source.to_index(), dest.to_index(), true};
+    return {};
+}
+
+std::vector<Move>
+look_direction(const Board& board, const Coords xy, int mult_dx, int mult_dy) {
+    std::vector<Move> ret;
+    for (int d = 0; d < 8; d++) {
+        int dx = mult_dx * d;
+        int dy = mult_dy * d;
+
+        std::optional<Move> move =
+            move_for_position(board, xy, Coords{xy.x + dx, xy.y + dy});
+        if (move.has_value()) {
+            ret.push_back(move.value());
+            if (move.value().is_capturing)
+                break;
+        }
+    }
+    return ret;
+}
