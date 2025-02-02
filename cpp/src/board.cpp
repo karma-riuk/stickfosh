@@ -188,6 +188,17 @@ Board Board::make_move(Move move) const {
     // -- Handle promotion
     if (move.promoting_to != 0)
         ret.squares[move.target_square] = move.promoting_to;
+
+    // -- Set en passant target if need
+    if ((squares[move.source_square] & 0b111) == Piece::Pawn
+        && std::abs(move.target_square - move.source_square) == 16) {
+        if (white_to_play)
+            ret.en_passant_target = move.target_square - 8;
+        else
+            ret.en_passant_target = move.target_square + 8;
+    } else {
+        ret.en_passant_target = -1;
+    }
     return ret;
 }
 
