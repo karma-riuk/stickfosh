@@ -31,3 +31,4 @@
 *.out
 *.appobj/
 test_bin/
+main
