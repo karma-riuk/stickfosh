@@ -1,5 +1,7 @@
 #pragma once
 
+#include "coords.hpp"
+#include "move.hpp"
 #include "pieces/piece.hpp"
 
 #include <string>
@@ -11,8 +13,8 @@ struct Board {
   public:
     int8_t squares[64] = {Piece::None};
     bool white_to_play;
-    int8_t w_castle_rights;
-    int8_t b_castle_rights;
+    CastleSide w_castle_rights;
+    CastleSide b_castle_rights;
 
     static Board setup_fen_position(std::string fen);
 
