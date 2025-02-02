@@ -16,6 +16,8 @@ struct Board {
     int8_t w_castle_rights = CastleSide::NeitherSide;
     int8_t b_castle_rights = CastleSide::NeitherSide;
     int8_t en_passant_target = -1;
+    uint8_t n_half_moves = 0;
+    uint8_t n_full_moves = 0;
 
     static Board setup_fen_position(std::string fen);
 

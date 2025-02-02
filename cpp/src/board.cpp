@@ -82,6 +82,15 @@ Board Board::setup_fen_position(std::string fen) {
         index++;
     }
 
+    // -- Half move clock
+    index = fen.find(' ', index) + 1;
+    board.n_half_moves =
+        std::stoi(fen.substr(index, fen.find(' ', index + 1) - index));
+
+    // -- Full move number
+    index = fen.find(' ', index) + 1;
+    board.n_full_moves = std::stoi(fen.substr(index));
+
 
     return board;
 }
@@ -127,7 +136,7 @@ std::string Board::to_fen() const {
     ret += white_to_play ? 'w' : 'b';
     ret += " ";
 
-    // Castling Rights
+    // -- Castling Rights
     if (w_castle_rights == CastleSide::NeitherSide
         && b_castle_rights == CastleSide::NeitherSide)
         ret += '-';
@@ -143,10 +152,18 @@ std::string Board::to_fen() const {
     }
     ret += ' ';
 
-    // En passant target
+    // -- En passant target
     ret += en_passant_target == -1
              ? "-"
              : Coords::from_index(en_passant_target).to_algebraic();
+    ret += ' ';
+
+    // -- Half move clock
+    ret += std::to_string(n_half_moves);
+    ret += ' ';
+
+    // -- Full moves number
+    ret += std::to_string(n_full_moves);
 
     return ret;
 }
