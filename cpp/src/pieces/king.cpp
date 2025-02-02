@@ -49,9 +49,9 @@ std::vector<Move> king_moves(const Board& b, const Coords xy) {
         return ret;
 
     // -- Castles
-    CastleSide castling_rights = b.colour_at(xy) == Colour::White
-                                   ? b.w_castle_rights
-                                   : b.b_castle_rights;
+    int8_t castling_rights = b.colour_at(xy) == Colour::White
+                               ? b.w_castle_rights
+                               : b.b_castle_rights;
 
     if (castling_rights == CastleSide::NeitherSide)
         return ret;
