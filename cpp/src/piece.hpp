@@ -1,4 +1,6 @@
-enum Piece {
+#include <cstdint>
+
+enum Piece : int8_t {
     None = 0,
     King = 1,
     Pawn = 2,
@@ -8,7 +10,7 @@ enum Piece {
     Queen = 6,
 };
 
-enum Colour {
+enum Colour : int8_t {
     White = 8,
     Black = 16,
 };
