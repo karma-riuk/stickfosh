@@ -1,6 +1,7 @@
 #include "board.hpp"
 
 #include "coords.hpp"
+#include "move.hpp"
 #include "pieces/piece.hpp"
 
 #include <algorithm>
@@ -45,6 +46,33 @@ Board Board::setup_fen_position(std::string fen) {
     int index = fen.find(' ');
     index++;
     board.white_to_play = fen[index] == 'w';
+
+    // Castling Rights
+    index += 2;
+    for (char symbol : fen.substr(index, fen.find(' ', index + 1))) {
+        index++;
+        if (symbol == ' ' || symbol == '-') {
+            if (symbol == '-')
+                index++;
+            break;
+        }
+
+        switch (symbol) {
+        case 'K':
+            board.w_castle_rights |= CastleSide::KingSide;
+            break;
+        case 'Q':
+            board.w_castle_rights |= CastleSide::QueenSide;
+            break;
+        case 'k':
+            board.b_castle_rights |= CastleSide::KingSide;
+            break;
+        case 'q':
+            board.b_castle_rights |= CastleSide::QueenSide;
+            break;
+        }
+    }
+
     return board;
 }
 
@@ -87,6 +115,23 @@ std::string Board::to_fen() const {
 
     // -- Active colour
     ret += white_to_play ? 'w' : 'b';
+    ret += " ";
+
+    // Castling Rights
+    if (w_castle_rights == CastleSide::NeitherSide
+        && b_castle_rights == CastleSide::NeitherSide)
+        ret += '-';
+    else {
+        if (w_castle_rights & CastleSide::KingSide)
+            ret += 'K';
+        if (w_castle_rights & CastleSide::QueenSide)
+            ret += 'Q';
+        if (b_castle_rights & CastleSide::KingSide)
+            ret += 'k';
+        if (b_castle_rights & CastleSide::QueenSide)
+            ret += 'q';
+    }
+
     return ret;
 }
 
