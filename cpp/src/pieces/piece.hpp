@@ -21,12 +21,13 @@ enum Colour : int8_t {
 };
 
 class Board;
+struct Coords;
 
-std::vector<Move> legal_moves(Piece p, Board b);
+std::vector<Move> legal_moves(const Piece, const Board&, const Coords);
 
-std::vector<Move> pawn_moves(Board b);
-std::vector<Move> rook_moves(Board b);
-std::vector<Move> knight_moves(Board b);
-std::vector<Move> bishop_moves(Board b);
-std::vector<Move> queen_moves(Board b);
-std::vector<Move> king_moves(Board b);
+std::vector<Move> pawn_moves(const Board&, const Coords);
+std::vector<Move> rook_moves(const Board&, const Coords);
+std::vector<Move> knight_moves(const Board&, const Coords);
+std::vector<Move> bishop_moves(const Board&, const Coords);
+std::vector<Move> queen_moves(const Board&, const Coords);
+std::vector<Move> king_moves(const Board&, const Coords);
