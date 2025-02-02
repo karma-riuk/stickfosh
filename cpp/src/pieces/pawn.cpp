@@ -1,4 +1,5 @@
 #include "../board.hpp"
+#include "../coords.hpp"
 #include "../move.hpp"
 #include "piece.hpp"
 

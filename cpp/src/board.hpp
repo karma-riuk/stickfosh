@@ -4,18 +4,6 @@
 
 #include <string>
 
-struct Coords {
-    int x, y;
-
-    int8_t to_index() const {
-        return this->y * 8 + this->x;
-    }
-
-    static Coords from_index(int idx) {
-        return {idx % 8, idx / 8};
-    }
-};
-
 struct Board {
   private:
     int8_t get_king_of(int8_t colour) const;
