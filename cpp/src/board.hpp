@@ -1,13 +1,8 @@
 #pragma once
 
-#include "piece.hpp"
+#include "pieces/piece.hpp"
 
 #include <string>
-
-enum CastleRights : int8_t {
-    KingSide = 1,
-    QueenSide = 2,
-};
 
 class Board {
   private:
