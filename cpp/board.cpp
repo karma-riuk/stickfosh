@@ -1,38 +1,7 @@
+#include "board.hpp"
+
 #include <cctype>
 #include <map>
-#include <string>
-
-enum Piece {
-    None = 0,
-    King = 1,
-    Pawn = 2,
-    Knigt = 3,
-    Bishop = 4,
-    Rook = 5,
-    Queen = 6,
-};
-
-enum Colour {
-    White = 8,
-    Black = 16,
-};
-
-enum CastleRights {
-    KingSide = 1,
-    QueenSide = 2,
-};
-
-class Board {
-  private:
-    int squares[64] = {Piece::None};
-    Colour turn;
-    int castle_rights;
-
-  public:
-    static Board* setup_fen_position(std::string fen);
-
-    std::string to_fen();
-};
 
 Board* Board::setup_fen_position(std::string fen) {
     Board* board = new Board();

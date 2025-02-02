@@ -1,5 +1,5 @@
 #include "../board.cpp"
-#include "lib.cpp"
+#include "lib.hpp"
 
 int main() {
     std::string pos = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
