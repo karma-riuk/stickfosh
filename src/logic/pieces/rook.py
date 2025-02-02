@@ -17,7 +17,7 @@ class Rook(Piece):
         # looking north
         ret.extend(self._look_direction(board, 0, 1))
 
-        if not looking_for_check and board.is_check_for(self.colour):
+        if not looking_for_check:# and board.is_check_for(self.colour):
             return self.keep_only_blocking(ret, board)
 
         return ret

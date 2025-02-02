@@ -47,7 +47,7 @@ class King(Piece):
 
         if CastleSide.Queen in castling_rights:
             clear = True
-            for dx in range(1, 3):
+            for dx in range(1, 4):
                 x = self.pos.x - dx
                 y = self.pos.y
 
@@ -57,7 +57,7 @@ class King(Piece):
 
                 move = self._move_for_position(board, x, y)
                 board_after_move = board.make_move(move)
-                if board_after_move.is_check_for(self.colour):
+                if dx < 3 and board_after_move.is_check_for(self.colour):
                     clear = False
                     break
 

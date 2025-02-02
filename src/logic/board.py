@@ -248,6 +248,12 @@ class Board:
                     ret._white_castling_rights.remove(CastleSide.Queen)
                 elif piece.pos.x == 7 and CastleSide.King in ret._white_castling_rights:
                     ret._white_castling_rights.remove(CastleSide.King)
+
+            if move.is_capturing and move.pos.y == 7 and move.pos in self._black and type(self._black[move.pos]) == Rook:
+                if move.pos.x == 0 and CastleSide.Queen in ret._black_castling_rights:
+                    ret._black_castling_rights.remove(CastleSide.Queen)
+                elif move.pos.x == 7 and CastleSide.King in ret._black_castling_rights:
+                    ret._black_castling_rights.remove(CastleSide.King)
         else:
             if type(piece) == King:
                 ret._black_castling_rights = set()
@@ -258,6 +264,11 @@ class Board:
                 elif piece.pos.x == 7 and CastleSide.King in ret._black_castling_rights:
                     ret._black_castling_rights.remove(CastleSide.King)
 
+            if move.is_capturing and move.pos.y == 0 and move.pos in self._white and type(self._white[move.pos]) == Rook:
+                if move.pos.x == 0 and CastleSide.Queen in ret._white_castling_rights:
+                    ret._white_castling_rights.remove(CastleSide.Queen)
+                elif move.pos.x == 7 and CastleSide.King in ret._white_castling_rights:
+                    ret._white_castling_rights.remove(CastleSide.King)
 
         return ret
 
@@ -309,7 +320,7 @@ class Board:
         ret += " "
 
         if self._en_passant_target is not None:
-            pos = self._en_passant_target.pos
+            pos = Position(self._en_passant_target.pos.x, self._en_passant_target.pos.y)
             pos.y += -1 if self._en_passant_target.colour == Colour.WHITE else 1
             ret += pos.to_algebraic()
         else:
@@ -322,6 +333,28 @@ class Board:
 
         return ret
 
-_fen_pos = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+
+    def legal_moves(self) -> list[Move]:
+        ret = []
+        pieces = self._white if self._turn == Colour.WHITE else self._black
+        for piece in pieces.values():
+            ret += piece.legal_moves(self)
+        return ret
+
+    def is_terminal(self) -> bool:
+        return self.is_stalemate_for(Colour.WHITE) or self.is_stalemate_for(Colour.BLACK) or self.is_checkmate_for(Colour.WHITE) or self.is_checkmate_for(Colour.BLACK)
+
+    def utility(self) -> int:
+        if self.is_stalemate_for(Colour.WHITE) or self.is_stalemate_for(Colour.BLACK):
+            return 0
+
+        if self.is_checkmate_for(Colour.WHITE):
+            return 1
+
+        if self.is_checkmate_for(Colour.BLACK):
+            return -1
+        
+        raise ValueError("Cannot determine the utility of board become it neither checkmate nor stalemate for either players")
+
 _fen_pos = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 INITIAL_BOARD = Board.setup_FEN_position(_fen_pos)

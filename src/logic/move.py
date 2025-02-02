@@ -32,10 +32,19 @@ class Move:
             return "O-O-O"
 
         ret = ""
-        if type(self.piece).__name__ != "Pawn":
+        if type(self.piece).__name__ == "Pawn":
+            if self.is_capturing:
+                ret += self.piece.pos.to_algebraic()[0]
+                ret += "x"
+                ret += self.pos.to_algebraic()
+            else:
+                ret += self.pos.to_algebraic()
+        else:
             ret += self.piece.letter().upper()
-
-        ret += str(self.pos)
+            if self.is_capturing:
+                ret += "x"
+            ret += str(self.pos)
+        
         return ret
     
     def __repr__(self) -> str:
