@@ -5,7 +5,7 @@
 
 #include <vector>
 
-std::vector<Move> rook_moves(const Board& b, const Coords xy) {
+std::vector<Move> queen_moves(const Board& b, const Coords xy) {
     std::vector<Move> ret;
     auto e = look_direction(b, xy, 1, 0);
     ret.insert(ret.end(), e.begin(), e.end());
