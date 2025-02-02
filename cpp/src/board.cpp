@@ -1,5 +1,6 @@
 #include "board.hpp"
 
+#include "coords.hpp"
 #include "pieces/piece.hpp"
 
 #include <algorithm>
