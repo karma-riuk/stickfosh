@@ -23,7 +23,7 @@ enum CastleRights {
 };
 
 class Board {
-  public: // make this private after debugging
+  private:
     int squares[64] = {Piece::None};
     Colour turn;
     int castle_rights;
