@@ -24,7 +24,7 @@ enum Colour : int8_t {
 class Board;
 struct Coords;
 
-std::vector<Move> legal_moves(int8_t, const Board&, const Coords, bool);
+std::vector<Move> legal_moves(int8_t, const Board&, const Coords, bool = false);
 std::vector<Move> keep_only_blocking(const std::vector<Move>, const Board&);
 std::optional<Move> move_for_position(const Board&, const Coords, const Coords);
 std::vector<Move> look_direction(const Board&, const Coords, int, int);
