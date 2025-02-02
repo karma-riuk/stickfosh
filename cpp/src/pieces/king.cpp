@@ -53,22 +53,22 @@ std::vector<Move> king_moves(const Board& b, const Coords xy) {
                                    ? b.w_castle_rights
                                    : b.b_castle_rights;
 
-    if (castling_rights == CastleSide::Neither)
+    if (castling_rights == CastleSide::NeitherSide)
         return ret;
 
-    if (castling_rights == CastleSide::King && is_clear_king_side(b, xy)) {
+    if (castling_rights & CastleSide::KingSide && is_clear_king_side(b, xy)) {
         ret.push_back(Move{
             xy.to_index(),
             Coords{6, xy.y}.to_index(),
-            .castle_side = CastleSide::King
+            .castle_side = CastleSide::KingSide
         });
     }
 
-    if (castling_rights == CastleSide::Queen && is_clear_queen_side(b, xy)) {
+    if (castling_rights & CastleSide::QueenSide && is_clear_queen_side(b, xy)) {
         ret.push_back(Move{
             xy.to_index(),
             Coords{2, xy.y}.to_index(),
-            .castle_side = CastleSide::Queen
+            .castle_side = CastleSide::QueenSide
         });
     }
 

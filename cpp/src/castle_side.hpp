@@ -1,7 +1,7 @@
 #include <cstdint>
 
-enum class CastleSide : int8_t {
-    Neither = 0,
-    King = 1,
-    Queen = 2,
+enum CastleSide : int8_t {
+    NeitherSide = 0,
+    KingSide = 1,
+    QueenSide = 2,
 };
