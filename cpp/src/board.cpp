@@ -19,6 +19,7 @@ Board Board::setup_fen_position(std::string fen) {
         {'q', Piece::Queen},
     };
 
+    // -- Pieces
     std::string fen_board = fen.substr(0, fen.find(' '));
     int rank = 7, file = 0;
     for (char symbol : fen_board) {
@@ -39,6 +40,11 @@ Board Board::setup_fen_position(std::string fen) {
             file++;
         }
     }
+
+    // -- Active colour
+    int index = fen.find(' ');
+    index++;
+    board.white_to_play = fen[index] == 'w';
     return board;
 }
 
@@ -53,15 +59,16 @@ std::string Board::to_fen() const {
     };
 
     std::string ret;
+    // -- Pieces
     for (int rank = 7; rank >= 0; rank--) {
         int empty_cell_counter = 0;
         for (int file = 0; file < 8; file++) {
-            if (this->squares[rank * 8 + file] == Piece::None) {
+            if (squares[rank * 8 + file] == Piece::None) {
                 empty_cell_counter++;
                 continue;
             }
 
-            int full_piece = this->squares[rank * 8 + file];
+            int full_piece = squares[rank * 8 + file];
             char piece = p2c[full_piece & 0b111];
             int8_t colour = colour_at({file, rank});
 
@@ -76,6 +83,10 @@ std::string Board::to_fen() const {
         if (rank > 0)
             ret += "/";
     }
+    ret += " ";
+
+    // -- Active colour
+    ret += white_to_play ? 'w' : 'b';
     return ret;
 }
 
