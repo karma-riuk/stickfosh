@@ -2,10 +2,6 @@
 
 #include "../board.hpp"
 
-std::vector<Move> pawn_moves(Board b) {
-    return {};
-}
-
 std::vector<Move> legal_moves(Piece p, Board b) {
     switch (p) {
     case Piece::Pawn:

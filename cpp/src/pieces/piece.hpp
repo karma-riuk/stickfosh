@@ -21,4 +21,12 @@ enum Colour : int8_t {
 };
 
 class Board;
+
 std::vector<Move> legal_moves(Piece p, Board b);
+
+std::vector<Move> pawn_moves(Board b);
+std::vector<Move> rook_moves(Board b);
+std::vector<Move> knight_moves(Board b);
+std::vector<Move> bishop_moves(Board b);
+std::vector<Move> queen_moves(Board b);
+std::vector<Move> king_moves(Board b);
