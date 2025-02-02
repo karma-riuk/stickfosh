@@ -2,8 +2,10 @@
 
 #include <iostream>
 
-#define ASSERT_EQUALS(expected, actual)                                        \
+#define ASSERT_EQUALS(x, y)                                                    \
     {                                                                          \
+        auto expected = x;                                                     \
+        auto actual = y;                                                       \
         if (expected != actual) {                                              \
             std::cerr << "Expected: " << std::endl                             \
                       << '\t' << expected << std::endl                         \
