@@ -75,7 +75,7 @@ Board Board::setup_fen_position(std::string fen) {
 
     // -- En passant target
     if (fen[index] != '-') {
-        Coords c = Coords::from_algebraic(fen.substr(index, index + 2));
+        Coords c = Coords::from_algebraic(fen.substr(index, 2));
         index += 2;
         board.en_passant_target = c.to_index();
     } else {
