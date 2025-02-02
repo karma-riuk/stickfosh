@@ -23,7 +23,8 @@ enum Colour : int8_t {
 class Board;
 struct Coords;
 
-std::vector<Move> legal_moves(const Piece, const Board&, const Coords, bool);
+std::vector<Move> legal_moves(int8_t, const Board&, const Coords, bool);
+std::vector<Move> keep_only_blocking(const std::vector<Move>, const Board&);
 
 std::vector<Move> pawn_moves(const Board&, const Coords);
 std::vector<Move> rook_moves(const Board&, const Coords);
