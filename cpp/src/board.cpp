@@ -292,3 +292,30 @@ bool Board::is_check_for(int8_t colour) const {
     }
     return false;
 }
+
+bool Board::no_legal_moves_for(int8_t colour) const {
+    for (int i = 0; i < 64; i++) {
+        if ((colour_at(i) == White && white_to_play)
+            || (colour_at(i) == Black && !white_to_play)) {
+            if (legal_moves(squares[i] & 0b111, *this, Coords::from_index(i))
+                    .size()
+                > 0)
+                return false;
+        }
+    }
+    return true;
+}
+
+std::vector<Move> Board::all_legal_moves() const {
+    std::vector<Move> ret;
+    for (int i = 0; i < 64; i++) {
+        if ((colour_at(i) == White && white_to_play)
+            || (colour_at(i) == Black && !white_to_play)) {
+            std::vector<Move> moves =
+                legal_moves(squares[i] & 0b111, *this, Coords::from_index(i));
+            if (moves.size() > 0)
+                ret.insert(ret.end(), moves.begin(), moves.end());
+        }
+    }
+    return ret;
+}

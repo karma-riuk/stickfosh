@@ -8,7 +8,8 @@
 
 struct Board {
   private:
-    int8_t get_king_of(int8_t colour) const;
+    int8_t get_king_of(int8_t) const;
+    bool no_legal_moves_for(int8_t) const;
 
   public:
     int8_t squares[64] = {Piece::None};
@@ -24,6 +25,21 @@ struct Board {
     Board make_move(Move) const;
     std::string to_fen() const;
     bool is_check_for(int8_t) const;
+
+    std::vector<Move> all_legal_moves() const;
+
+    bool is_checkmate_for(int8_t colour) const {
+        return is_checkmate_for(colour) && no_legal_moves_for(colour);
+    }
+
+    bool is_stalemate_for(int8_t colour) const {
+        return !is_checkmate_for(colour) && no_legal_moves_for(colour);
+    }
+
+    bool is_terminal() const {
+        return is_checkmate_for(White) || is_checkmate_for(Black)
+            || is_stalemate_for(White) || is_stalemate_for(Black);
+    }
 
     int8_t colour_at(int8_t idx) const {
         return squares[idx] & 0b11000;
