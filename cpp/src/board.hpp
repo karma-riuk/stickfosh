@@ -15,6 +15,7 @@ struct Board {
     bool white_to_play = true;
     int8_t w_castle_rights = CastleSide::NeitherSide;
     int8_t b_castle_rights = CastleSide::NeitherSide;
+    int8_t en_passant_target = -1;
 
     static Board setup_fen_position(std::string fen);
 

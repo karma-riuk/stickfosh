@@ -73,6 +73,16 @@ Board Board::setup_fen_position(std::string fen) {
         }
     }
 
+    // -- En passant target
+    if (fen[index] != '-') {
+        Coords c = Coords::from_algebraic(fen.substr(index, index + 2));
+        index += 2;
+        board.en_passant_target = c.to_index();
+    } else {
+        index++;
+    }
+
+
     return board;
 }
 
@@ -131,6 +141,12 @@ std::string Board::to_fen() const {
         if (b_castle_rights & CastleSide::QueenSide)
             ret += 'q';
     }
+    ret += ' ';
+
+    // En passant target
+    ret += en_passant_target == -1
+             ? "-"
+             : Coords::from_index(en_passant_target).to_algebraic();
 
     return ret;
 }
