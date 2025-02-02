@@ -1,4 +1,4 @@
-#include "../board.hpp"
+#include "../src/board.hpp"
 #include "lib.hpp"
 
 int main() {

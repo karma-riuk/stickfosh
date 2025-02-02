@@ -29,4 +29,28 @@ main: $(OBJFILES)
 	$(CXX) $(LDFLAGS) $(OBJFILES) $(LOADLIBES) $(LDLIBS) -o main
 
 clean:
-	rm -rf obj/* $(DEPFILES)
+	rm -rf obj/* $(DEPFILES) test_bin/
+
+
+# --- Test Support ---
+# Find all test source files in the tests directory
+TESTS := $(shell find tests -name "*.cpp")
+# Define corresponding test executable names, e.g. tests/foo.cpp -> test_bin/foo
+TEST_BIN := $(patsubst tests/%.cpp,test_bin/%,$(TESTS))
+LIBS := $(filter-out obj/main.o,$(OBJFILES))
+
+# Pattern rule: how to build a test executable from a test source file.
+# You can adjust CXXFLAGS or add include directories if needed.
+test_bin/%: tests/%.cpp $(LIBS)
+	@echo $(LIBS)
+	@mkdir -p $(dir $@)
+	$(CXX) $(CXXFLAGS) -o $@ $< $(LIBS)
+
+# The 'test' target builds all tests and then runs each one.
+.PHONY: test
+test: $(TEST_BIN)
+	@echo "Running all tests..."
+	@for t in $(TEST_BIN); do \
+	    echo "---- Running $$t ----"; \
+	    ./$$t || exit 1; \
+	done
