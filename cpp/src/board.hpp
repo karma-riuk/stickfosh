@@ -12,9 +12,9 @@ struct Board {
 
   public:
     int8_t squares[64] = {Piece::None};
-    bool white_to_play;
-    CastleSide w_castle_rights;
-    CastleSide b_castle_rights;
+    bool white_to_play = true;
+    int8_t w_castle_rights = CastleSide::NeitherSide;
+    int8_t b_castle_rights = CastleSide::NeitherSide;
 
     static Board setup_fen_position(std::string fen);
 
