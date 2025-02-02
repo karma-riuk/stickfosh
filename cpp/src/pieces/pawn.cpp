@@ -42,7 +42,7 @@ std::vector<Move> pawn_moves(const Board& b, const Coords xy) {
             });
     }
 
-    // -- Promotion
+    // -- Normal move + promotion
     bool is_on_starting_rank =
         my_colour == Colour::White ? xy.y == 1 : xy.y == 6;
     int max_dy = is_on_starting_rank ? 3 : 2;
