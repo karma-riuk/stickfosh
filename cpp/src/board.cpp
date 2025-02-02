@@ -169,8 +169,6 @@ std::string Board::to_fen() const {
 }
 
 Board Board::make_move(Move move) const {
-    int8_t dest_piece = this->squares[move.target_square];
-
     Board ret;
     std::copy(
         std::begin(this->squares),
