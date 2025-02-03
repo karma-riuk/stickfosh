@@ -312,9 +312,8 @@ std::vector<Move> Board::all_legal_moves() const {
         if ((colour_at(i) == White && white_to_play)
             || (colour_at(i) == Black && !white_to_play)) {
             std::vector<Move> moves =
-                legal_moves(squares[i] & 0b111, *this, Coords::from_index(i));
-            if (moves.size() > 0)
-                ret.insert(ret.end(), moves.begin(), moves.end());
+                legal_moves(squares[i], *this, Coords::from_index(i));
+            ret.insert(ret.end(), moves.begin(), moves.end());
         }
     }
     return ret;
