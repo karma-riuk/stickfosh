@@ -281,11 +281,29 @@ std::vector<int8_t> to_target_square(std::vector<Move> moves) {
 bool Board::is_check_for(int8_t colour) const {
     int8_t king_idx = this->get_king_of(colour);
     for (int i = 0; i < 64; i++) {
-        if (this->squares[i] == Piece::None)
+        if (this->squares[i] == Piece::None || colour_at(i) == colour)
             continue;
-        std::vector<Move> moves =
-            legal_moves(this->squares[i], *this, Coords::from_index(i), true);
-        std::vector<int8_t> targets = to_target_square(moves);
+        std::vector<int8_t> targets;
+        if ((squares[i] & 0b00111) == King) {
+            // special case for the king, because it creates infinite recursion
+            // (since he looks if he's walking into a check)
+            Coords king_pos = Coords::from_index(i);
+            for (int dx = -1; dx <= 1; dx++) {
+                for (int dy = -1; dy <= 1; dy++) {
+                    Coords c{king_pos.x + dx, king_pos.y + dy};
+                    if (c.is_within_bounds())
+                        targets.push_back(c.to_index());
+                }
+            }
+        } else {
+            std::vector<Move> moves = legal_moves(
+                this->squares[i],
+                *this,
+                Coords::from_index(i),
+                true
+            );
+            targets = to_target_square(moves);
+        }
         if (std::find(targets.begin(), targets.end(), king_idx)
             != targets.end())
             return true;
