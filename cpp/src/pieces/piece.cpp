@@ -44,15 +44,15 @@ legal_moves(int8_t p, const Board& b, const Coords xy, bool looking_for_check) {
         break;
     }
 
-    if (!looking_for_check)
-        return keep_only_blocking(ret, b);
+    // if (!looking_for_check)
+    //     return keep_only_blocking(ret, b);
 
-    return {};
+    return ret;
 }
 
 std::optional<Move>
 move_for_position(const Board& board, const Coords source, const Coords dest) {
-    if (dest.is_within_bounds())
+    if (!dest.is_within_bounds())
         return {};
 
     int8_t piece = board.squares[dest.to_index()];
