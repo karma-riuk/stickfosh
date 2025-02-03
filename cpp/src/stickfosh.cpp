@@ -3,6 +3,8 @@
 
 #include <chrono>
 #include <map>
+#include <ostream>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -33,8 +35,14 @@ static std::map<std::string, std::map<int, int>> pos2expected{
     },
 };
 
+static std::stringstream res;
+
 int move_generation_test(Board& b, int depth, int max_depth) {
-    std::cout << "hello" << std::endl;
+    if (depth == max_depth) {
+        res.str("");
+        res.clear();
+    }
+
     if (b.is_terminal())
         return 0;
     if (depth == 0)
@@ -47,7 +55,12 @@ int move_generation_test(Board& b, int depth, int max_depth) {
     int num_pos = 0;
     for (const Move& move : moves) {
         Board tmp_board = b.make_move(move);
-        num_pos += move_generation_test(tmp_board, depth - 1, max_depth);
+        int n = move_generation_test(tmp_board, depth - 1, max_depth);
+        if (depth == max_depth)
+            res << Coords::from_index(move.source_square)
+                << Coords::from_index(move.target_square) << ": " << n
+                << std::endl;
+        num_pos += n;
     }
     return num_pos;
 }
@@ -57,7 +70,7 @@ void perft(std::string pos) {
     Board b = Board::setup_fen_position(pos);
 
     for (const auto& [depth, expected_n_moves] : expected) {
-        std::cout << "Depth: " << depth << " ";
+        std::cout << "Depth: " << depth << " " << std::flush;
         auto start = std::chrono::steady_clock::now();
         int moves = move_generation_test(b, depth, depth);
         auto end = std::chrono::steady_clock::now();
@@ -72,5 +85,7 @@ void perft(std::string pos) {
             std::cout << cross << " (expected " << expected_n_moves << ") ";
         std::cout << "positions Time: " << elapsed << " milliseconds"
                   << std::endl;
+        if (moves != expected_n_moves)
+            std::cout << res.str();
     }
 }
