@@ -69,7 +69,7 @@ move_for_position(const Board& board, const Coords source, const Coords dest) {
 std::vector<Move>
 look_direction(const Board& board, const Coords xy, int mult_dx, int mult_dy) {
     std::vector<Move> ret;
-    for (int d = 0; d < 8; d++) {
+    for (int d = 1; d < 8; d++) {
         int dx = mult_dx * d;
         int dy = mult_dy * d;
 
@@ -79,6 +79,8 @@ look_direction(const Board& board, const Coords xy, int mult_dx, int mult_dy) {
             ret.push_back(move.value());
             if (move.value().is_capturing)
                 break;
+        } else {
+            break;
         }
     }
     return ret;
