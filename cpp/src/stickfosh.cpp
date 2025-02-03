@@ -63,7 +63,7 @@ void perft(std::string pos) {
         auto end = std::chrono::steady_clock::now();
         auto elapsed = (end - start).count();
 
-        std::cout << "Results: " << depth << " ";
+        std::cout << "Results: " << moves << " ";
         if (moves == expected_n_moves)
             std::cout << tick << " ";
         else
