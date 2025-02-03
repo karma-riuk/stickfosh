@@ -1,3 +1,5 @@
+CXXFLAGS += -O3 -Wall
+
 # Add .d to Make's recognized suffixes.
 SUFFIXES += .d
 
