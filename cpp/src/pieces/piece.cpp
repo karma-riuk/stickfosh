@@ -21,7 +21,8 @@ keep_only_blocking(const std::vector<Move> candidates, const Board& board) {
 std::vector<Move>
 legal_moves(int8_t p, const Board& b, const Coords xy, bool looking_for_check) {
     std::vector<Move> ret;
-    switch (p) {
+    int8_t simple_piece = p & 0b00111;
+    switch (simple_piece) {
     case Piece::Pawn:
         ret = pawn_moves(b, xy);
         break;
