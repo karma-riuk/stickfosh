@@ -58,6 +58,11 @@ std::vector<Move> pawn_moves(const Board& b, const Coords xy) {
                     new_xy.to_index(),
                     .promoting_to = (int8_t) (my_colour | piece)
                 });
+        else
+            ret.push_back(Move{
+                xy.to_index(),
+                new_xy.to_index(),
+            });
     }
 
     return ret;
