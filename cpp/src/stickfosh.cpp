@@ -62,7 +62,7 @@ void perft(std::string pos) {
         int moves = move_generation_test(b, depth, depth);
         auto end = std::chrono::steady_clock::now();
         auto elapsed =
-            std::chrono::duration_cast<std::chrono::microseconds>(end - start)
+            std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
                 .count();
 
         std::cout << "Results: " << moves << " ";
