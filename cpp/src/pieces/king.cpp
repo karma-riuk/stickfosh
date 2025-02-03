@@ -45,8 +45,6 @@ std::vector<Move> king_moves(const Board& b, const Coords xy) {
         }
     }
 
-    if (b.is_check_for(b.colour_at(xy)))
-        return ret;
 
     // -- Castles
     int8_t castling_rights = b.colour_at(xy) == Colour::White
