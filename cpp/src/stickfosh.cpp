@@ -86,6 +86,6 @@ void perft(std::string pos) {
         std::cout << "positions Time: " << elapsed << " milliseconds"
                   << std::endl;
         if (moves != expected_n_moves)
-            std::cout << res.str();
+            std::cout << std::endl << res.str();
     }
 }
