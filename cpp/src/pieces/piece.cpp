@@ -24,7 +24,21 @@ legal_moves(int8_t p, const Board& b, const Coords xy, bool looking_for_check) {
     switch (p) {
     case Piece::Pawn:
         ret = pawn_moves(b, xy);
+        break;
     case Piece::Bishop:
+        ret = bishop_moves(b, xy);
+        break;
+    case Piece::Rook:
+        ret = rook_moves(b, xy);
+        break;
+    case Piece::Knigt:
+        ret = knight_moves(b, xy);
+        break;
+    case Piece::Queen:
+        ret = queen_moves(b, xy);
+        break;
+    case Piece::King:
+        ret = king_moves(b, xy);
         break;
     default:
         break;
