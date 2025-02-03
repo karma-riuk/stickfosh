@@ -9,12 +9,12 @@
 
 enum Piece : int8_t {
     None = 0,
-    King = 1,
-    Pawn = 2,
-    Knigt = 3,
-    Bishop = 4,
-    Rook = 5,
-    Queen = 6,
+    Rook = 1,
+    Knigt = 2,
+    Bishop = 3,
+    Queen = 4,
+    King = 5,
+    Pawn = 6,
 };
 
 enum Colour : int8_t {
