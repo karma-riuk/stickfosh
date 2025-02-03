@@ -17,8 +17,7 @@ struct Coords {
         return this->y * 8 + this->x;
     }
 
-    static Coords from_index(int idx, const char* yes = __builtin_FUNCTION()) {
-        // std::cout << yes << std::endl;
+    static Coords from_index(int idx) {
         if (idx < 0 || idx > 63)
             throw std::invalid_argument("The index is outside the board...");
         return {idx % 8, idx / 8};
