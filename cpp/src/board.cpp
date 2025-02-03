@@ -265,7 +265,7 @@ Board Board::make_move(Move move) const {
 
 int8_t Board::get_king_of(int8_t colour) const {
     for (int i = 0; i < 64; i++)
-        if (this->squares[i] == (colour | Piece::King))
+        if (squares[i] == (colour | Piece::King))
             return i;
     throw std::domain_error(
         "Apparently there no kings of the such color in this board"
