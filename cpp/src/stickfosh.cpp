@@ -55,11 +55,11 @@ int move_generation_test(Board& b, int depth, int max_depth) {
     int num_pos = 0;
     for (const Move& move : moves) {
         Board tmp_board = b.make_move(move);
+        // std::cout << ">" << move << std::endl;
         int n = move_generation_test(tmp_board, depth - 1, max_depth);
+        // std::cout << "<" << move << std::endl;
         if (depth == max_depth)
-            res << Coords::from_index(move.source_square)
-                << Coords::from_index(move.target_square) << ": " << n
-                << std::endl;
+            res << move << ": " << n << std::endl;
         num_pos += n;
     }
     return num_pos;
