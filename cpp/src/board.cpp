@@ -209,7 +209,6 @@ Board Board::make_move(Move move) const {
         Coords rook_dest{5, c.y};
         ret.squares[rook_dest.to_index()] = old_rook;
     } else if (move.castle_side & QueenSide) {
-        Coords c = Coords::from_index(move.source_square);
         Coords rook_source{0, c.y};
         int8_t old_rook = ret.squares[rook_source.to_index()];
         ret.squares[rook_source.to_index()] = Piece::None;
