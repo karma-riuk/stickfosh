@@ -45,8 +45,8 @@ legal_moves(int8_t p, const Board& b, const Coords xy, bool looking_for_check) {
         break;
     }
 
-    // if (!looking_for_check)
-    //     return keep_only_blocking(ret, b);
+    if (!looking_for_check)
+        return keep_only_blocking(ret, b);
 
     return ret;
 }
