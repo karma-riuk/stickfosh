@@ -55,7 +55,7 @@ struct Coords {
     }
 
     bool is_within_bounds() const {
-        return this->to_index() < 64;
+        return 0 <= x && x < 8 && 0 <= y && y < 8;
     }
 };
 
