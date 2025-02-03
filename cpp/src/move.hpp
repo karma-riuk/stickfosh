@@ -1,6 +1,7 @@
 #pragma once
 
 #include "castle_side.hpp"
+#include "pieces/piece.hpp"
 
 #include <cstdint>
 
@@ -11,5 +12,5 @@ struct Move {
     bool is_capturing = false;
     CastleSide castle_side = CastleSide::NeitherSide;
     bool en_passant = false;
-    int8_t promoting_to = 0;
+    int8_t promoting_to = Piece::None;
 };
