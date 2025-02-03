@@ -4,6 +4,7 @@
 
 #include <cstdint>
 #include <optional>
+#include <ostream>
 #include <vector>
 
 enum Piece : int8_t {
@@ -20,6 +21,11 @@ enum Colour : int8_t {
     White = 8,
     Black = 16,
 };
+
+inline std::ostream& operator<<(std::ostream& os, const int8_t& i) {
+    os << std::to_string(i);
+    return os;
+}
 
 class Board;
 struct Coords;
