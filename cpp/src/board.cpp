@@ -231,7 +231,7 @@ Board Board::make_move(Move move) const {
         }
 
         Coords target = Coords::from_index(move.target_square);
-        if (move.is_capturing && c.y == 7
+        if (move.is_capturing && target.y == 7
             && (squares[move.target_square] & 0b111) == Rook) {
             if (target.x == 0 && (ret.b_castle_rights & QueenSide))
                 ret.b_castle_rights &= ~(QueenSide);
@@ -250,7 +250,7 @@ Board Board::make_move(Move move) const {
         }
 
         Coords target = Coords::from_index(move.target_square);
-        if (move.is_capturing && c.y == 7
+        if (move.is_capturing && target.y == 7
             && (squares[move.target_square] & 0b111) == Rook) {
             if (target.x == 0 && (ret.w_castle_rights & QueenSide))
                 ret.w_castle_rights &= ~(QueenSide);
