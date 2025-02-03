@@ -14,7 +14,18 @@ std::vector<Move> pawn_moves(const Board& b, const Coords xy) {
         int8_t capturable_piece = b.squares[left.to_index()];
         if (capturable_piece != 0) {
             if (my_colour != b.colour_at(left))
-                ret.push_back(Move{xy.to_index(), left.to_index()});
+                if ((my_colour == White && left.y == 7)
+                    || (my_colour == Black && left.y == 0))
+
+                    for (auto piece : {Rook, Knigt, Bishop, Queen})
+                        ret.push_back(Move{
+                            xy.to_index(),
+                            left.to_index(),
+                            .is_capturing = true,
+                            .promoting_to = (int8_t) (my_colour | piece)
+                        });
+                else
+                    ret.push_back(Move{xy.to_index(), left.to_index()});
         }
     }
 
@@ -25,7 +36,18 @@ std::vector<Move> pawn_moves(const Board& b, const Coords xy) {
         int8_t capturable_piece = b.squares[right.to_index()];
         if (capturable_piece != 0) {
             if (my_colour != b.colour_at(right))
-                ret.push_back(Move{xy.to_index(), right.to_index()});
+                if ((my_colour == White && right.y == 7)
+                    || (my_colour == Black && right.y == 0))
+
+                    for (auto piece : {Rook, Knigt, Bishop, Queen})
+                        ret.push_back(Move{
+                            xy.to_index(),
+                            right.to_index(),
+                            .is_capturing = true,
+                            .promoting_to = (int8_t) (my_colour | piece)
+                        });
+                else
+                    ret.push_back(Move{xy.to_index(), right.to_index()});
         }
     }
 
@@ -53,7 +75,7 @@ std::vector<Move> pawn_moves(const Board& b, const Coords xy) {
         if (b.squares[new_xy.to_index()] != Piece::None)
             break;
         if (new_xy.y == 7 || new_xy.y == 0)
-            for (auto piece : {Queen, Knigt, Bishop, Rook})
+            for (auto piece : {Rook, Knigt, Bishop, Queen})
                 ret.push_back(Move{
                     xy.to_index(),
                     new_xy.to_index(),
