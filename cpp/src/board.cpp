@@ -287,7 +287,8 @@ bool Board::is_check_for(int8_t colour) const {
         std::vector<Move> moves =
             legal_moves(this->squares[i], *this, Coords::from_index(i), true);
         std::vector<int8_t> targets = to_target_square(moves);
-        if (std::find(targets.begin(), targets.end(), i) != targets.end())
+        if (std::find(targets.begin(), targets.end(), king_idx)
+            != targets.end())
             return true;
     }
     return false;
