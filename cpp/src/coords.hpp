@@ -29,17 +29,17 @@ struct Coords {
                 "An algebraic coordinate should only have two characters"
             );
 
-        int x = _FILES.find(pos[0]);
+        size_t x = _FILES.find(pos[0]);
         if (x == std::string::npos)
             throw std::invalid_argument("The first character of the given "
                                         "algebraic coordinate is invalid");
 
-        int y = _RANKS.find(pos[1]);
+        size_t y = _RANKS.find(pos[1]);
         if (y == std::string::npos)
             throw std::invalid_argument("The second character of the given "
                                         "algebraic coordinate is invalid");
 
-        return Coords{x, y};
+        return Coords{(int) x, (int) y};
     }
 
     std::string to_algebraic() const {
