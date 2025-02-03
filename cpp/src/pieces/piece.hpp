@@ -1,7 +1,5 @@
 #pragma once
 
-#include "../move.hpp"
-
 #include <cstdint>
 #include <optional>
 #include <ostream>
@@ -29,6 +27,7 @@ inline std::ostream& operator<<(std::ostream& os, const int8_t& i) {
 
 class Board;
 struct Coords;
+struct Move;
 
 std::vector<Move> legal_moves(int8_t, const Board&, const Coords, bool = false);
 std::vector<Move> keep_only_blocking(const std::vector<Move>, const Board&);
