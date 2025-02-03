@@ -296,11 +296,10 @@ bool Board::is_check_for(int8_t colour) const {
 
 bool Board::no_legal_moves_for(int8_t colour) const {
     for (int i = 0; i < 64; i++) {
-        if ((colour_at(i) == White && white_to_play)
-            || (colour_at(i) == Black && !white_to_play)) {
-            if (legal_moves(squares[i] & 0b111, *this, Coords::from_index(i))
-                    .size()
-                > 0)
+        if (colour_at(i) == colour) {
+            std::vector<Move> moves =
+                legal_moves(squares[i], *this, Coords::from_index(i));
+            if (moves.size() > 0)
                 return false;
         }
     }
