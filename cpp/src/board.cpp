@@ -243,9 +243,9 @@ Board Board::make_move(Move move) const {
             ret.b_castle_rights = NeitherSide;
 
         if ((squares[move.source_square] & 0b111) == Rook) {
-            if (c.x == 0 && (ret.w_castle_rights & QueenSide))
+            if (c.x == 0 && (ret.b_castle_rights & QueenSide))
                 ret.b_castle_rights &= ~(QueenSide);
-            if (c.x == 7 && (ret.w_castle_rights & KingSide))
+            if (c.x == 7 && (ret.b_castle_rights & KingSide))
                 ret.b_castle_rights &= ~(KingSide);
         }
 
