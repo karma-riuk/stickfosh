@@ -1,3 +1,5 @@
+#include "stickfosh.hpp"
+
 #include "board.hpp"
 #include "move.hpp"
 
@@ -65,7 +67,13 @@ int move_generation_test(Board& b, int depth, int max_depth) {
     return num_pos;
 }
 
+void perft() {
+    for (auto& [key, value] : pos2expected)
+        perft(key);
+}
+
 void perft(std::string pos) {
+    std::cout << pos << std::endl;
     std::map<int, int> expected = pos2expected[pos];
     Board b = Board::setup_fen_position(pos);
 
@@ -85,7 +93,9 @@ void perft(std::string pos) {
             std::cout << cross << " (expected " << expected_n_moves << ") ";
         std::cout << "positions Time: " << elapsed << " milliseconds"
                   << std::endl;
-        if (moves != expected_n_moves)
+        if (moves != expected_n_moves) {
             std::cout << std::endl << res.str();
+            exit(1);
+        }
     }
 }
