@@ -2,6 +2,7 @@
 
 #include "board.hpp"
 #include "move.hpp"
+#include "threadpool.hpp"
 
 #include <chrono>
 #include <map>
@@ -102,7 +103,9 @@ static std::map<std::string, std::map<int, int>> pos2expected{
 
 static std::stringstream res;
 
-int move_generation_test(Board& b, int depth, int max_depth) {
+int move_generation_test(
+    const Board& b, int depth, int max_depth, ThreadPool& pool
+) {
     if (depth == max_depth) {
         res.str("");
         res.clear();
@@ -118,15 +121,34 @@ int move_generation_test(Board& b, int depth, int max_depth) {
         return moves.size();
 
     int num_pos = 0;
-    for (const Move& move : moves) {
-        Board tmp_board = b.make_move(move);
-        // std::cout << ">" << move << std::endl;
-        int n = move_generation_test(tmp_board, depth - 1, max_depth);
-        // std::cout << "<" << move << std::endl;
-        if (depth == max_depth)
-            res << move << ": " << n << std::endl;
-        num_pos += n;
+
+    if (depth == max_depth) {
+        // Parallel execution at the top level
+        std::vector<std::future<int>> futures;
+        for (const Move& move : moves) {
+            Board tmp_board = b.make_move(move);
+            futures.push_back(pool.enqueue(
+                move_generation_test,
+                tmp_board,
+                depth - 1,
+                max_depth,
+                std::ref(pool)
+            ));
+        }
+
+        for (auto& future : futures)
+            num_pos += future.get(); // Retrieve the result of each task
+    } else {
+        // Regular sequential execution
+        for (const Move& move : moves) {
+            Board tmp_board = b.make_move(move);
+            int n = move_generation_test(tmp_board, depth - 1, max_depth, pool);
+            if (depth == max_depth)
+                res << move << ": " << n << std::endl;
+            num_pos += n;
+        }
     }
+
     return num_pos;
 }
 
@@ -139,11 +161,12 @@ void perft(std::string pos) {
     std::cout << pos << std::endl;
     std::map<int, int> expected = pos2expected[pos];
     Board b = Board::setup_fen_position(pos);
+    ThreadPool pool(std::thread::hardware_concurrency());
 
     for (const auto& [depth, expected_n_moves] : expected) {
         std::cout << "Depth: " << depth << " " << std::flush;
         auto start = std::chrono::steady_clock::now();
-        int moves = move_generation_test(b, depth, depth);
+        int moves = move_generation_test(b, depth, depth, pool);
         auto end = std::chrono::steady_clock::now();
         auto elapsed =
             std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
