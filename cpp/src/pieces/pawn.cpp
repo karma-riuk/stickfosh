@@ -53,10 +53,8 @@ std::vector<Move> pawn_moves(const Board& b, const Coords xy) {
     if (b.en_passant_target != -1) {
         Coords c = Coords::from_index(b.en_passant_target);
         int dy = my_colour == Colour::White ? 1 : -1;
-        if (c.y == xy.y + dy && (c.x == xy.x - 1 || c.x == xy.x + 1)) {
-            ret.push_back(Move{xy.to_index(), c.to_index(), .en_passant = true}
-            );
-        }
+        if (c.y == xy.y + dy && (c.x == xy.x - 1 || c.x == xy.x + 1))
+            ret.push_back(Move{xy.to_index(), c.to_index()});
     }
 
     // -- Normal move + promotion

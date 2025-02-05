@@ -182,7 +182,9 @@ Board Board::make_move(Move move) const {
     ret.squares[move.target_square] = this->squares[move.source_square];
 
     // -- Handle en passant target being eaten
-    if (move.en_passant)
+    if (en_passant_target != -1
+        && (squares[move.source_square] & 0b111) == Piece::Pawn
+        && squares[move.target_square] == Piece::None)
         ret.squares[move.target_square + (white_to_play ? -8 : 8)] =
             Piece::None;
 

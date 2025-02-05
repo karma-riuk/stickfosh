@@ -13,7 +13,7 @@ struct Move {
 
     // bool is_capturing = false;
     // CastleSide castle_side = CastleSide::NeitherSide;
-    bool en_passant = false;
+    // bool en_passant = false;
     int8_t promoting_to = Piece::None;
 
     std::string to_string() const {
