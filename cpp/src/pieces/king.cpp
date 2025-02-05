@@ -60,7 +60,6 @@ std::vector<Move> king_moves(const Board& b, const Coords xy) {
         ret.push_back(Move{
             xy.to_index(),
             Coords{6, xy.y}.to_index(),
-            .castle_side = CastleSide::KingSide
         });
     }
 
@@ -68,7 +67,6 @@ std::vector<Move> king_moves(const Board& b, const Coords xy) {
         ret.push_back(Move{
             xy.to_index(),
             Coords{2, xy.y}.to_index(),
-            .castle_side = CastleSide::QueenSide
         });
     }
 

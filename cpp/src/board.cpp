@@ -203,18 +203,20 @@ Board Board::make_move(Move move) const {
 
     // -- Handle castling (just move the rook over)
     Coords c = Coords::from_index(move.source_square);
-    if (move.castle_side & KingSide) {
-        Coords rook_source{7, c.y};
-        int8_t old_rook = ret.squares[rook_source.to_index()];
-        ret.squares[rook_source.to_index()] = Piece::None;
-        Coords rook_dest{5, c.y};
-        ret.squares[rook_dest.to_index()] = old_rook;
-    } else if (move.castle_side & QueenSide) {
-        Coords rook_source{0, c.y};
-        int8_t old_rook = ret.squares[rook_source.to_index()];
-        ret.squares[rook_source.to_index()] = Piece::None;
-        Coords rook_dest{3, c.y};
-        ret.squares[rook_dest.to_index()] = old_rook;
+    if ((squares[move.source_square] & 0b111) == Piece::King) {
+        if (move.target_square - move.source_square == 2) { // king side castle
+            Coords rook_source{7, c.y};
+            int8_t old_rook = ret.squares[rook_source.to_index()];
+            ret.squares[rook_source.to_index()] = Piece::None;
+            Coords rook_dest{5, c.y};
+            ret.squares[rook_dest.to_index()] = old_rook;
+        } else if (move.target_square - move.source_square == -2) { // queen
+            Coords rook_source{0, c.y};
+            int8_t old_rook = ret.squares[rook_source.to_index()];
+            ret.squares[rook_source.to_index()] = Piece::None;
+            Coords rook_dest{3, c.y};
+            ret.squares[rook_dest.to_index()] = old_rook;
+        }
     }
 
     // -- Check for castling rights
