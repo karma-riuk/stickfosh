@@ -1,4 +1,4 @@
-#include "stickfosh.hpp"
+#include "perft.hpp"
 
 #include "board.hpp"
 #include "move.hpp"

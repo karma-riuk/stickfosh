@@ -1,5 +1,5 @@
 #include "board.hpp"
-#include "stickfosh.hpp"
+#include "perft.hpp"
 
 #include <iostream>
 
