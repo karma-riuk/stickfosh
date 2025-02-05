@@ -53,18 +53,11 @@ legal_moves(int8_t p, const Board& b, const Coords xy, bool looking_for_check) {
 
 std::optional<Move>
 move_for_position(const Board& board, const Coords source, const Coords dest) {
-    if (!dest.is_within_bounds())
+    if (!dest.is_within_bounds()
+        || board.colour_at(source) == board.colour_at(dest))
         return {};
 
-    int8_t piece = board.squares[dest.to_index()];
-    if (piece == Piece::None)
-        return Move{source.to_index(), dest.to_index()};
-
-    int8_t source_colour = board.colour_at(source);
-    int8_t dest_colour = board.colour_at(dest);
-    if (source_colour != dest_colour)
-        return Move{source.to_index(), dest.to_index(), true};
-    return {};
+    return Move{source.to_index(), dest.to_index()};
 }
 
 std::vector<Move>
@@ -74,11 +67,11 @@ look_direction(const Board& board, const Coords xy, int mult_dx, int mult_dy) {
         int dx = mult_dx * d;
         int dy = mult_dy * d;
 
-        std::optional<Move> move =
-            move_for_position(board, xy, Coords{xy.x + dx, xy.y + dy});
+        Coords target{xy.x + dx, xy.y + dy};
+        std::optional<Move> move = move_for_position(board, xy, target);
         if (move.has_value()) {
             ret.push_back(move.value());
-            if (move.value().is_capturing)
+            if (board.squares[target.to_index()] != Piece::None)
                 break;
         } else {
             break;

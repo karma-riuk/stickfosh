@@ -220,6 +220,7 @@ Board Board::make_move(Move move) const {
     // -- Check for castling rights
     ret.w_castle_rights = w_castle_rights;
     ret.b_castle_rights = b_castle_rights;
+    bool is_capturing = squares[move.target_square] != Piece::None;
     if (white_to_play) {
         if ((squares[move.source_square] & 0b111) == King)
             ret.w_castle_rights = NeitherSide;
@@ -232,7 +233,7 @@ Board Board::make_move(Move move) const {
         }
 
         Coords target = Coords::from_index(move.target_square);
-        if (move.is_capturing && target.y == 7
+        if (is_capturing && target.y == 7
             && (squares[move.target_square] & 0b111) == Rook) {
             if (target.x == 0 && (ret.b_castle_rights & QueenSide))
                 ret.b_castle_rights &= ~(QueenSide);
@@ -251,7 +252,7 @@ Board Board::make_move(Move move) const {
         }
 
         Coords target = Coords::from_index(move.target_square);
-        if (move.is_capturing && target.y == 0
+        if (is_capturing && target.y == 0
             && (squares[move.target_square] & 0b111) == Rook) {
             if (target.x == 0 && (ret.w_castle_rights & QueenSide))
                 ret.w_castle_rights &= ~(QueenSide);

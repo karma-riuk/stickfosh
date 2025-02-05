@@ -21,7 +21,6 @@ std::vector<Move> pawn_moves(const Board& b, const Coords xy) {
                         ret.push_back(Move{
                             xy.to_index(),
                             left.to_index(),
-                            .is_capturing = true,
                             .promoting_to = (int8_t) (my_colour | piece)
                         });
                 else
@@ -43,7 +42,6 @@ std::vector<Move> pawn_moves(const Board& b, const Coords xy) {
                         ret.push_back(Move{
                             xy.to_index(),
                             right.to_index(),
-                            .is_capturing = true,
                             .promoting_to = (int8_t) (my_colour | piece)
                         });
                 else
@@ -56,12 +54,8 @@ std::vector<Move> pawn_moves(const Board& b, const Coords xy) {
         Coords c = Coords::from_index(b.en_passant_target);
         int dy = my_colour == Colour::White ? 1 : -1;
         if (c.y == xy.y + dy && (c.x == xy.x - 1 || c.x == xy.x + 1)) {
-            ret.push_back(Move{
-                xy.to_index(),
-                c.to_index(),
-                .is_capturing = true,
-                .en_passant = true
-            });
+            ret.push_back(Move{xy.to_index(), c.to_index(), .en_passant = true}
+            );
         }
     }
 
