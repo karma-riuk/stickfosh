@@ -13,7 +13,10 @@ namespace ai {
 
     struct v0_random : public AI {
         Move search(const Board&, bool) override;
-        // int eval(const Board&) override;
+
+        int eval(const Board&) override {
+            return 0;
+        };
     };
 
     class v1_simple : public AI {
