@@ -46,8 +46,8 @@ void GUI::handle_click(int x, int y) {
 
 void GUI::draw_board(int selected_square, std::vector<Move> legal_moves) {
     sf::Color colours[2] = {
-        sf::Color(0xEDD6B0),
-        sf::Color(0xB88762)
+        sf::Color(0xEDD6B0FF),
+        sf::Color(0xB88762FF)
     }; // Light and dark squares
     // sf::Color alt_colours[2] = {
     //     sf::Color(0xF6EB72),
