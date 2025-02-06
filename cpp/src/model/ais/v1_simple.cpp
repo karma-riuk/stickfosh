@@ -2,18 +2,29 @@
 #include "../utils/threadpool.hpp"
 #include "ai.hpp"
 
+#include <map>
+
 static int INFINITY = std::numeric_limits<int>::max();
+
+int position_counter;
 
 Move ai::v1_simple::_search(const Board& b) {
     ThreadPool pool(std::thread::hardware_concurrency());
 
-    Move best_move;
-    int best_eval = -INFINITY;
     std::vector<Move> moves = b.all_legal_moves();
 
+    std::map<Move, std::future<int>> futures;
     for (const Move& move : moves) {
         Board tmp_board = b.make_move(move);
-        int eval = _search(tmp_board, 4);
+        futures.insert({move, pool.enqueue([&, tmp_board]() {
+                            return _search(tmp_board, 3);
+                        })});
+    }
+
+    Move best_move;
+    int best_eval = -INFINITY;
+    for (auto& [move, future] : futures) {
+        int eval = future.get();
         if (!am_white)
             eval *= -1;
         if (eval > best_eval) {
@@ -22,18 +33,22 @@ Move ai::v1_simple::_search(const Board& b) {
         }
     }
 
+    std::cout << "Looked at " << position_counter << " positions" << std::endl;
     return best_move;
 }
 
 int ai::v1_simple::_search(const Board& b, int depth) {
-    if (b.is_checkmate_for(b.white_to_play ? White : Black))
-        return -INFINITY;
+    if (b.is_terminal()) {
+        if (b.is_checkmate_for(b.white_to_play ? White : Black))
+            return -INFINITY;
+        return 0;
+    }
 
     if (depth == 0 || stop_computation)
         return eval(b);
 
     std::vector<Move> moves = b.all_legal_moves();
-    int best_evaluation = 0;
+    int best_evaluation = -INFINITY;
     Move best_move;
     for (const Move& move : moves) {
         Board tmp_board = b.make_move(move);
@@ -69,12 +84,16 @@ int count_material(const Board& b, int8_t colour) {
             case Piece::Queen:
                 ret += QueenValue;
                 break;
+            case Piece::King:
+            case Piece::None:
+                break;
             }
     }
     return ret;
 }
 
 int ai::v1_simple::eval(const Board& b) {
+    position_counter++;
     int white_eval = count_material(b, Colour::White);
     int black_eval = count_material(b, Colour::Black);
 
