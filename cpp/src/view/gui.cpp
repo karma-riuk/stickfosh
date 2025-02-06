@@ -1,5 +1,7 @@
 #include "gui.hpp"
 
+#include "../model/utils/utils.hpp"
+
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/System/Vector2.hpp>
 
@@ -75,25 +77,37 @@ void GUI::draw_annotation(int file, int rank) {
     }
 }
 
-void GUI::draw_board(int selected_square, std::vector<Move> legal_moves) {
-    // sf::Color alt_colours[2] = {
-    //     sf::Color(0xF6EB72),
-    //     sf::Color(0xDCC34B)
-    // }; // when selected
-    // sf::Color circle_colours[2] = {
-    //     sf::Color(0xCCB897),
-    //     sf::Color(0x9E7454)
-    // }; //  legal moves
-
+void GUI::draw_board(int selected_square, std::vector<Move> moves) {
     sf::RectangleShape square(sf::Vector2f(TILE_SIZE, TILE_SIZE));
     for (int rank = 0; rank < 8; ++rank) {
         for (int file = 0; file < 8; ++file) {
+            int8_t index = Coords{file, rank}.to_index();
             square.setPosition(file * TILE_SIZE, (7 - rank) * TILE_SIZE);
-            square.setFillColor(
-                (file + rank) % 2 == 0 ? colours[0] : colours[1]
-            );
+            if (index == selected_square)
+                square.setFillColor(
+                    (file + rank) % 2 == 0 ? alt_colours[0] : alt_colours[1]
+                );
+            else
+                square.setFillColor(
+                    (file + rank) % 2 == 0 ? colours[0] : colours[1]
+                );
             window.draw(square);
             draw_annotation(file, rank);
+
+            std::vector<int8_t> targets = to_target_square(moves);
+            if (std::find(targets.begin(), targets.end(), index)
+                != targets.end()) {
+                float r = .15 * TILE_SIZE;
+                sf::CircleShape circle{r};
+                sf::Color c(0x00000055);
+                circle.setFillColor(c);
+                circle.setOrigin(r, r);
+                circle.setPosition(
+                    (file + .5) * TILE_SIZE,
+                    (7 - rank + .5) * TILE_SIZE
+                );
+                window.draw(circle);
+            }
         }
     }
 }
