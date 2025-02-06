@@ -1,10 +1,11 @@
 #include "gui.hpp"
 
 #include <SFML/Graphics/Color.hpp>
+#include <SFML/System/Vector2.hpp>
 
 GUI::GUI() {
     window.create(sf::VideoMode(WINDOW_SIZE, WINDOW_SIZE), "Chess Board");
-    // load_textures();
+    load_textures();
 }
 
 void GUI::update_board(
@@ -12,7 +13,7 @@ void GUI::update_board(
 ) {
     window.clear();
     draw_board(selected_square, legal_moves);
-    // draw_pieces(b);
+    draw_pieces(b);
     window.display();
 }
 
@@ -31,10 +32,11 @@ void GUI::handle_events() {
 
 void GUI::load_textures() {
     const std::string names[6] =
-        {"pawn", "rook", "knight", "bishop", "queen", "king"};
+        {"rook", "knight", "bishop", "queen", "king", "pawn"
+        }; // don't touch the order, it's reflecting the one in the Piece enum
     for (int i = 0; i < 6; ++i) {
-        textures[i][0].loadFromFile("res/white-" + names[i] + ".png");
-        textures[i][1].loadFromFile("res/black-" + names[i] + ".png");
+        textures[i][0].loadFromFile("res/pieces/white-" + names[i] + ".png");
+        textures[i][1].loadFromFile("res/pieces/black-" + names[i] + ".png");
     }
 }
 
@@ -74,11 +76,15 @@ void GUI::draw_pieces(const Board& board) {
     for (int i = 0; i < 64; ++i) {
         int piece = board.piece_at(i);
         if (piece != Piece::None) {
-            int color = board.colour_at(i) == Colour::White ? 0 : 1;
-            pieces[i].setTexture(textures[piece - 1][color]);
+            int colour = board.colour_at(i) == Colour::White ? 0 : 1;
+            pieces[i].setTexture(textures[piece - 1][colour]);
+
+            sf::Vector2 center = textures[piece - 1][colour].getSize() / 2u;
+            pieces[i].setOrigin(center.x, center.y);
+
             pieces[i].setPosition(
-                (i % 8) * TILE_SIZE,
-                (7 - (int) (i / 8)) * TILE_SIZE
+                (i % 8 + .5) * TILE_SIZE,
+                (7 - (int) (i / 8) + .5) * TILE_SIZE
             );
             window.draw(pieces[i]);
         }
