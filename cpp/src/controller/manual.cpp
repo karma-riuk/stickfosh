@@ -25,13 +25,6 @@ void ManualController::on_tile_selected(int x, int y) {
         else
             reset_selection();
     }
-
-    Colour current_colour = board.white_to_play ? White : Black;
-    if (board.is_checkmate_for(current_colour))
-        view.notify_checkmate(current_colour);
-
-    if (board.is_stalemate_for(current_colour))
-        view.notify_stalemate(current_colour);
 }
 
 void ManualController::reset_selection() {
@@ -57,4 +50,11 @@ void ManualController::show_legal_moves(Coords xy) {
 void ManualController::make_move(Move move) {
     board = board.make_move(move);
     reset_selection();
+
+    Colour current_colour = board.white_to_play ? White : Black;
+    if (board.is_checkmate_for(current_colour))
+        view.notify_checkmate(current_colour);
+
+    if (board.is_stalemate_for(current_colour))
+        view.notify_stalemate(current_colour);
 }
