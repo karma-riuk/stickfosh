@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <cctype>
 #include <map>
+#include <sstream>
 #include <stdexcept>
 
 Board Board::setup_fen_position(std::string fen) {
@@ -112,7 +113,7 @@ std::string Board::to_fen() const {
     for (int rank = 7; rank >= 0; rank--) {
         int empty_cell_counter = 0;
         for (int file = 0; file < 8; file++) {
-            if (squares[rank * 8 + file] == Piece::None) {
+            if (piece_at({file, rank}) == Piece::None) {
                 empty_cell_counter++;
                 continue;
             }
@@ -302,9 +303,11 @@ int8_t Board::get_king_of(int8_t colour) const {
     for (int i = 0; i < 64; i++)
         if (squares[i] == (colour | Piece::King))
             return i;
-    throw std::domain_error(
-        "Apparently there no kings of the such color in this board"
-    );
+    std::stringstream ss;
+    ss << "Apparently there no kings of the such color in this board: "
+       << std::endl;
+    ss << to_fen();
+    throw std::domain_error(ss.str());
 }
 
 bool Board::is_check_for(int8_t colour) const {
