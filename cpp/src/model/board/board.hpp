@@ -43,7 +43,7 @@ struct Board {
     }
 
     bool is_terminal() const {
-        return insufficient_material() || white_to_play
+        return n_half_moves == 100 || insufficient_material() || white_to_play
                  ? is_checkmate_for(White) || is_stalemate_for(White)
                  : is_checkmate_for(Black) || is_stalemate_for(Black);
     }

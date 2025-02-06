@@ -267,6 +267,12 @@ Board Board::make_move(Move move) const {
         }
     }
 
+    ret.n_half_moves = n_half_moves + 1;
+    if (is_capturing || piece_at(move.source_square) == Piece::Pawn)
+        ret.n_half_moves = 0;
+    if (!white_to_play)
+        ret.n_full_moves = n_full_moves + 1;
+
     return ret;
 }
 
