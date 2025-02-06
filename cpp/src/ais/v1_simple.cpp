@@ -7,21 +7,21 @@
 
 static int INFINITY = std::numeric_limits<int>::max();
 
-std::string ai::v1_simple::search(std::string pos, int depth) {
-    Board b = Board::setup_fen_position(pos);
-
+Move ai::v1_simple::search(const Board& b, bool am_black) {
     ThreadPool pool(std::thread::hardware_concurrency());
 
     std::vector<Move> moves = b.all_legal_moves();
-    std::map<std::string, std::future<int>> futures;
-    for (const Move& move : moves) {
-        Board tmp_board = b.make_move(move);
-        futures.insert({move.to_string(), pool.enqueue([&]() {
-                            return minimax(tmp_board, depth - 1);
-                        })});
+    std::map<Move, std::future<int>> futures;
+    for (int depth = 1; !stop_computation; depth++) {
+        for (const Move& move : moves) {
+            Board tmp_board = b.make_move(move);
+            futures.insert({move, pool.enqueue([&]() {
+                                return _search(tmp_board, depth - 1);
+                            })});
+        }
     }
 
-    std::string best_move;
+    Move best_move;
     int best_eval = -INFINITY;
     for (auto& [move, future] : futures) {
         int eval = future.get();
@@ -34,11 +34,11 @@ std::string ai::v1_simple::search(std::string pos, int depth) {
     return best_move;
 }
 
-int ai::v1_simple::minimax(const Board& b, int depth) {
+int ai::v1_simple::_search(const Board& b, int depth) {
     if (b.is_checkmate_for(b.white_to_play ? White : Black))
         return -INFINITY;
 
-    if (depth == 0)
+    if (depth == 0 || stop_computation)
         return eval(b);
 
     std::vector<Move> moves = b.all_legal_moves();
@@ -46,7 +46,7 @@ int ai::v1_simple::minimax(const Board& b, int depth) {
     Move best_move;
     for (const Move& move : moves) {
         Board tmp_board = b.make_move(move);
-        int tmp_eval = -minimax(tmp_board, depth - 1);
+        int tmp_eval = -_search(tmp_board, depth - 1);
         best_evaluation = std::max(best_evaluation, tmp_eval);
     }
     return best_evaluation;
@@ -62,7 +62,7 @@ int count_material(const Board& b, int8_t colour) {
     int ret = 0;
     for (int i = 0; i < 64; i++) {
         if (b.colour_at(i) == colour)
-            switch (b.squares[i] & 0b111) {
+            switch (b.piece_at(i)) {
             case Piece::Pawn:
                 ret += PawnValue;
                 break;

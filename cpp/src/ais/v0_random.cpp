@@ -1,8 +1,7 @@
 #include "ai.hpp"
 
-std::string ai::v1_simple::search(std::string pos, int depth) {
-    Board b = Board::setup_fen_position(pos);
+Move ai::v0_random::search(const Board& b, bool) {
     std::vector<Move> moves = b.all_legal_moves();
 
-    return moves[rand() % moves.size()].to_string();
+    return moves[rand() % moves.size()];
 }

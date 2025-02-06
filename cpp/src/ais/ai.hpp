@@ -2,22 +2,25 @@
 
 #include "../board.hpp"
 
-#include <string>
-
-#define DECLARE_AI(x)                                                          \
-    struct x : public AI {                                                     \
-        std::string search(std::string, int) override;                         \
-        int minimax(const Board&, int) override;                               \
-        int eval(const Board&) override;                                       \
-    };
+#include <atomic>
 
 namespace ai {
     struct AI {
-        virtual std::string search(std::string, int) = 0;
-        virtual int minimax(const Board&, int) = 0;
+        std::atomic<bool> stop_computation = false;
+        virtual Move search(const Board&, bool = false) = 0;
         virtual int eval(const Board&) = 0;
     };
 
-    DECLARE_AI(v0_random)
-    DECLARE_AI(v1_simple)
+    struct v0_random : public AI {
+        Move search(const Board&, bool) override;
+        // int eval(const Board&) override;
+    };
+
+    class v1_simple : public AI {
+        int _search(const Board&, int);
+
+      public:
+        Move search(const Board&, bool) override;
+        int eval(const Board&) override;
+    };
 } // namespace ai
