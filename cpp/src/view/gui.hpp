@@ -33,4 +33,5 @@ class GUI : public View {
     void handle_click(int, int);
     void draw_board(int, std::vector<Move>);
     void draw_pieces(const Board&);
+    void draw_annotation(int, int);
 };

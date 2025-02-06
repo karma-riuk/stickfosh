@@ -48,6 +48,33 @@ void GUI::handle_click(int x, int y) {
     controller->on_tile_selected(file, rank);
 }
 
+void GUI::draw_annotation(int file, int rank) {
+    if (file == 0) {
+        sf::Text annotation(std::to_string(rank + 1), font);
+        annotation.setStyle(sf::Text::Bold);
+        annotation.setCharacterSize(16);
+        annotation.setFillColor(rank % 2 == 0 ? colours[1] : colours[0]);
+        annotation.setPosition(
+            (file + .05) * TILE_SIZE,
+            (7 - rank + .05) * TILE_SIZE
+        );
+        window.draw(annotation);
+    }
+
+    if (rank == 0) {
+        sf::Text annotation("abcdefgh"[file], font);
+        annotation.setCharacterSize(16);
+        annotation.setOrigin(16, 16);
+        annotation.setStyle(sf::Text::Bold);
+        annotation.setFillColor(file % 2 == 0 ? colours[1] : colours[0]);
+        annotation.setPosition(
+            (file + 1) * TILE_SIZE,
+            (7 - rank + .95) * TILE_SIZE
+        );
+        window.draw(annotation);
+    }
+}
+
 void GUI::draw_board(int selected_square, std::vector<Move> legal_moves) {
     // sf::Color alt_colours[2] = {
     //     sf::Color(0xF6EB72),
@@ -66,35 +93,7 @@ void GUI::draw_board(int selected_square, std::vector<Move> legal_moves) {
                 (file + rank) % 2 == 0 ? colours[0] : colours[1]
             );
             window.draw(square);
-
-            if (file == 0) {
-                sf::Text annotation(std::to_string(rank + 1), font);
-                annotation.setStyle(sf::Text::Bold);
-                annotation.setCharacterSize(16);
-                annotation.setFillColor(
-                    rank % 2 == 0 ? colours[1] : colours[0]
-                );
-                annotation.setPosition(
-                    (file + .05) * TILE_SIZE,
-                    (7 - rank + .05) * TILE_SIZE
-                );
-                window.draw(annotation);
-            }
-
-            if (rank == 0) {
-                sf::Text annotation("abcdefgh"[file], font);
-                annotation.setCharacterSize(16);
-                annotation.setOrigin(16, 16);
-                annotation.setStyle(sf::Text::Bold);
-                annotation.setFillColor(
-                    file % 2 == 0 ? colours[1] : colours[0]
-                );
-                annotation.setPosition(
-                    (file + 1) * TILE_SIZE,
-                    (7 - rank + .95) * TILE_SIZE
-                );
-                window.draw(annotation);
-            }
+            draw_annotation(file, rank);
         }
     }
 }
