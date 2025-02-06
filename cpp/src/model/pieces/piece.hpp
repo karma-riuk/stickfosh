@@ -20,6 +20,36 @@ enum Colour : int8_t {
     Black = 16,
 };
 
+inline const char* to_string(Colour c) {
+    switch (c) {
+    case White:
+        return "White";
+    case Black:
+        return "Black";
+    default:
+        return "[Unknown Colour]";
+    }
+}
+
+inline const char* to_string(Piece c) {
+    switch (c) {
+    case Pawn:
+        return "Pawn";
+    case Rook:
+        return "Rook";
+    case Bishop:
+        return "Bishop";
+    case Knigt:
+        return "Knight";
+    case Queen:
+        return "Queen";
+    case King:
+        return "King";
+    default:
+        return "[Unknown Colour]";
+    }
+}
+
 inline std::ostream& operator<<(std::ostream& os, const int8_t& i) {
     os << std::to_string(i);
     return os;
