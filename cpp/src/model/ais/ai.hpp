@@ -3,16 +3,28 @@
 #include "../board/board.hpp"
 
 #include <atomic>
+#include <chrono>
 
 namespace ai {
-    struct AI {
+    class AI {
+      protected:
+        std::chrono::milliseconds thinking_time;
+        virtual Move _search(const Board&, bool = false) = 0;
+
+      public:
+        AI(std::chrono::milliseconds tt): thinking_time(tt) {}
+
         std::atomic<bool> stop_computation = false;
-        virtual Move search(const Board&, bool = false) = 0;
+
+        Move search(const Board& b, bool am_white = false);
+
         virtual int eval(const Board&) = 0;
     };
 
     struct v0_random : public AI {
-        Move search(const Board&, bool) override;
+        v0_random(std::chrono::milliseconds tt): AI(tt) {}
+
+        Move _search(const Board&, bool) override;
 
         int eval(const Board&) override {
             return 0;
@@ -23,7 +35,9 @@ namespace ai {
         int _search(const Board&, int);
 
       public:
-        Move search(const Board&, bool) override;
+        v1_simple(std::chrono::milliseconds tt): AI(tt) {}
+
+        Move _search(const Board&, bool) override;
         int eval(const Board&) override;
     };
 } // namespace ai
