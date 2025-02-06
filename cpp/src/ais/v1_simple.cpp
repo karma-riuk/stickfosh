@@ -16,11 +16,9 @@ std::string ai::v1_simple::search(std::string pos, int depth) {
     std::map<std::string, std::future<int>> futures;
     for (const Move& move : moves) {
         Board tmp_board = b.make_move(move);
-        futures.insert(
-            {move.to_string(), pool.enqueue([this, tmp_board, depth]() {
-                 return minimax(tmp_board, depth - 1);
-             })}
-        );
+        futures.insert({move.to_string(), pool.enqueue([&]() {
+                            return minimax(tmp_board, depth - 1);
+                        })});
     }
 
     std::string best_move;
