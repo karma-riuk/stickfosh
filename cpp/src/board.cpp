@@ -181,10 +181,12 @@ Board Board::make_move(Move move) const {
     ret.squares[move.source_square] = Piece::None;
     ret.squares[move.target_square] = this->squares[move.source_square];
 
+    int8_t source_piece = piece_at(move.source_square);
+    int8_t target_piece = piece_at(move.target_square);
+
     // -- Handle en passant target being eaten
-    if (en_passant_target != -1
-        && (squares[move.source_square] & 0b111) == Piece::Pawn
-        && squares[move.target_square] == Piece::None)
+    if (en_passant_target != -1 && source_piece == Piece::Pawn
+        && target_piece == Piece::None)
         ret.squares[move.target_square + (white_to_play ? -8 : 8)] =
             Piece::None;
 
@@ -193,7 +195,7 @@ Board Board::make_move(Move move) const {
         ret.squares[move.target_square] = move.promoting_to;
 
     // -- Set en passant target if need
-    if ((squares[move.source_square] & 0b111) == Piece::Pawn
+    if (source_piece == Piece::Pawn
         && std::abs(move.target_square - move.source_square) == 16) {
         if (white_to_play)
             ret.en_passant_target = move.target_square - 8;
@@ -205,7 +207,7 @@ Board Board::make_move(Move move) const {
 
     // -- Handle castling (just move the rook over)
     Coords c = Coords::from_index(move.source_square);
-    if ((squares[move.source_square] & 0b111) == Piece::King) {
+    if (source_piece == Piece::King) {
         if (move.target_square - move.source_square == 2) { // king side castle
             Coords rook_source{7, c.y};
             int8_t old_rook = ret.squares[rook_source.to_index()];
@@ -226,10 +228,10 @@ Board Board::make_move(Move move) const {
     ret.b_castle_rights = b_castle_rights;
     bool is_capturing = squares[move.target_square] != Piece::None;
     if (white_to_play) {
-        if ((squares[move.source_square] & 0b111) == King)
+        if (source_piece == King)
             ret.w_castle_rights = NeitherSide;
 
-        if ((squares[move.source_square] & 0b111) == Rook) {
+        if (source_piece == Rook) {
             if (c.x == 0 && (ret.w_castle_rights & QueenSide))
                 ret.w_castle_rights &= ~(QueenSide);
             if (c.x == 7 && (ret.w_castle_rights & KingSide))
@@ -237,18 +239,17 @@ Board Board::make_move(Move move) const {
         }
 
         Coords target = Coords::from_index(move.target_square);
-        if (is_capturing && target.y == 7
-            && (squares[move.target_square] & 0b111) == Rook) {
+        if (is_capturing && target.y == 7 && target_piece == Rook) {
             if (target.x == 0 && (ret.b_castle_rights & QueenSide))
                 ret.b_castle_rights &= ~(QueenSide);
             if (target.x == 7 && (ret.b_castle_rights & KingSide))
                 ret.b_castle_rights &= ~(KingSide);
         }
     } else {
-        if ((squares[move.source_square] & 0b111) == King)
+        if (source_piece == King)
             ret.b_castle_rights = NeitherSide;
 
-        if ((squares[move.source_square] & 0b111) == Rook) {
+        if (source_piece == Rook) {
             if (c.x == 0 && (ret.b_castle_rights & QueenSide))
                 ret.b_castle_rights &= ~(QueenSide);
             if (c.x == 7 && (ret.b_castle_rights & KingSide))
@@ -256,8 +257,7 @@ Board Board::make_move(Move move) const {
         }
 
         Coords target = Coords::from_index(move.target_square);
-        if (is_capturing && target.y == 0
-            && (squares[move.target_square] & 0b111) == Rook) {
+        if (is_capturing && target.y == 0 && target_piece == Rook) {
             if (target.x == 0 && (ret.w_castle_rights & QueenSide))
                 ret.w_castle_rights &= ~(QueenSide);
             if (target.x == 7 && (ret.w_castle_rights & KingSide))
@@ -290,7 +290,7 @@ bool Board::is_check_for(int8_t colour) const {
         if (this->squares[i] == Piece::None || colour_at(i) == colour)
             continue;
         std::vector<int8_t> targets;
-        if ((squares[i] & 0b00111) == King) {
+        if (piece_at(i) == King) {
             // special case for the king, because it creates infinite recursion
             // (since he looks if he's walking into a check)
             Coords king_pos = Coords::from_index(i);

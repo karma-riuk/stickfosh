@@ -41,6 +41,14 @@ struct Board {
             || is_stalemate_for(White) || is_stalemate_for(Black);
     }
 
+    int8_t piece_at(int8_t idx) const {
+        return squares[idx] & 0b00111;
+    }
+
+    int8_t piece_at(Coords xy) const {
+        return piece_at(xy.to_index());
+    }
+
     int8_t colour_at(int8_t idx) const {
         return squares[idx] & 0b11000;
     }
