@@ -57,3 +57,8 @@ struct Board {
         return colour_at(xy.to_index());
     }
 };
+
+inline bool operator<(const Board& m1, const Board& m2) {
+    return m1.to_fen() < m2.to_fen(
+           ); // TODO: make this the comparison between the hash of the board
+}

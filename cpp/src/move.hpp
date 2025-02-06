@@ -39,6 +39,10 @@ struct Move {
     }
 };
 
+inline bool operator<(const Move& m1, const Move& m2) {
+    return m1.to_string() < m2.to_string();
+}
+
 inline std::ostream& operator<<(std::ostream& os, const Move& m) {
     os << m.to_string();
     return os;
