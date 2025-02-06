@@ -46,7 +46,7 @@ LIBS := $(filter-out obj/main.o,$(OBJFILES))
 test_bin/%: tests/%.cpp $(LIBS)
 	@echo $(LIBS)
 	@mkdir -p $(dir $@)
-	$(CXX) $(CXXFLAGS) -o $@ $< $(LIBS)
+	$(CXX) $(CXXFLAGS) -o $@ $< $(LIBS) -lsfml-graphics -lsfml-window -lsfml-system
 
 # The 'test' target builds all tests and then runs each one.
 .PHONY: test
