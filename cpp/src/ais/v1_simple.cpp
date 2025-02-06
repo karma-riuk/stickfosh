@@ -1,14 +1,13 @@
-#include "stickfosh.hpp"
-
-#include "pieces/piece.hpp"
-#include "threadpool.hpp"
+#include "../pieces/piece.hpp"
+#include "../threadpool.hpp"
+#include "ai.hpp"
 
 #include <future>
 #include <map>
 
 static int INFINITY = std::numeric_limits<int>::max();
 
-std::string search(std::string pos, int depth) {
+std::string ai::v1_simple::search(std::string pos, int depth) {
     Board b = Board::setup_fen_position(pos);
 
     ThreadPool pool(std::thread::hardware_concurrency());
@@ -18,7 +17,9 @@ std::string search(std::string pos, int depth) {
     for (const Move& move : moves) {
         Board tmp_board = b.make_move(move);
         futures.insert(
-            {move.to_string(), pool.enqueue(minimax, tmp_board, depth - 1)}
+            {move.to_string(), pool.enqueue([this, tmp_board, depth]() {
+                 return minimax(tmp_board, depth - 1);
+             })}
         );
     }
 
@@ -35,7 +36,7 @@ std::string search(std::string pos, int depth) {
     return best_move;
 }
 
-int minimax(const Board& b, int depth) {
+int ai::v1_simple::minimax(const Board& b, int depth) {
     if (b.is_checkmate_for(b.white_to_play ? White : Black))
         return -INFINITY;
 
@@ -84,7 +85,7 @@ int count_material(const Board& b, int8_t colour) {
     return ret;
 }
 
-int eval(const Board& b) {
+int ai::v1_simple::eval(const Board& b) {
     int white_eval = count_material(b, Colour::White);
     int black_eval = count_material(b, Colour::Black);
 
