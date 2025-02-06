@@ -1,7 +1,8 @@
 #include "piece.hpp"
 
-#include "../board.hpp"
-#include "../coords.hpp"
+#include "../board/board.hpp"
+#include "../utils/coords.hpp"
+#include "../utils/move.hpp"
 
 std::vector<Move>
 keep_only_blocking(const std::vector<Move> candidates, const Board& board) {

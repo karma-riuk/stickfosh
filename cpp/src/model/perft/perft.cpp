@@ -1,8 +1,8 @@
 #include "perft.hpp"
 
-#include "board.hpp"
-#include "move.hpp"
-#include "threadpool.hpp"
+#include "../board/board.hpp"
+#include "../utils/move.hpp"
+#include "../utils/threadpool.hpp"
 
 #include <chrono>
 #include <map>

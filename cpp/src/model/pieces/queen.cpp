@@ -1,6 +1,6 @@
-#include "../board.hpp"
-#include "../coords.hpp"
-#include "../move.hpp"
+#include "../board/board.hpp"
+#include "../utils/coords.hpp"
+#include "../utils/move.hpp"
 #include "piece.hpp"
 
 #include <vector>

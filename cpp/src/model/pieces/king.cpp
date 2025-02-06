@@ -1,5 +1,6 @@
-#include "../board.hpp"
-#include "../coords.hpp"
+#include "../board/board.hpp"
+#include "../utils/coords.hpp"
+#include "../utils/move.hpp"
 #include "piece.hpp"
 
 static bool is_clear_king_side(const Board& b, const Coords xy) {

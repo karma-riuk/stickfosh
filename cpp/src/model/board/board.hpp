@@ -1,8 +1,8 @@
 #pragma once
 
-#include "coords.hpp"
-#include "move.hpp"
-#include "pieces/piece.hpp"
+#include "../pieces/piece.hpp"
+#include "../utils/coords.hpp"
+#include "../utils/move.hpp"
 
 #include <string>
 

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "castle_side.hpp"
+#include "../board/castle_side.hpp"
+#include "../pieces/piece.hpp"
 #include "coords.hpp"
-#include "pieces/piece.hpp"
 
 #include <cstdint>
 #include <sstream>

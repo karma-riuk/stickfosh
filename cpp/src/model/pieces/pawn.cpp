@@ -1,6 +1,6 @@
-#include "../board.hpp"
-#include "../coords.hpp"
-#include "../move.hpp"
+#include "../board/board.hpp"
+#include "../utils/coords.hpp"
+#include "../utils/move.hpp"
 #include "piece.hpp"
 
 std::vector<Move> pawn_moves(const Board& b, const Coords xy) {
@@ -16,12 +16,11 @@ std::vector<Move> pawn_moves(const Board& b, const Coords xy) {
             if (my_colour != b.colour_at(left))
                 if ((my_colour == White && left.y == 7)
                     || (my_colour == Black && left.y == 0))
-
                     for (auto piece : {Rook, Knigt, Bishop, Queen})
                         ret.push_back(Move{
                             xy.to_index(),
                             left.to_index(),
-                            .promoting_to = (int8_t) (my_colour | piece)
+                            (int8_t) (my_colour | piece)
                         });
                 else
                     ret.push_back(Move{xy.to_index(), left.to_index()});
@@ -42,7 +41,7 @@ std::vector<Move> pawn_moves(const Board& b, const Coords xy) {
                         ret.push_back(Move{
                             xy.to_index(),
                             right.to_index(),
-                            .promoting_to = (int8_t) (my_colour | piece)
+                            (int8_t) (my_colour | piece)
                         });
                 else
                     ret.push_back(Move{xy.to_index(), right.to_index()});

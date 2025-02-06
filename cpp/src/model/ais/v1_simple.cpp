@@ -1,5 +1,5 @@
 #include "../pieces/piece.hpp"
-#include "../threadpool.hpp"
+#include "../utils/threadpool.hpp"
 #include "ai.hpp"
 
 #include <future>
