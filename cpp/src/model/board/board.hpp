@@ -25,6 +25,7 @@ struct Board {
     Board make_move(Move) const;
     std::string to_fen() const;
     bool is_check_for(int8_t) const;
+    bool insufficient_material() const;
 
     std::vector<Move> all_legal_moves() const;
 
@@ -37,8 +38,9 @@ struct Board {
     }
 
     bool is_terminal() const {
-        return is_checkmate_for(White) || is_checkmate_for(Black)
-            || is_stalemate_for(White) || is_stalemate_for(Black);
+        return insufficient_material() || white_to_play
+                 ? is_checkmate_for(White) || is_stalemate_for(White)
+                 : is_checkmate_for(Black) || is_stalemate_for(Black);
     }
 
     Piece piece_at(int8_t idx) const {
