@@ -6,7 +6,7 @@
 #include "controller.hpp"
 
 class ManualController : public Controller {
-  private:
+  protected:
     View& view;
     int8_t selected_index;
     Piece selected_piece;

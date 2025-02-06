@@ -1,4 +1,5 @@
 #include "controller/controller.hpp"
+#include "controller/human_vs_ai.hpp"
 #include "controller/manual.hpp"
 #include "view/gui.hpp"
 #include "view/noop.hpp"
@@ -10,8 +11,10 @@ int main(int argc, char* argv[]) {
 
     Board b = Board::setup_fen_position(pos);
 
-    NoOpView gui;
-    ManualController manual(b, gui);
+    ai::v0_random ai;
+
+    GUI gui;
+    HumanVsAIController manual(b, gui, ai);
 
 
     View& view = gui;
