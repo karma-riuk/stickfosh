@@ -2,29 +2,20 @@
 #include "../utils/threadpool.hpp"
 #include "ai.hpp"
 
-#include <future>
-#include <map>
-
 static int INFINITY = std::numeric_limits<int>::max();
 
 Move ai::v1_simple::_search(const Board& b) {
     ThreadPool pool(std::thread::hardware_concurrency());
 
-    std::vector<Move> moves = b.all_legal_moves();
-    std::map<Move, std::future<int>> futures;
-    for (int depth = 1; !stop_computation; depth++) {
-        for (const Move& move : moves) {
-            Board tmp_board = b.make_move(move);
-            futures.insert({move, pool.enqueue([&]() {
-                                return _search(tmp_board, depth - 1);
-                            })});
-        }
-    }
-
     Move best_move;
     int best_eval = -INFINITY;
-    for (auto& [move, future] : futures) {
-        int eval = future.get();
+    std::vector<Move> moves = b.all_legal_moves();
+
+    for (const Move& move : moves) {
+        Board tmp_board = b.make_move(move);
+        int eval = _search(tmp_board, 4);
+        if (!am_white)
+            eval *= -1;
         if (eval > best_eval) {
             best_eval = eval;
             best_move = move;
