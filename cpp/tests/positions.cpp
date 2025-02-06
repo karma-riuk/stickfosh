@@ -1,4 +1,4 @@
-#include "../src/coords.hpp"
+#include "../src/model/utils/coords.hpp"
 #include "lib.hpp"
 
 int main() {
