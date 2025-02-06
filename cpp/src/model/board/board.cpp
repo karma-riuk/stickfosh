@@ -3,6 +3,7 @@
 #include "../pieces/piece.hpp"
 #include "../utils/coords.hpp"
 #include "../utils/move.hpp"
+#include "../utils/utils.hpp"
 
 #include <algorithm>
 #include <cctype>
@@ -275,13 +276,6 @@ int8_t Board::get_king_of(int8_t colour) const {
     throw std::domain_error(
         "Apparently there no kings of the such color in this board"
     );
-}
-
-std::vector<int8_t> to_target_square(std::vector<Move> moves) {
-    std::vector<int8_t> ret;
-    for (Move move : moves)
-        ret.push_back(move.target_square);
-    return ret;
 }
 
 bool Board::is_check_for(int8_t colour) const {
