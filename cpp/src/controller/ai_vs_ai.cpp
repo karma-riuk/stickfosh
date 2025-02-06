@@ -14,7 +14,7 @@ void AIvsAIController::start() {
     ai::AI* current_player;
     while (!board.is_terminal()) {
         current_player = board.white_to_play ? &p1 : &p2;
-        Move move = current_player->search(board, board.white_to_play);
+        Move move = current_player->search(board);
         make_move(move);
     }
 
