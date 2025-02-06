@@ -23,6 +23,9 @@ class GUI : public View {
     sf::RenderWindow window;
     sf::Texture textures[6][2];
     sf::Sprite pieces[64];
+    sf::Color colours[2] = {
+        sf::Color(0xB88762FF), sf::Color(0xEDD6B0FF)
+    }; // Light and dark squares
 
     void load_textures();
     void handle_events();
