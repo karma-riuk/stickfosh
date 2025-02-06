@@ -14,7 +14,6 @@ void ManualController::on_tile_selected(int x, int y) {
     Coords c{x, y};
     Piece piece = board.piece_at(c);
 
-    std::cout << "Clicked on " << c << std::endl;
     if (selected_index == -1
         || (piece != Piece::None && piece != selected_piece
             && (piece & 0b11000) != (selected_piece & 0b11000))) {

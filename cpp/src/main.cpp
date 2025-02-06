@@ -1,6 +1,7 @@
 #include "controller/controller.hpp"
 #include "controller/manual.hpp"
 #include "view/gui.hpp"
+#include "view/noop.hpp"
 #include "view/view.hpp"
 
 int main(int argc, char* argv[]) {
@@ -9,7 +10,7 @@ int main(int argc, char* argv[]) {
 
     Board b = Board::setup_fen_position(pos);
 
-    GUI gui;
+    NoOpView gui;
     ManualController manual(b, gui);
 
 
