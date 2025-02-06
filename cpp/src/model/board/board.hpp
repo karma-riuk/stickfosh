@@ -25,7 +25,12 @@ struct Board {
     Board make_move(Move) const;
     std::string to_fen() const;
     bool is_check_for(int8_t) const;
-    bool insufficient_material() const;
+    bool insufficient_material_for(Colour) const;
+
+    bool insufficient_material() const {
+        return insufficient_material_for(White)
+            && insufficient_material_for(Black);
+    };
 
     std::vector<Move> all_legal_moves() const;
 

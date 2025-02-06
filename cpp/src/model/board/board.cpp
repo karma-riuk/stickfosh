@@ -5,6 +5,7 @@
 #include "../utils/move.hpp"
 #include "../utils/utils.hpp"
 
+#include <SFML/Graphics/BlendMode.hpp>
 #include <algorithm>
 #include <cctype>
 #include <map>
@@ -267,6 +268,28 @@ Board Board::make_move(Move move) const {
     }
 
     return ret;
+}
+
+bool Board::insufficient_material_for(Colour current_colour) const {
+    int n_bishop = 0, n_knight = 0;
+
+    for (int i = 0; i < 64; i++) {
+        Colour colour = colour_at(i);
+        if (colour != current_colour)
+            continue;
+
+        Piece piece = piece_at(i);
+        if (piece == Piece::Pawn || piece == Piece::Queen
+            || piece == Piece::Rook)
+            return false;
+
+        if (piece == Piece::Bishop)
+            n_bishop++;
+        if (piece == Piece::Knigt && colour == Colour::White)
+            n_knight++;
+    }
+    return (n_bishop == 0 && n_knight == 0) || (n_bishop == 1 && n_knight == 0)
+        || (n_bishop == 0 && n_knight == 1);
 }
 
 int8_t Board::get_king_of(int8_t colour) const {
