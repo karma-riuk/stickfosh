@@ -8,7 +8,7 @@ class Controller {
   protected:
     Board board;
     View& view;
-
+    virtual void make_move(Move) = 0;
 
   public:
     Controller(Board, View&);

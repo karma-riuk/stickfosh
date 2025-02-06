@@ -1,3 +1,4 @@
+#include "controller/ai_vs_ai.hpp"
 #include "controller/controller.hpp"
 #include "controller/human_vs_ai.hpp"
 #include "controller/manual.hpp"
@@ -13,10 +14,11 @@ int main(int argc, char* argv[]) {
 
     Board b = Board::setup_fen_position(pos);
 
-    ai::v0_random ai(std::chrono::milliseconds(500));
+    ai::v0_random p1(std::chrono::milliseconds(500));
+    ai::v0_random p2(std::chrono::milliseconds(500));
 
     GUI gui;
-    HumanVsAIController manual(b, gui, ai);
+    AIvsAIController manual(b, gui, p1, p2);
 
     Controller& controller = manual;
 

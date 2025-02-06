@@ -1,22 +1,19 @@
 #pragma once
 
+#include "../model/ais/ai.hpp"
 #include "../model/utils/coords.hpp"
 #include "../model/utils/move.hpp"
 #include "../view/view.hpp"
 #include "controller.hpp"
 
-class ManualController : public Controller {
-  protected:
-    int8_t selected_index;
-    Piece selected_piece;
-    std::vector<int8_t> targets;
+class AIvsAIController : public Controller {
+    ai::AI &p1, &p2;
 
-    void reset_selection();
-    void show_legal_moves(Coords);
+  protected:
     void make_move(Move) override;
 
   public:
-    ManualController(Board, View&);
+    AIvsAIController(Board, View&, ai::AI&, ai::AI&);
     void on_tile_selected(int, int) override;
     void start() override;
 };
