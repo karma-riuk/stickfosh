@@ -7,7 +7,7 @@
 
 static int INFINITY = std::numeric_limits<int>::max();
 
-Move ai::v1_simple::_search(const Board& b, bool am_black) {
+Move ai::v1_simple::_search(const Board& b, bool am_white) {
     ThreadPool pool(std::thread::hardware_concurrency());
 
     std::vector<Move> moves = b.all_legal_moves();
