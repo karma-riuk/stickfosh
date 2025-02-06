@@ -13,17 +13,21 @@ GUI::GUI() {
 }
 
 void GUI::update_board(
-    const Board& b, int8_t selected_square, std::vector<Move> legal_moves
+    const Board& b, int8_t selected_square, std::vector<int8_t> targets
 ) {
     window.clear();
-    draw_board(selected_square, legal_moves);
+    draw_board(selected_square, targets);
     draw_pieces(b);
     window.display();
 }
 
-void GUI::notify_stalemate() {}
+void GUI::notify_stalemate(Colour col) {
+    std::cout << "Stalemate for " << to_string(col) << std::endl;
+}
 
-void GUI::notify_checkmate() {}
+void GUI::notify_checkmate(Colour col) {
+    std::cout << "Checkmate for " << to_string(col) << std::endl;
+}
 
 void GUI::handle_events() {
     sf::Event event;
@@ -77,7 +81,7 @@ void GUI::draw_annotation(int file, int rank) {
     }
 }
 
-void GUI::draw_board(int selected_square, std::vector<Move> moves) {
+void GUI::draw_board(int selected_square, std::vector<int8_t> targets) {
     sf::RectangleShape square(sf::Vector2f(TILE_SIZE, TILE_SIZE));
     for (int rank = 0; rank < 8; ++rank) {
         for (int file = 0; file < 8; ++file) {
@@ -94,7 +98,6 @@ void GUI::draw_board(int selected_square, std::vector<Move> moves) {
             window.draw(square);
             draw_annotation(file, rank);
 
-            std::vector<int8_t> targets = to_target_square(moves);
             if (std::find(targets.begin(), targets.end(), index)
                 != targets.end()) {
                 float r = .15 * TILE_SIZE;

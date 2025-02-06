@@ -15,7 +15,7 @@ class View {
     }
 
     virtual void show() = 0;
-    virtual void update_board(const Board&, int8_t, std::vector<Move>) = 0;
-    virtual void notify_checkmate() = 0;
-    virtual void notify_stalemate() = 0;
+    virtual void update_board(const Board&, int8_t, std::vector<int8_t>) = 0;
+    virtual void notify_checkmate(Colour) = 0;
+    virtual void notify_stalemate(Colour) = 0;
 };

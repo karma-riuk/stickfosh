@@ -8,8 +8,9 @@
 class ManualController : public Controller {
   private:
     View& view;
+    int8_t selected_index;
     Piece selected_piece;
-    std::vector<Move> legal_moves;
+    std::vector<int8_t> targets;
 
     void reset_selection();
     void show_legal_moves(Coords);

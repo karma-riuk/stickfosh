@@ -15,9 +15,9 @@ class GUI : public View {
     GUI();
 
     void show() override;
-    void update_board(const Board&, int8_t, std::vector<Move>) override;
-    void notify_checkmate() override;
-    void notify_stalemate() override;
+    void update_board(const Board&, int8_t, std::vector<int8_t>) override;
+    void notify_checkmate(Colour) override;
+    void notify_stalemate(Colour) override;
 
   private:
     sf::RenderWindow window;
@@ -30,7 +30,7 @@ class GUI : public View {
     void load_textures();
     void handle_events();
     void handle_click(int, int);
-    void draw_board(int, std::vector<Move>);
+    void draw_board(int, std::vector<int8_t>);
     void draw_pieces(const Board&);
     void draw_annotation(int, int);
 };
