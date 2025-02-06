@@ -18,11 +18,9 @@ int main(int argc, char* argv[]) {
     GUI gui;
     HumanVsAIController manual(b, gui, ai);
 
-
-    View& view = gui;
     Controller& controller = manual;
 
-    view.show();
+    controller.start();
 
     // perft();
     // ai::v1_simple ai;

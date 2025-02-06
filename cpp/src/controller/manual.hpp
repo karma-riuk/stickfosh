@@ -7,7 +7,6 @@
 
 class ManualController : public Controller {
   protected:
-    View& view;
     int8_t selected_index;
     Piece selected_piece;
     std::vector<int8_t> targets;
@@ -19,4 +18,5 @@ class ManualController : public Controller {
   public:
     ManualController(Board, View&);
     void on_tile_selected(int, int) override;
+    void start() override;
 };

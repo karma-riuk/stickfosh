@@ -4,10 +4,7 @@
 
 HumanVsAIController::HumanVsAIController(Board b, View& v, ai::AI& ai)
     : ManualController(b, v),
-      ai(ai) {
-    view.set_controller(this);
-    reset_selection();
-}
+      ai(ai) {}
 
 void HumanVsAIController::on_tile_selected(int x, int y) {
     Coords c{x, y};

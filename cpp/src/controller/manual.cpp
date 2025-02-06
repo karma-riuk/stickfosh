@@ -4,10 +4,12 @@
 
 #include <algorithm>
 
-ManualController::ManualController(Board b, View& view): view(view) {
-    board = b;
-    view.set_controller(this);
+ManualController::ManualController(Board b, View& v): Controller(b, v) {
     reset_selection();
+}
+
+void ManualController::start() {
+    view.show();
 }
 
 void ManualController::on_tile_selected(int x, int y) {
