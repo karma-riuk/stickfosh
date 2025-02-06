@@ -5,7 +5,7 @@
 
 std::vector<Move> pawn_moves(const Board& b, const Coords xy) {
     std::vector<Move> ret{};
-    int8_t my_colour = b.colour_at(xy);
+    Colour my_colour = b.colour_at(xy);
 
     // -- Capture to the left
     if (xy.x > 0) {

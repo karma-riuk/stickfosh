@@ -117,7 +117,7 @@ std::string Board::to_fen() const {
 
             int full_piece = squares[rank * 8 + file];
             char piece = p2c[full_piece & 0b111];
-            int8_t colour = colour_at({file, rank});
+            Colour colour = colour_at({file, rank});
 
             if (empty_cell_counter > 0) {
                 ret += std::to_string(empty_cell_counter);
@@ -181,8 +181,8 @@ Board Board::make_move(Move move) const {
     ret.squares[move.source_square] = Piece::None;
     ret.squares[move.target_square] = this->squares[move.source_square];
 
-    int8_t source_piece = piece_at(move.source_square);
-    int8_t target_piece = piece_at(move.target_square);
+    Piece source_piece = piece_at(move.source_square);
+    Piece target_piece = piece_at(move.target_square);
 
     // -- Handle en passant target being eaten
     if (en_passant_target != -1 && source_piece == Piece::Pawn
