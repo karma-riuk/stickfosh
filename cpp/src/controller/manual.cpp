@@ -9,6 +9,7 @@ ManualController::ManualController(Board b, View& v): Controller(b, v) {
 }
 
 void ManualController::start() {
+    reset_selection();
     view.show();
 }
 
