@@ -94,6 +94,10 @@ Board Board::setup_fen_position(std::string fen) {
     index = fen.find(' ', index) + 1;
     board.n_full_moves = std::stoi(fen.substr(index));
 
+    board.w_check = board.is_check_for(White);
+    board.b_check = board.is_check_for(Black);
+    board.w_nlm = board.no_legal_moves_for(White);
+    board.b_nlm = board.no_legal_moves_for(Black);
 
     return board;
 }
@@ -312,10 +316,11 @@ int8_t Board::get_king_of(int8_t colour) const {
 
 bool Board::is_check_for(int8_t colour) const {
     int8_t king_idx = this->get_king_of(colour);
-    for (int i = 0; i < 64; i++) {
+    std::vector<Move> all_moves;
+    all_moves.reserve(50);
+    for (int8_t i = 0; i < 64; i++) {
         if (this->squares[i] == Piece::None || colour_at(i) == colour)
             continue;
-        std::vector<int8_t> targets;
         if (piece_at(i) == King) {
             // special case for the king, because it creates infinite recursion
             // (since he looks if he's walking into a check)
@@ -324,7 +329,7 @@ bool Board::is_check_for(int8_t colour) const {
                 for (int dy = -1; dy <= 1; dy++) {
                     Coords c{king_pos.x + dx, king_pos.y + dy};
                     if (c.is_within_bounds())
-                        targets.push_back(c.to_index());
+                        all_moves.push_back(Move{i, c.to_index()});
                 }
             }
         } else {
@@ -334,11 +339,14 @@ bool Board::is_check_for(int8_t colour) const {
                 Coords::from_index(i),
                 true
             );
-            targets = to_target_square(moves);
+
+            all_moves.insert(all_moves.end(), moves.begin(), moves.end());
         }
-        if (std::find(targets.begin(), targets.end(), king_idx)
-            != targets.end())
-            return true;
+
+        for (const Move& move : all_moves)
+            if (move.target_square == king_idx)
+                return true;
+        all_moves.clear();
     }
     return false;
 }
