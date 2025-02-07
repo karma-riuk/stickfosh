@@ -134,6 +134,81 @@ void GUI::draw_pieces(const Board& board) {
     }
 }
 
+int GUI::show_popup(
+    const std::string& message, const std::vector<std::string>& options
+) {
+    sf::RenderWindow popup(sf::VideoMode(300, 200), "Choice");
+    sf::Font font;
+
+    if (!font.loadFromFile("res/arial.ttf")) {
+        std::cerr << "Error: Could not load font!" << std::endl;
+        return -1;
+    }
+
+    sf::Text text(message, font, 20);
+    text.setPosition(20, 20);
+    text.setFillColor(sf::Color::Black);
+
+    std::vector<sf::RectangleShape> buttonShapes;
+    std::vector<sf::Text> buttonTexts;
+
+    for (size_t i = 0; i < options.size(); ++i) {
+        sf::RectangleShape button(sf::Vector2f(200, 30));
+        button.setPosition(50, 70 + i * 40);
+        button.setFillColor(sf::Color(150, 150, 150));
+        buttonShapes.push_back(button);
+
+        sf::Text buttonText(options[i], font, 18);
+        buttonText.setPosition(60, 75 + i * 40);
+        buttonText.setFillColor(sf::Color::Black);
+        buttonTexts.push_back(buttonText);
+    }
+
+    while (popup.isOpen()) {
+        sf::Event event;
+        while (popup.pollEvent(event)) {
+            if (event.type == sf::Event::Closed)
+                popup.close();
+            else if (event.type == sf::Event::MouseButtonPressed) {
+                for (size_t i = 0; i < buttonShapes.size(); ++i) {
+                    if (buttonShapes[i].getGlobalBounds().contains(
+                            event.mouseButton.x,
+                            event.mouseButton.y
+                        )) {
+                        popup.close();
+                        return i;
+                    }
+                }
+            }
+        }
+
+        popup.clear(sf::Color::White);
+        popup.draw(text);
+        for (size_t i = 0; i < buttonShapes.size(); ++i) {
+            popup.draw(buttonShapes[i]);
+            popup.draw(buttonTexts[i]);
+        }
+        popup.display();
+    }
+    return -1;
+}
+
+Piece GUI::ask_about_promotion() {
+    std::vector<std::string> options = {"Queen", "Rook", "Bishop", "Knight"};
+    int idx = show_popup("Please choose a promotion for your pawn", options);
+    switch (idx) {
+    case 0:
+        return Queen;
+    case 1:
+        return Rook;
+    case 2:
+        return Bishop;
+    case 3:
+        return Knigt;
+    };
+    return Piece::None;
+}
+
 void GUI::show() {
     while (window.isOpen())
         handle_events();

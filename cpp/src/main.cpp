@@ -11,11 +11,9 @@
 #include <chrono>
 
 int main(int argc, char* argv[]) {
-    std::string pos =
-        "r2qkb1r/2p1pppp/p1n1b3/1p6/B2P4/2P1P3/P4PPP/R1BQK1NR w KQkq - 0 9 ";
     // std::string pos =
-    //     "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 4 3
-    //     ";
+    //     "r2qkb1r/2p1pppp/p1n1b3/1p6/B2P4/2P1P3/P4PPP/R1BQK1NR w KQkq - 0 9 ";
+    std::string pos = "8/6K1/5P2/8/1k6/8/8/8 w - - 0 1";
 
     // pos for ai timing<
     // std::string pos =

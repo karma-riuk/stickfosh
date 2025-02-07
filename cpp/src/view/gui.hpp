@@ -15,6 +15,7 @@ class GUI : public View {
     GUI();
 
     void show() override;
+    Piece ask_about_promotion();
     void update_board(const Board&, int8_t, std::vector<int8_t>) override;
     void notify_checkmate(Colour) override;
     void notify_stalemate(Colour) override;
@@ -27,6 +28,10 @@ class GUI : public View {
     sf::Color colours[2] = {sf::Color(0xB88762FF), sf::Color(0xEDD6B0FF)};
     sf::Color alt_colours[2] = {sf::Color(0xDCC34BFF), sf::Color(0xF6EB72FF)};
 
+
+    int show_popup(
+        const std::string& message, const std::vector<std::string>& options
+    );
     void load_textures();
     void handle_events();
     void handle_click(int, int);
