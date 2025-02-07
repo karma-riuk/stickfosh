@@ -410,3 +410,14 @@ std::vector<Move> Board::all_legal_moves() const {
     }
     return ret;
 }
+
+std::vector<Move> Board::all_capturing_moves() const {
+    std::vector<Move> moves = all_legal_moves();
+    std::vector<Move> ret;
+    ret.reserve(moves.size());
+    for (const Move& move : moves)
+        if (piece_at(move.target_square) != Piece::None)
+            ret.push_back(move);
+
+    return ret;
+}

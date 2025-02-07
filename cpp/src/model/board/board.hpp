@@ -38,6 +38,7 @@ struct Board {
     };
 
     std::vector<Move> all_legal_moves() const;
+    std::vector<Move> all_capturing_moves() const;
 
     bool is_checkmate() const;
 
