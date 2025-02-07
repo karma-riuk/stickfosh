@@ -15,8 +15,13 @@ int main(int argc, char* argv[]) {
     // std::string pos =
     //     "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 4 3
     //     ";
-    std::string pos =
-        "r3k2r/p1ppqpb1/Bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPB1PPP/R3K2R b KQkq - 0 3";
+
+    // pos for ai timing<
+    // std::string pos =
+    //     "r3k2r/p1ppqpb1/Bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPB1PPP/R3K2R b KQkq - 0
+    //     3";
+    std::string pos = "r3k2r/p1p1qpb1/bn1ppnp1/3PN3/1p2P3/P1N2Q1p/1PPBBPPP/"
+                      "1R2K2R b Kkq - 0 4";
 
     Board b = Board::setup_fen_position(pos);
 
@@ -33,6 +38,6 @@ int main(int argc, char* argv[]) {
 
     // controller.start();
 
-    perft();
+    perft(pos);
     return 0;
 }

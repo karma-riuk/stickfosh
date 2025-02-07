@@ -107,6 +107,28 @@ static std::map<std::string, std::map<int, int>> pos2expected{
             {4, 4085603}, //
         },
     },
+    // -- Position 7 after a1b1
+    {
+        "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/1R2K2R b Kkq - 5 3",
+        {
+            {3, 83348}, //
+        },
+    },
+    // -- Position 7 after a1b1 d7d6
+    {
+        "r3k2r/p1p1qpb1/bn1ppnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/1R2K2R w Kkq - 0 4",
+        {
+            {2, 1919}, //
+        },
+    },
+    // -- Position 7 after a1b1 d7d6 a2a3
+    {
+        "r3k2r/p1p1qpb1/bn1ppnp1/3PN3/1p2P3/P1N2Q1p/1PPBBPPP/1R2K2R b Kkq - 0 "
+        "4",
+        {
+            {1, 45}, //
+        },
+    },
 };
 
 static std::stringstream res;
@@ -119,8 +141,7 @@ int move_generation_test(
         res.clear();
     }
 
-    if (b.is_checkmate_for(b.white_to_play ? White : Black)
-        || b.is_stalemate_for(b.white_to_play ? White : Black))
+    if (b.is_terminal())
         return 1;
     if (depth == 0)
         return 1;
@@ -150,7 +171,7 @@ int move_generation_test(
     // } else {
     // Regular sequential execution
     for (const Move& move : moves) {
-        std::cout << "Looking at " << move << std::endl;
+        // std::cout << "Looking at " << move << std::endl;
         Board tmp_board = b.make_move(move);
         int n = move_generation_test(tmp_board, depth - 1, max_depth, pool);
         if (depth == max_depth)
