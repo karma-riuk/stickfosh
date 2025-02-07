@@ -2,6 +2,7 @@
 #include "controller/controller.hpp"
 #include "controller/human_vs_ai.hpp"
 #include "controller/manual.hpp"
+#include "model/ais/ai.hpp"
 #include "model/perft/perft.hpp"
 #include "view/gui.hpp"
 #include "view/noop.hpp"
@@ -23,9 +24,8 @@ int main(int argc, char* argv[]) {
     Board b = Board::setup_fen_position(pos);
 
     ai::v0_random p1(true, std::chrono::milliseconds(1000));
-    // ai::v1_simple p1(false, std::chrono::milliseconds(100000));
-    ai::v1_pure_minimax p2(false, std::chrono::milliseconds(150000));
-    // ai::v0_random p2(false, std::chrono::milliseconds(10000));
+    // ai::v1_pure_minimax p2(false, std::chrono::milliseconds(150000));
+    ai::v2_alpha_beta p2(false, std::chrono::milliseconds(150000));
 
     NoOpView gui;
     AIvsAIController manual(b, gui, p1, p2);

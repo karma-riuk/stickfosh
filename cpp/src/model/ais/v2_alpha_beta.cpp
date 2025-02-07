@@ -7,9 +7,10 @@
 
 #define MULTITHREADED 1
 
+
 static int position_counter;
 
-Move ai::v1_pure_minimax::_search(const Board& b) {
+Move ai::v2_alpha_beta::_search(const Board& b) {
     position_counter = 0;
     std::vector<Move> moves = b.all_legal_moves();
 
@@ -24,7 +25,7 @@ Move ai::v1_pure_minimax::_search(const Board& b) {
     for (const Move& move : moves) {
         Board tmp_board = b.make_move(move);
         futures.insert({move, pool.enqueue([&, tmp_board]() {
-                            return _search(tmp_board, 3);
+                            return _search(tmp_board, 3, -INFINITY, INFINITY);
                         })});
     }
 
@@ -56,7 +57,7 @@ Move ai::v1_pure_minimax::_search(const Board& b) {
     return best_move;
 }
 
-int ai::v1_pure_minimax::_search(const Board& b, int depth) {
+int ai::v2_alpha_beta::_search(const Board& b, int depth, int alpha, int beta) {
     if (depth == 0 || stop_computation)
         return eval(b);
 
@@ -68,17 +69,18 @@ int ai::v1_pure_minimax::_search(const Board& b, int depth) {
 
     std::vector<Move> moves = b.all_legal_moves();
 
-    int best_evaluation = -INFINITY;
     Move best_move;
     for (const Move& move : moves) {
         Board tmp_board = b.make_move(move);
-        int tmp_eval = -_search(tmp_board, depth - 1);
-        best_evaluation = std::max(best_evaluation, tmp_eval);
+        int tmp_eval = -_search(tmp_board, depth - 1, -beta, -alpha);
+        if (tmp_eval >= beta)
+            return beta;
+        alpha = std::max(alpha, tmp_eval);
     }
-    return best_evaluation;
+    return alpha;
 }
 
-int ai::v1_pure_minimax::eval(const Board& b) {
+int ai::v2_alpha_beta::eval(const Board& b) {
     position_counter++;
     int white_eval = count_material(b, Colour::White);
     int black_eval = count_material(b, Colour::Black);
