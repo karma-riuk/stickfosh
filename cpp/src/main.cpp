@@ -12,11 +12,11 @@
 int main(int argc, char* argv[]) {
     // std::string pos =
     //     "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-    std::string pos =
-        "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 4 3 ";
     // std::string pos =
-    // "r1b1k2r/p1ppqpb1/1n2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/"
-    //                   "R3K2R b KQkq - 3 2";
+    //     "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 4 3
+    //     ";
+    std::string pos =
+        "r3k2r/p1ppqpb1/Bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPB1PPP/R3K2R b KQkq - 0 3";
 
     Board b = Board::setup_fen_position(pos);
 

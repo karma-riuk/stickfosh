@@ -24,6 +24,8 @@ void AIvsAIController::start() {
 
 void AIvsAIController::make_move(Move move) {
     board = board.make_move(move);
+    std::cout << "Made move: " << move << std::endl;
+    exit(0);
     view.update_board(board, -1, {});
 
     Colour current_colour = board.white_to_play ? White : Black;
