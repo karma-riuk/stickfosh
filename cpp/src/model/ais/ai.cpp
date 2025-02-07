@@ -10,6 +10,7 @@ Move ai::AI::search(const Board& b) {
     std::condition_variable cv;
     std::mutex cv_mutex;
     double elapsed;
+    stop_computation = false;
 
 
     // Start computation in a separate thread
