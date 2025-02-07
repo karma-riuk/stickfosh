@@ -47,7 +47,7 @@ static std::map<std::string, std::map<int, int>> pos2expected{
             {3, 2812},   // 11
             {4, 43238},  // 157
             {5, 674624}, // 2199
-            // {6, 11030083},
+            {6, 11030083},
         },
     },
 
@@ -55,11 +55,11 @@ static std::map<std::string, std::map<int, int>> pos2expected{
     {
         "r3k2r/Pppp1ppp/1b3nbN/nP6/BBP1P3/q4N2/Pp1P2PP/R2Q1RK1 w kq - 0 4",
         {
-            {1, 6},      // 0
-            {2, 264},    // 1
-            {3, 9467},   // 69
-            {4, 422333}, // 3085
-            // {5, 15833292}, // 124452
+            {1, 6},        // 0
+            {2, 264},      // 1
+            {3, 9467},     // 69
+            {4, 422333},   // 3085
+            {5, 15833292}, // 124452
         },
     },
 
@@ -67,11 +67,11 @@ static std::map<std::string, std::map<int, int>> pos2expected{
     {
         "r2q1rk1/pP1p2pp/Q4n2/bbp1p3/Np6/1B3NBn/pPPP1PPP/R3K2R b KQ - 0 5",
         {
-            {1, 6},      // 0
-            {2, 264},    // 2
-            {3, 9467},   // 104
-            {4, 422333}, // 3742
-            // {5, 15833292}, // 136784
+            {1, 6},        // 0
+            {2, 264},      // 2
+            {3, 9467},     // 104
+            {4, 422333},   // 3742
+            {5, 15833292}, // 136784
         },
     },
 
@@ -79,10 +79,10 @@ static std::map<std::string, std::map<int, int>> pos2expected{
     {
         "rnbq1k1r/pp1Pbppp/2p5/8/2B5/8/PPP1NnPP/RNBQK2R w KQ - 1 6",
         {
-            {1, 44},    // 0
-            {2, 1486},  // 12
-            {3, 62379}, // 357
-            // {4, 2103487}, // 13804
+            {1, 44},      // 0
+            {2, 1486},    // 12
+            {3, 62379},   // 357
+            {4, 2103487}, // 13804
             // {5, 89941194}, // 1230428
         },
     },
@@ -92,41 +92,11 @@ static std::map<std::string, std::map<int, int>> pos2expected{
         "r4rk1/1pp1qppp/p1np1n2/2b1p1B1/2B1P1b1/P1NP1N2/1PP1QPPP/R4RK1 w - - 0 "
         "7",
         {
-            {1, 46},    // 0
-            {2, 2079},  // 16
-            {3, 89890}, // 602
-            // {4, 3894594}, // 26612
+            {1, 46},      // 0
+            {2, 2079},    // 16
+            {3, 89890},   // 602
+            {4, 3894594}, // 26612
             // {5, 164075551}, // 1230428
-        },
-    },
-
-    // -- Position 7
-    {
-        "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 4 3",
-        {
-            {4, 4085603}, //
-        },
-    },
-    // -- Position 7 after a1b1
-    {
-        "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/1R2K2R b Kkq - 5 3",
-        {
-            {3, 83348}, //
-        },
-    },
-    // -- Position 7 after a1b1 d7d6
-    {
-        "r3k2r/p1p1qpb1/bn1ppnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/1R2K2R w Kkq - 0 4",
-        {
-            {2, 1919}, //
-        },
-    },
-    // -- Position 7 after a1b1 d7d6 a2a3
-    {
-        "r3k2r/p1p1qpb1/bn1ppnp1/3PN3/1p2P3/P1N2Q1p/1PPBBPPP/1R2K2R b Kkq - 0 "
-        "4",
-        {
-            {1, 45}, //
         },
     },
 };
@@ -142,43 +112,43 @@ int move_generation_test(
     }
 
     if (b.is_terminal())
-        return 1;
+        return 0;
     if (depth == 0)
         return 1;
 
     std::vector<Move> moves = b.all_legal_moves();
-    // if (depth == 1)
-    //     return moves.size();
+    if (depth == 1)
+        return moves.size();
 
     int num_pos = 0;
 
-    // if (depth == max_depth) {
-    //     // Parallel execution at the top level
-    //     std::vector<std::future<int>> futures;
-    //     for (const Move& move : moves) {
-    //         Board tmp_board = b.make_move(move);
-    //         futures.push_back(pool.enqueue(
-    //             move_generation_test,
-    //             tmp_board,
-    //             depth - 1,
-    //             max_depth,
-    //             std::ref(pool)
-    //         ));
-    //     }
-    //
-    //     for (auto& future : futures)
-    //         num_pos += future.get(); // Retrieve the result of each task
-    // } else {
-    // Regular sequential execution
-    for (const Move& move : moves) {
-        // std::cout << "Looking at " << move << std::endl;
-        Board tmp_board = b.make_move(move);
-        int n = move_generation_test(tmp_board, depth - 1, max_depth, pool);
-        if (depth == max_depth)
-            res << move << ": " << n << std::endl;
-        num_pos += n;
+    if (depth == max_depth) {
+        // Parallel execution at the top level
+        std::vector<std::future<int>> futures;
+        for (const Move& move : moves) {
+            Board tmp_board = b.make_move(move);
+            futures.push_back(pool.enqueue(
+                move_generation_test,
+                tmp_board,
+                depth - 1,
+                max_depth,
+                std::ref(pool)
+            ));
+        }
+
+        for (auto& future : futures)
+            num_pos += future.get(); // Retrieve the result of each task
+    } else {
+        // Regular sequential execution
+        for (const Move& move : moves) {
+            // std::cout << "Looking at " << move << std::endl;
+            Board tmp_board = b.make_move(move);
+            int n = move_generation_test(tmp_board, depth - 1, max_depth, pool);
+            if (depth == max_depth)
+                res << move << ": " << n << std::endl;
+            num_pos += n;
+        }
     }
-    // }
 
     return num_pos;
 }

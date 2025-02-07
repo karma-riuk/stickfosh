@@ -11,7 +11,7 @@ struct Board {
     int8_t get_king_of(int8_t) const;
     bool _no_legal_moves_for(Colour) const;
     bool _is_check_for(Colour) const;
-    bool w_nlm = false, b_nlm = false, w_check = false, b_check = false;
+    bool nlm = false, check = false;
 
   public:
     int8_t squares[64] = {Piece::None};
@@ -19,15 +19,17 @@ struct Board {
     int8_t w_castle_rights = CastleSide::NeitherSide;
     int8_t b_castle_rights = CastleSide::NeitherSide;
     int8_t en_passant_target = -1;
-    uint8_t n_half_moves = 0;
-    uint8_t n_full_moves = 0;
+    int n_half_moves = 0;
+    int n_full_moves = 0;
+
 
     static Board setup_fen_position(std::string fen);
 
+    Board skip_turn() const;
     Board make_move(Move, bool = true) const;
     std::string to_fen() const;
-    bool no_legal_moves_for(int8_t) const;
-    bool is_check_for(int8_t) const;
+    bool no_legal_moves() const;
+    bool is_check() const;
     bool insufficient_material_for(Colour) const;
 
     bool insufficient_material() const {
@@ -37,9 +39,9 @@ struct Board {
 
     std::vector<Move> all_legal_moves() const;
 
-    bool is_checkmate_for(Colour) const;
+    bool is_checkmate() const;
 
-    bool is_stalemate_for(Colour) const;
+    bool is_stalemate() const;
 
     bool is_terminal() const;
 

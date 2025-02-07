@@ -29,10 +29,10 @@ void AIvsAIController::make_move(Move move) {
     view.update_board(board, -1, {});
 
     Colour current_colour = board.white_to_play ? White : Black;
-    if (board.is_checkmate_for(current_colour))
+    if (board.is_checkmate())
         view.notify_checkmate(current_colour);
 
-    if (board.is_stalemate_for(current_colour))
+    if (board.is_stalemate())
         view.notify_stalemate(current_colour);
 }
 

@@ -61,8 +61,8 @@ int ai::v1_pure_minimax::_search(const Board& b, int depth) {
     if (depth == 0 || stop_computation)
         return eval(b);
 
-    if (b.no_legal_moves_for(b.white_to_play ? White : Black)) {
-        if (b.is_check_for(b.white_to_play ? White : Black))
+    if (b.no_legal_moves()) {
+        if (b.is_check())
             return -INFINITY;
         return 0;
     }

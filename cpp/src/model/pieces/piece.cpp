@@ -13,10 +13,10 @@ keep_only_blocking(const std::vector<Move> candidates, const Board& board) {
     std::vector<Move> ret;
     for (Move move : candidates) {
         Board board_after_move = board.make_move(move, false);
-        if (!board_after_move.is_check_for(my_colour))
+        board_after_move = board_after_move.skip_turn();
+
+        if (!board_after_move.is_check())
             ret.push_back(move);
-        else
-            std::cout << "removing " << move << std::endl;
     }
     return ret;
 }
