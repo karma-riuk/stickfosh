@@ -4,6 +4,7 @@
 
 #include <map>
 
+#define MULTITHREADED 0
 
 static int INFINITY = std::numeric_limits<int>::max();
 
@@ -11,9 +12,14 @@ int position_counter;
 
 Move ai::v1_simple::_search(const Board& b) {
     position_counter = 0;
+    std::vector<Move> moves = b.all_legal_moves();
+
+    Move best_move;
+    int best_eval = -INFINITY;
+#if MULTITHREADED
     ThreadPool pool(std::thread::hardware_concurrency());
 
-    std::vector<Move> moves = b.all_legal_moves();
+    std::cout << "Have to look at " << moves.size() << " moves" << std::endl;
 
     std::map<Move, std::future<int>> futures;
     for (const Move& move : moves) {
@@ -23,8 +29,6 @@ Move ai::v1_simple::_search(const Board& b) {
                         })});
     }
 
-    Move best_move;
-    int best_eval = -INFINITY;
     int counter = 0;
     for (auto& [move, future] : futures) {
         int eval = future.get();
@@ -36,7 +40,19 @@ Move ai::v1_simple::_search(const Board& b) {
             best_move = move;
         }
     }
-
+#else
+    for (const Move& move : moves) {
+        Board tmp_board = b.make_move(move);
+        std::cout << "Looking at " << move << std::endl;
+        int eval = _search(tmp_board, 3);
+        if (!am_white)
+            eval *= -1;
+        if (eval > best_eval) {
+            best_eval = eval;
+            best_move = move;
+        }
+    }
+#endif
     std::cout << "Looked at " << position_counter << " positions" << std::endl;
     return best_move;
 }

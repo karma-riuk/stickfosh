@@ -29,7 +29,7 @@ obj/%.o:
 	$(CXX) $(CXXFLAGS) -o $@ -c $<
 
 main: $(OBJFILES)
-	$(CXX) $(LDFLAGS) $(OBJFILES) $(LOADLIBES) $(LDLIBS) -o main -lsfml-graphics -lsfml-window -lsfml-system
+	$(CXX) $(CXXFLAGS) $(OBJFILES) $(LOADLIBES) $(LDLIBS) -o main -lsfml-graphics -lsfml-window -lsfml-system
 
 clean:
 	rm -rf obj/* $(DEPFILES) test_bin/

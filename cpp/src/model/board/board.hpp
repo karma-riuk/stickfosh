@@ -48,19 +48,19 @@ struct Board {
                  : is_checkmate_for(Black) || is_stalemate_for(Black);
     }
 
-    Piece piece_at(int8_t idx) const {
+    inline Piece piece_at(int8_t idx) const {
         return (Piece) (squares[idx] & 0b00111);
     }
 
-    Piece piece_at(Coords xy) const {
+    inline Piece piece_at(Coords xy) const {
         return piece_at(xy.to_index());
     }
 
-    Colour colour_at(int8_t idx) const {
+    inline Colour colour_at(int8_t idx) const {
         return (Colour) (squares[idx] & 0b11000);
     }
 
-    Colour colour_at(Coords xy) const {
+    inline Colour colour_at(Coords xy) const {
         return colour_at(xy.to_index());
     }
 };

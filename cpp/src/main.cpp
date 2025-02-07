@@ -25,7 +25,7 @@ int main(int argc, char* argv[]) {
     ai::v1_simple p2(false, std::chrono::milliseconds(150000));
     // ai::v0_random p2(false, std::chrono::milliseconds(10000));
 
-    GUI gui;
+    NoOpView gui;
     AIvsAIController manual(b, gui, p1, p2);
     // HumanVsAIController manual(b, gui, p2);
 
