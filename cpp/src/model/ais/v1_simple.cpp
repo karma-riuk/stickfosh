@@ -31,16 +31,16 @@ Move ai::v1_simple::_search(const Board& b) {
 }
 
 int ai::v1_simple::_search(const Board& b, int depth) {
-    if (b.is_terminal()) {
-        if (b.is_checkmate_for(b.white_to_play ? White : Black))
-            return -INFINITY;
-        return 0;
-    }
-
     if (depth == 0 || stop_computation)
         return eval(b);
 
     std::vector<Move> moves = b.all_legal_moves();
+    if (moves.size() == 0) {
+        if (b.is_check_for(b.white_to_play ? White : Black))
+            return -INFINITY;
+        return 0;
+    }
+
     int best_evaluation = -INFINITY;
     Move best_move;
     for (const Move& move : moves) {
