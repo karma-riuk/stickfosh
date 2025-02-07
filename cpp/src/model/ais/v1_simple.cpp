@@ -4,7 +4,7 @@
 
 #include <map>
 
-#define MULTITHREADED 0
+#define MULTITHREADED 1
 
 static int INFINITY = std::numeric_limits<int>::max();
 
