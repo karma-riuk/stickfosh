@@ -9,7 +9,8 @@
 struct Board {
   private:
     int8_t get_king_of(int8_t) const;
-    bool no_legal_moves_for(int8_t) const;
+    bool _no_legal_moves_for(Colour) const;
+    bool _is_check_for(Colour) const;
     bool w_nlm = false, b_nlm = false, w_check = false, b_check = false;
 
   public:
@@ -23,8 +24,9 @@ struct Board {
 
     static Board setup_fen_position(std::string fen);
 
-    Board make_move(Move) const;
+    Board make_move(Move, bool = true) const;
     std::string to_fen() const;
+    bool no_legal_moves_for(int8_t) const;
     bool is_check_for(int8_t) const;
     bool insufficient_material_for(Colour) const;
 
@@ -35,25 +37,11 @@ struct Board {
 
     std::vector<Move> all_legal_moves() const;
 
-    bool is_checkmate_for(int8_t colour) const {
-        if (colour == White)
-            return w_nlm && w_check;
-        return b_nlm && b_check;
-        // return no_legal_moves_for(colour) && is_check_for(colour);
-    }
+    bool is_checkmate_for(Colour) const;
 
-    bool is_stalemate_for(int8_t colour) const {
-        if (colour == White)
-            return w_nlm && !w_check;
-        return b_nlm && !b_check;
-        // return no_legal_moves_for(colour) && !is_check_for(colour);
-    }
+    bool is_stalemate_for(Colour) const;
 
-    bool is_terminal() const {
-        return n_half_moves == 100 || insufficient_material() || white_to_play
-                 ? is_checkmate_for(White) || is_stalemate_for(White)
-                 : is_checkmate_for(Black) || is_stalemate_for(Black);
-    }
+    bool is_terminal() const;
 
     inline Piece piece_at(int8_t idx) const {
         return (Piece) (squares[idx] & 0b00111);

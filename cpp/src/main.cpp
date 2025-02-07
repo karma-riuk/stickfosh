@@ -31,8 +31,8 @@ int main(int argc, char* argv[]) {
 
     Controller& controller = manual;
 
-    controller.start();
+    // controller.start();
 
-    // perft(pos);
+    perft();
     return 0;
 }

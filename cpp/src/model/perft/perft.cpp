@@ -119,43 +119,45 @@ int move_generation_test(
         res.clear();
     }
 
-    if (b.is_terminal())
-        return 0;
+    if (b.is_checkmate_for(b.white_to_play ? White : Black)
+        || b.is_stalemate_for(b.white_to_play ? White : Black))
+        return 1;
     if (depth == 0)
         return 1;
 
     std::vector<Move> moves = b.all_legal_moves();
-    if (depth == 1)
-        return moves.size();
+    // if (depth == 1)
+    //     return moves.size();
 
     int num_pos = 0;
 
-    if (depth == max_depth) {
-        // Parallel execution at the top level
-        std::vector<std::future<int>> futures;
-        for (const Move& move : moves) {
-            Board tmp_board = b.make_move(move);
-            futures.push_back(pool.enqueue(
-                move_generation_test,
-                tmp_board,
-                depth - 1,
-                max_depth,
-                std::ref(pool)
-            ));
-        }
-
-        for (auto& future : futures)
-            num_pos += future.get(); // Retrieve the result of each task
-    } else {
-        // Regular sequential execution
-        for (const Move& move : moves) {
-            Board tmp_board = b.make_move(move);
-            int n = move_generation_test(tmp_board, depth - 1, max_depth, pool);
-            if (depth == max_depth)
-                res << move << ": " << n << std::endl;
-            num_pos += n;
-        }
+    // if (depth == max_depth) {
+    //     // Parallel execution at the top level
+    //     std::vector<std::future<int>> futures;
+    //     for (const Move& move : moves) {
+    //         Board tmp_board = b.make_move(move);
+    //         futures.push_back(pool.enqueue(
+    //             move_generation_test,
+    //             tmp_board,
+    //             depth - 1,
+    //             max_depth,
+    //             std::ref(pool)
+    //         ));
+    //     }
+    //
+    //     for (auto& future : futures)
+    //         num_pos += future.get(); // Retrieve the result of each task
+    // } else {
+    // Regular sequential execution
+    for (const Move& move : moves) {
+        std::cout << "Looking at " << move << std::endl;
+        Board tmp_board = b.make_move(move);
+        int n = move_generation_test(tmp_board, depth - 1, max_depth, pool);
+        if (depth == max_depth)
+            res << move << ": " << n << std::endl;
+        num_pos += n;
     }
+    // }
 
     return num_pos;
 }

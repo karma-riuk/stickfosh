@@ -94,10 +94,10 @@ Board Board::setup_fen_position(std::string fen) {
     index = fen.find(' ', index) + 1;
     board.n_full_moves = std::stoi(fen.substr(index));
 
-    board.w_check = board.is_check_for(White);
-    board.b_check = board.is_check_for(Black);
-    board.w_nlm = board.no_legal_moves_for(White);
-    board.b_nlm = board.no_legal_moves_for(Black);
+    board.w_check = board._is_check_for(White);
+    board.b_check = board._is_check_for(Black);
+    board.w_nlm = board._no_legal_moves_for(White);
+    board.b_nlm = board._no_legal_moves_for(Black);
 
     return board;
 }
@@ -175,7 +175,7 @@ std::string Board::to_fen() const {
     return ret;
 }
 
-Board Board::make_move(Move move) const {
+Board Board::make_move(Move move, bool recurse_call) const {
     Board ret;
     std::copy(
         std::begin(this->squares),
@@ -278,6 +278,17 @@ Board Board::make_move(Move move) const {
     if (!white_to_play)
         ret.n_full_moves = n_full_moves + 1;
 
+    if (ret.n_half_moves > 20) {
+        std::cerr << "too many recursions" << std::endl;
+        exit(1);
+    }
+
+    if (recurse_call) {
+        ret.w_check = ret._is_check_for(White);
+        ret.b_check = ret._is_check_for(Black);
+        ret.w_nlm = ret._no_legal_moves_for(White);
+        ret.b_nlm = ret._no_legal_moves_for(Black);
+    }
     return ret;
 }
 
@@ -314,7 +325,7 @@ int8_t Board::get_king_of(int8_t colour) const {
     throw std::domain_error(ss.str());
 }
 
-bool Board::is_check_for(int8_t colour) const {
+bool Board::_is_check_for(Colour colour) const {
     int8_t king_idx = this->get_king_of(colour);
     std::vector<Move> all_moves;
     all_moves.reserve(50);
@@ -343,15 +354,23 @@ bool Board::is_check_for(int8_t colour) const {
             all_moves.insert(all_moves.end(), moves.begin(), moves.end());
         }
 
-        for (const Move& move : all_moves)
-            if (move.target_square == king_idx)
+        for (const Move& move : all_moves) {
+            // if (colour == White
+            //     && move.target_square
+            //            == Coords::from_algebraic("b6").to_index())
+            // std::cout << "am here" << std::endl;
+            if (move.target_square == king_idx) {
+                std::cout << "indeed check for " << to_string(colour)
+                          << std::endl;
                 return true;
+            }
+        }
         all_moves.clear();
     }
     return false;
 }
 
-bool Board::no_legal_moves_for(int8_t colour) const {
+bool Board::_no_legal_moves_for(Colour colour) const {
     for (int i = 0; i < 64; i++) {
         if (colour_at(i) == colour) {
             std::vector<Move> moves =
@@ -361,6 +380,28 @@ bool Board::no_legal_moves_for(int8_t colour) const {
         }
     }
     return true;
+}
+
+bool Board::no_legal_moves_for(int8_t colour) const {
+    return colour == White ? w_nlm : b_nlm;
+}
+
+bool Board::is_check_for(int8_t colour) const {
+    return colour == White ? w_check : b_check;
+}
+
+bool Board::is_checkmate_for(Colour colour) const {
+    return no_legal_moves_for(colour) && is_check_for(colour);
+}
+
+bool Board::is_stalemate_for(Colour colour) const {
+    return no_legal_moves_for(colour) && !is_check_for(colour);
+}
+
+bool Board::is_terminal() const {
+    return n_half_moves == 100 || insufficient_material() || white_to_play
+             ? is_checkmate_for(White) || is_stalemate_for(White)
+             : is_checkmate_for(Black) || is_stalemate_for(Black);
 }
 
 std::vector<Move> Board::all_legal_moves() const {

@@ -10,7 +10,7 @@ static bool is_clear_king_side(const Board& b, const Coords xy) {
             return false;
 
         std::optional<Move> move = move_for_position(b, xy, c);
-        Board board_after_move = b.make_move(move.value());
+        Board board_after_move = b.make_move(move.value(), false);
         if (board_after_move.is_check_for(b.colour_at(xy)))
             return false;
     }
@@ -24,7 +24,7 @@ static bool is_clear_queen_side(const Board& b, const Coords xy) {
             return false;
 
         std::optional<Move> move = move_for_position(b, xy, c);
-        Board board_after_move = b.make_move(move.value());
+        Board board_after_move = b.make_move(move.value(), false);
         if (dx < 3 && board_after_move.is_check_for(b.colour_at(xy)))
             return false;
     }
@@ -46,8 +46,11 @@ std::vector<Move> king_moves(const Board& b, const Coords xy) {
         }
     }
 
-    if (b.is_check_for(b.colour_at(xy)))
+    if (b.is_check_for(b.colour_at(xy))) {
+        std::cout << b.to_fen() << std::endl;
+        std::cout << "Check for " << to_string(b.colour_at(xy)) << std::endl;
         return keep_only_blocking(ret, b);
+    }
 
     // -- Castles
     int8_t castling_rights = b.colour_at(xy) == Colour::White

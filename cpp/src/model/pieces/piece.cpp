@@ -12,9 +12,11 @@ keep_only_blocking(const std::vector<Move> candidates, const Board& board) {
     Colour my_colour = board.colour_at(candidates[0].source_square);
     std::vector<Move> ret;
     for (Move move : candidates) {
-        Board board_after_move = board.make_move(move);
+        Board board_after_move = board.make_move(move, false);
         if (!board_after_move.is_check_for(my_colour))
             ret.push_back(move);
+        else
+            std::cout << "removing " << move << std::endl;
     }
     return ret;
 }

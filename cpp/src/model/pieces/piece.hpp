@@ -50,7 +50,12 @@ inline const char* to_string(Piece c) {
     }
 }
 
-inline std::ostream& operator<<(std::ostream& os, const int8_t& i) {
+inline std::ostream& operator<<(std::ostream& os, const Colour& i) {
+    os << std::to_string(i);
+    return os;
+}
+
+inline std::ostream& operator<<(std::ostream& os, const Piece& i) {
     os << std::to_string(i);
     return os;
 }
