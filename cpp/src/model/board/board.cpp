@@ -283,7 +283,7 @@ Board Board::make_move(Move move, bool recurse_call) const {
     if (!white_to_play)
         ret.n_full_moves = n_full_moves + 1;
 
-    if (ret.n_half_moves > 20) {
+    if (ret.n_half_moves > 150) {
         std::cerr << "too many recursions" << std::endl;
         exit(1);
     }
