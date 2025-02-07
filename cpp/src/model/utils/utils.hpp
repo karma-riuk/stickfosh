@@ -8,6 +8,7 @@
 
 std::vector<int8_t> to_target_square(std::vector<Move>);
 int count_material(const Board&, int8_t);
+int piece_value(Piece);
 
 const int INFINITY = std::numeric_limits<int>::max();
 

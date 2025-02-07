@@ -19,7 +19,7 @@ std::vector<Move> pawn_moves(const Board& b, const Coords xy) {
                     ret.push_back(Move{
                         xy.to_index(),
                         left.to_index(),
-                        (int8_t) (my_colour | piece)
+                        (Piece) (my_colour | piece)
                     });
             else
                 ret.push_back(Move{xy.to_index(), left.to_index()});
@@ -39,7 +39,7 @@ std::vector<Move> pawn_moves(const Board& b, const Coords xy) {
                     ret.push_back(Move{
                         xy.to_index(),
                         right.to_index(),
-                        (int8_t) (my_colour | piece)
+                        (Piece) (my_colour | piece)
                     });
             else
                 ret.push_back(Move{xy.to_index(), right.to_index()});
@@ -68,7 +68,7 @@ std::vector<Move> pawn_moves(const Board& b, const Coords xy) {
                 ret.push_back(Move{
                     xy.to_index(),
                     new_xy.to_index(),
-                    .promoting_to = (int8_t) (my_colour | piece)
+                    (Piece) (my_colour | piece)
                 });
         else
             ret.push_back(Move{

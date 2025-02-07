@@ -9,30 +9,27 @@ std::vector<int8_t> to_target_square(std::vector<Move> moves) {
     return ret;
 }
 
+int piece_value(Piece p) {
+    switch (p) {
+    case Piece::Pawn:
+        return PawnValue;
+    case Piece::Knigt:
+        return KnightValue;
+    case Piece::Bishop:
+        return BishopValue;
+    case Piece::Rook:
+        return RookValue;
+    case Piece::Queen:
+        return QueenValue;
+    default:
+        return 0;
+    }
+}
+
 int count_material(const Board& b, int8_t colour) {
     int ret = 0;
-    for (int i = 0; i < 64; i++) {
+    for (int i = 0; i < 64; i++)
         if (b.colour_at(i) == colour)
-            switch (b.piece_at(i)) {
-            case Piece::Pawn:
-                ret += PawnValue;
-                break;
-            case Piece::Knigt:
-                ret += KnightValue;
-                break;
-            case Piece::Bishop:
-                ret += BishopValue;
-                break;
-            case Piece::Rook:
-                ret += RookValue;
-                break;
-            case Piece::Queen:
-                ret += QueenValue;
-                break;
-            case Piece::King:
-            case Piece::None:
-                break;
-            }
-    }
+            ret += piece_value(b.piece_at(i));
     return ret;
 }

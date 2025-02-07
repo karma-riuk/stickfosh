@@ -11,7 +11,9 @@ struct Move {
     int8_t source_square;
     int8_t target_square;
 
-    int8_t promoting_to = Piece::None;
+    Piece promoting_to = Piece::None;
+
+    int score_guess(const Board&) const;
 
     std::string to_string() const {
         std::stringstream ss;

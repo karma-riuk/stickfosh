@@ -54,4 +54,15 @@ namespace ai {
         Move _search(const Board&) override;
         int eval(const Board&) override;
     };
+
+    class v3_AB_ordering : public AI {
+        // looks two moves ahead, with alpha-beta pruning, with move ordering
+        int _search(const Board&, int, int, int);
+
+      public:
+        v3_AB_ordering(bool w, std::chrono::milliseconds tt): AI(w, tt) {}
+
+        Move _search(const Board&) override;
+        int eval(const Board&) override;
+    };
 } // namespace ai
