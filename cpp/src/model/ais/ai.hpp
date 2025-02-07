@@ -34,11 +34,11 @@ namespace ai {
         };
     };
 
-    class v1_simple : public AI { // looks two moves ahead
+    class v1_pure_minimax : public AI { // looks two moves ahead
         int _search(const Board&, int);
 
       public:
-        v1_simple(bool w, std::chrono::milliseconds tt): AI(w, tt) {}
+        v1_pure_minimax(bool w, std::chrono::milliseconds tt): AI(w, tt) {}
 
         Move _search(const Board&) override;
         int eval(const Board&) override;

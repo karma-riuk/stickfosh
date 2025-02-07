@@ -10,7 +10,7 @@ static int INFINITY = std::numeric_limits<int>::max();
 
 int position_counter;
 
-Move ai::v1_simple::_search(const Board& b) {
+Move ai::v1_pure_minimax::_search(const Board& b) {
     position_counter = 0;
     std::vector<Move> moves = b.all_legal_moves();
 
@@ -57,16 +57,17 @@ Move ai::v1_simple::_search(const Board& b) {
     return best_move;
 }
 
-int ai::v1_simple::_search(const Board& b, int depth) {
+int ai::v1_pure_minimax::_search(const Board& b, int depth) {
     if (depth == 0 || stop_computation)
         return eval(b);
 
-    std::vector<Move> moves = b.all_legal_moves();
-    if (moves.size() == 0) {
+    if (b.no_legal_moves_for(b.white_to_play ? White : Black)) {
         if (b.is_check_for(b.white_to_play ? White : Black))
             return -INFINITY;
         return 0;
     }
+
+    std::vector<Move> moves = b.all_legal_moves();
 
     int best_evaluation = -INFINITY;
     Move best_move;
@@ -112,7 +113,7 @@ int count_material(const Board& b, int8_t colour) {
     return ret;
 }
 
-int ai::v1_simple::eval(const Board& b) {
+int ai::v1_pure_minimax::eval(const Board& b) {
     position_counter++;
     int white_eval = count_material(b, Colour::White);
     int black_eval = count_material(b, Colour::Black);

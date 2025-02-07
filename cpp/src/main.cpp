@@ -22,7 +22,7 @@ int main(int argc, char* argv[]) {
 
     ai::v0_random p1(true, std::chrono::milliseconds(1000));
     // ai::v1_simple p1(false, std::chrono::milliseconds(100000));
-    ai::v1_simple p2(false, std::chrono::milliseconds(150000));
+    ai::v1_pure_minimax p2(false, std::chrono::milliseconds(150000));
     // ai::v0_random p2(false, std::chrono::milliseconds(10000));
 
     NoOpView gui;
