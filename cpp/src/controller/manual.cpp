@@ -54,11 +54,12 @@ void ManualController::make_move(Move move) {
     // handle promotion before making the move
     Colour colour = board.white_to_play ? White : Black;
     Coords source = Coords::from_index(move.source_square);
-    Piece promotion_piece = Piece::None;
     if (board.piece_at(move.source_square) == Piece::Pawn
-        && board.colour_at(move.source_square) == White && source.y == 6)
-        promotion_piece = (Piece) (colour | view.ask_about_promotion());
-    move.promoting_to = promotion_piece;
+        && board.colour_at(move.source_square) == White && source.y == 6) {
+        Piece promotion_piece = (Piece) (colour | view.ask_about_promotion());
+        move.promoting_to = promotion_piece;
+    }
+
     board = board.make_move(move);
     reset_selection();
 
