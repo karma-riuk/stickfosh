@@ -60,6 +60,8 @@ void ManualController::make_move(Move move) {
         move.promoting_to = promotion_piece;
     }
 
+    std::cout << "Move made: " << move << std::endl;
+
     board = board.make_move(move);
     reset_selection();
 

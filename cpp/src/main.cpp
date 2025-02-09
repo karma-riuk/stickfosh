@@ -25,7 +25,8 @@ int main(int argc, char* argv[]) {
     ai::v0_random p1(true, std::chrono::milliseconds(1000));
     // ai::v1_pure_minimax p2(false, std::chrono::milliseconds(20000));
     // ai::v2_alpha_beta p2(false, std::chrono::milliseconds(20000));
-    ai::v3_AB_ordering p2(false, std::chrono::milliseconds(20000));
+    // ai::v3_AB_ordering p2(false, std::chrono::milliseconds(20000));
+    ai::v4_search_captures p2(false, std::chrono::milliseconds(20000));
 
     GUI gui;
     // AIvsAIController manual(b, gui, p1, p2);
