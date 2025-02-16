@@ -26,10 +26,13 @@ int piece_value(Piece p) {
     }
 }
 
-int count_material(const Board& b, int8_t colour) {
+int count_material(const Board& b, int8_t colour, bool count_pawns) {
     int ret = 0;
-    for (int i = 0; i < 64; i++)
+    for (int i = 0; i < 64; i++) {
+        if (b.piece_at(i) == Pawn && !count_pawns)
+            continue;
         if (b.colour_at(i) == colour)
             ret += piece_value(b.piece_at(i));
+    }
     return ret;
 }

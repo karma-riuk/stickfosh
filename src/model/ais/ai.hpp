@@ -76,4 +76,15 @@ namespace ai {
         v4_search_captures(bool w, std::chrono::milliseconds tt)
             : v3_AB_ordering(w, tt) {}
     };
+
+    class v5_better_endgame : public v4_search_captures {
+        // same as v4, but with a better evaluation function, that forces the
+        // king towards the corner of the board for endgames
+
+      public:
+        v5_better_endgame(bool w, std::chrono::milliseconds tt)
+            : v4_search_captures(w, tt) {}
+
+        int eval(const Board&) override;
+    };
 } // namespace ai

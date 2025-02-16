@@ -8,7 +8,6 @@
 
 struct Board {
   private:
-    int8_t get_king_of(int8_t) const;
     bool _no_legal_moves_for(Colour) const;
     bool _is_check_for(Colour) const;
     bool nlm = false, check = false;
@@ -25,6 +24,7 @@ struct Board {
 
     static Board setup_fen_position(std::string fen);
 
+    int8_t get_king_of(int8_t) const;
     Board skip_turn() const;
     Board make_move(Move, bool = true) const;
     std::string to_fen() const;
