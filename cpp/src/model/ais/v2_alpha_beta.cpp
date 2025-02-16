@@ -8,7 +8,7 @@
 #define MULTITHREADED 1
 
 
-static int position_counter;
+static int position_counter = 0;
 
 Move ai::v2_alpha_beta::_search(const Board& b) {
     position_counter = 0;
@@ -69,7 +69,6 @@ int ai::v2_alpha_beta::_search(const Board& b, int depth, int alpha, int beta) {
 
     std::vector<Move> moves = b.all_legal_moves();
 
-    Move best_move;
     for (const Move& move : moves) {
         Board tmp_board = b.make_move(move);
         int tmp_eval = -_search(tmp_board, depth - 1, -beta, -alpha);

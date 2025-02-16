@@ -7,7 +7,7 @@
 
 #define MULTITHREADED 1
 
-static int position_counter;
+static int position_counter = 0;
 
 Move ai::v1_pure_minimax::_search(const Board& b) {
     position_counter = 0;
