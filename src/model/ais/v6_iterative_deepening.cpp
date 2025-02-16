@@ -15,7 +15,8 @@ Move ai::v6_iterative_deepening::_search(const Board& b) {
     int best_eval = -INFINITY;
 
     std::map<Move, std::future<int>> futures;
-    for (int depth = 1; !stop_computation; depth++) {
+    int depth;
+    for (depth = 1; !stop_computation; depth++) {
         for (const Move& move : moves) {
             Board tmp_board = b.make_move(move);
             futures.insert(
@@ -38,5 +39,7 @@ Move ai::v6_iterative_deepening::_search(const Board& b) {
         }
         futures.clear();
     }
+
+    std::cout << "Went up until depth: " << depth << std::endl;
     return best_move;
 }
