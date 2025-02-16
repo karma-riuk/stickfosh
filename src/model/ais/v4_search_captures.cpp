@@ -9,7 +9,7 @@
 
 static int position_counter;
 
-int ai::v4_search_captures::_search(
+int ai::v4_search_captures::_ab_search(
     const Board& b, int depth, int alpha, int beta
 ) {
     if (depth == 0 || stop_computation)
@@ -29,7 +29,7 @@ int ai::v4_search_captures::_search(
     Move best_move;
     for (const Move& move : moves) {
         Board tmp_board = b.make_move(move);
-        int tmp_eval = -_search(tmp_board, depth - 1, -beta, -alpha);
+        int tmp_eval = -_ab_search(tmp_board, depth - 1, -beta, -alpha);
         if (tmp_eval >= beta)
             return beta;
         alpha = std::max(alpha, tmp_eval);
