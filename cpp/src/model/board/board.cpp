@@ -421,3 +421,17 @@ std::vector<Move> Board::all_capturing_moves() const {
 
     return ret;
 }
+
+std::vector<int8_t> Board::opponent_pawn_attack_map() const {
+    std::vector<int8_t> ret;
+    for (int i = 0; i < 64; i++) {
+        if (piece_at(i) == Piece::Pawn
+            && ((colour_at(i) == White && !white_to_play)
+                || (colour_at(i) == Black && white_to_play))) {
+            std::vector<int8_t> attack_map =
+                pawn_attack_map(*this, Coords::from_index(i));
+            ret.insert(ret.end(), attack_map.begin(), attack_map.end());
+        }
+    }
+    return ret;
+}

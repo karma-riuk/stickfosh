@@ -39,6 +39,7 @@ struct Board {
 
     std::vector<Move> all_legal_moves() const;
     std::vector<Move> all_capturing_moves() const;
+    std::vector<int8_t> opponent_pawn_attack_map() const;
 
     bool is_checkmate() const;
 

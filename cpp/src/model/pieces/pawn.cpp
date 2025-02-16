@@ -79,3 +79,24 @@ std::vector<Move> pawn_moves(const Board& b, const Coords xy) {
 
     return ret;
 }
+
+std::vector<int8_t> pawn_attack_map(const Board& b, Coords xy) {
+    std::vector<int8_t> ret{};
+    Colour my_colour = b.colour_at(xy);
+
+    // -- Capture to the left
+    if (xy.x > 0) {
+        int dy = my_colour == Colour::White ? 1 : -1;
+        Coords left{xy.x - 1, xy.y + dy};
+        ret.push_back(left.to_index());
+    }
+
+    // -- Capture to the right
+    if (xy.x < 7) {
+        int dy = my_colour == Colour::White ? 1 : -1;
+        Coords right{xy.x + 1, xy.y + dy};
+        ret.push_back(right.to_index());
+    }
+
+    return ret;
+}

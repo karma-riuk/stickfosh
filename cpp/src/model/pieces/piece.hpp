@@ -69,6 +69,7 @@ std::vector<Move> keep_only_blocking(const std::vector<Move>, const Board&);
 std::optional<Move> move_for_position(const Board&, const Coords, const Coords);
 std::vector<Move> look_direction(const Board&, const Coords, int, int);
 
+std::vector<int8_t> pawn_attack_map(const Board&, const Coords);
 std::vector<Move> pawn_moves(const Board&, const Coords);
 std::vector<Move> rook_moves(const Board&, const Coords);
 std::vector<Move> knight_moves(const Board&, const Coords);
