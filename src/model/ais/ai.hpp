@@ -88,5 +88,16 @@ namespace ai {
 
         virtual int eval(const Board&) override;
     };
+
+    class v6_iterative_deepening : public v5_better_endgame {
+        // same as v5, but instead of just looking 2 moves ahead, it does
+        // iterative depening until and keeps on searching until the thinking
+        // time runs out
+
+      public:
+        v6_iterative_deepening(bool w, std::chrono::milliseconds tt)
+            : v5_better_endgame(w, tt) {}
+
+        virtual Move _search(const Board&) override;
     };
 } // namespace ai

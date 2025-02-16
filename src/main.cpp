@@ -27,7 +27,8 @@ int main(int argc, char* argv[]) {
     // ai::v2_alpha_beta p2(false, std::chrono::milliseconds(20000));
     // ai::v3_AB_ordering p2(false, std::chrono::milliseconds(20000));
     // ai::v4_search_captures p2(false, std::chrono::milliseconds(20000));
-    ai::v5_better_endgame p2(false, std::chrono::milliseconds(20000));
+    // ai::v5_better_endgame p2(false, std::chrono::milliseconds(20000));
+    ai::v6_iterative_deepening p2(false, std::chrono::milliseconds(2000));
 
     GUI gui;
     // NoOpView gui;
