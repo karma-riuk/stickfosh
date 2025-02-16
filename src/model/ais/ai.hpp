@@ -20,8 +20,9 @@ namespace ai {
         std::atomic<bool> stop_computation = false;
 
         Move search(const Board& b);
+        int eval(const Board&);
 
-        virtual int eval(const Board&) = 0;
+        virtual int _eval(const Board&) = 0;
     };
 
     struct v0_random : public AI {
@@ -29,7 +30,7 @@ namespace ai {
 
         Move _search(const Board&) override;
 
-        int eval(const Board&) override {
+        int _eval(const Board&) override {
             return 0;
         };
     };
@@ -41,7 +42,7 @@ namespace ai {
         v1_pure_minimax(bool w, std::chrono::milliseconds tt): AI(w, tt) {}
 
         Move _search(const Board&) override;
-        int eval(const Board&) override;
+        int _eval(const Board&) override;
     };
 
     class v2_alpha_beta : public AI {
@@ -52,7 +53,7 @@ namespace ai {
         v2_alpha_beta(bool w, std::chrono::milliseconds tt): AI(w, tt) {}
 
         virtual Move _search(const Board&) override;
-        virtual int eval(const Board&) override;
+        virtual int _eval(const Board&) override;
     };
 
     class v3_AB_ordering : public AI {
@@ -63,7 +64,7 @@ namespace ai {
         v3_AB_ordering(bool w, std::chrono::milliseconds tt): AI(w, tt) {}
 
         virtual Move _search(const Board&) override;
-        virtual int eval(const Board&) override;
+        virtual int _eval(const Board&) override;
     };
 
     class v4_search_captures : public v3_AB_ordering {
@@ -86,7 +87,7 @@ namespace ai {
         v5_better_endgame(bool w, std::chrono::milliseconds tt)
             : v4_search_captures(w, tt) {}
 
-        virtual int eval(const Board&) override;
+        virtual int _eval(const Board&) override;
     };
 
     class v6_iterative_deepening : public v5_better_endgame {

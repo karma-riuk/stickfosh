@@ -4,7 +4,10 @@
 #include <ostream>
 #include <thread>
 
+static long int position_counter = 0;
+
 Move ai::AI::search(const Board& b) {
+    position_counter = 0;
     Move result;
 
     std::condition_variable cv;
@@ -47,6 +50,13 @@ Move ai::AI::search(const Board& b) {
     // Ensure timer thread is also stopped
     timer_thread.join();
 
-    std::cout << "Took " << elapsed << " ms" << std::endl;
+    std::cout << "Took " << elapsed << " ms, " << "Looked at "
+              << position_counter << " positions" << std::endl;
     return result;
+}
+
+int ai::AI::eval(const Board& b) {
+    int ret = _eval(b);
+    position_counter++;
+    return ret;
 }

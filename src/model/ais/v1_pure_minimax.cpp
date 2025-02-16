@@ -7,10 +7,7 @@
 
 #define MULTITHREADED 1
 
-static int position_counter = 0;
-
 Move ai::v1_pure_minimax::_search(const Board& b) {
-    position_counter = 0;
     std::vector<Move> moves = b.all_legal_moves();
 
     Move best_move;
@@ -52,7 +49,6 @@ Move ai::v1_pure_minimax::_search(const Board& b) {
         }
     }
 #endif
-    std::cout << "Looked at " << position_counter << " positions" << std::endl;
     return best_move;
 }
 
@@ -78,8 +74,7 @@ int ai::v1_pure_minimax::_search(const Board& b, int depth) {
     return best_evaluation;
 }
 
-int ai::v1_pure_minimax::eval(const Board& b) {
-    position_counter++;
+int ai::v1_pure_minimax::_eval(const Board& b) {
     int white_eval = count_material(b, Colour::White);
     int black_eval = count_material(b, Colour::Black);
 

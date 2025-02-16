@@ -7,11 +7,7 @@
 
 #define MULTITHREADED 1
 
-
-static int position_counter = 0;
-
 Move ai::v2_alpha_beta::_search(const Board& b) {
-    position_counter = 0;
     std::vector<Move> moves = b.all_legal_moves();
 
     Move best_move;
@@ -53,7 +49,6 @@ Move ai::v2_alpha_beta::_search(const Board& b) {
         }
     }
 #endif
-    std::cout << "Looked at " << position_counter << " positions" << std::endl;
     return best_move;
 }
 
@@ -79,8 +74,7 @@ int ai::v2_alpha_beta::_search(const Board& b, int depth, int alpha, int beta) {
     return alpha;
 }
 
-int ai::v2_alpha_beta::eval(const Board& b) {
-    position_counter++;
+int ai::v2_alpha_beta::_eval(const Board& b) {
     int white_eval = count_material(b, Colour::White);
     int black_eval = count_material(b, Colour::Black);
 

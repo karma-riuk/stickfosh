@@ -5,6 +5,8 @@
 
 #include <map>
 
+static int position_counter = 0;
+
 Move ai::v6_iterative_deepening::_search(const Board& b) {
     ThreadPool pool(std::thread::hardware_concurrency());
     std::vector<Move> moves = b.all_legal_moves();

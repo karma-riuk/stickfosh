@@ -6,9 +6,6 @@
 
 #define MULTITHREADED 1
 
-
-static int position_counter;
-
 int ai::v4_search_captures::_ab_search(
     const Board& b, int depth, int alpha, int beta
 ) {

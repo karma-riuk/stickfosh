@@ -36,8 +36,8 @@ static float endgame_phase_weight(int material_count_no_pawns) {
     return 1.f - std::min(1.f, material_count_no_pawns * multiplier);
 }
 
-int ai::v5_better_endgame::eval(const Board& b) {
-    int old_eval = v4_search_captures::eval(b);
+int ai::v5_better_endgame::_eval(const Board& b) {
+    int old_eval = v4_search_captures::_eval(b);
     Colour attacking_colour = b.white_to_play ? White : Black;
     Colour defending_colour = b.white_to_play ? Black : White;
     return old_eval
