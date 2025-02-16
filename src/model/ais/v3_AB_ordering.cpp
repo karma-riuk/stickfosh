@@ -10,6 +10,12 @@
 
 Move ai::v3_AB_ordering::_search(const Board& b) {
     std::vector<Move> moves = b.all_legal_moves();
+    std::sort(moves.begin(), moves.end(), [&](Move& m1, Move& m2) {
+        int score = m1.score_guess(b) - m2.score_guess(b);
+        if (!am_white)
+            score *= -1;
+        return score < 0;
+    });
 
     Move best_move;
     int best_eval = -INFINITY;
@@ -69,7 +75,10 @@ int ai::v3_AB_ordering::_ab_search(
 
     std::vector<Move> moves = b.all_legal_moves();
     std::sort(moves.begin(), moves.end(), [&](Move& m1, Move& m2) {
-        return m1.score_guess(b) > m2.score_guess(b);
+        int score = m1.score_guess(b) - m2.score_guess(b);
+        if (!am_white)
+            score *= -1;
+        return score < 0;
     });
 
     Move best_move;
