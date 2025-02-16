@@ -24,3 +24,31 @@ int Move::score_guess(const Board& b) const {
 
     return ret;
 }
+
+Move Move::from_string(std::string move) {
+    if (!(4 <= move.size() && move.size() <= 5))
+        throw std::invalid_argument("Move must be 4 or 5 characters long");
+    Move ret;
+    ret.source_square = Coords::from_algebraic(move.substr(0, 2)).to_index();
+    ret.target_square = Coords::from_algebraic(move.substr(2, 2)).to_index();
+    if (move.size() == 5)
+        switch (move[4]) {
+        case 'n':
+            ret.promoting_to = Knigt;
+            break;
+        case 'b':
+            ret.promoting_to = Bishop;
+            break;
+        case 'r':
+            ret.promoting_to = Rook;
+            break;
+        case 'q':
+            ret.promoting_to = Queen;
+            break;
+        default:
+            throw std::invalid_argument("Promotion piece must be one of 'nbrq'"
+            );
+        }
+    ret.target_square = Coords::from_algebraic(move.substr(2, 2)).to_index();
+    return ret;
+}

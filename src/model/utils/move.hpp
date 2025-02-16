@@ -15,6 +15,8 @@ struct Move {
 
     int score_guess(const Board&) const;
 
+    static Move from_string(std::string);
+
     std::string to_string() const {
         std::stringstream ss;
         ss << Coords::from_index(source_square)
