@@ -15,7 +15,7 @@ iterations, improving its decision-making capabilities through enhancements like
 
 - **MVC Architecture**: The project follows the MVC pattern for clean separation of concerns:
   - **Model**: Handles chess rules, board state, and AI logic.
-  - **View**: GUI and NoOp (console-based) rendering options.
+  - **View**: GUI and NoOp (that shows nothing, but is useful for debugging the AIs) rendering options.
   - **Controller**: Manages interactions between players and the game.
 - **Multiple AI Versions**: Several AI versions with increasing complexity have been implemented.
 - **AI vs AI Matches**: A dedicated mode to watch different AI versions compete.
