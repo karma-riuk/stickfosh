@@ -53,11 +53,11 @@ This project has undergone multiple AI improvements, including:
    ```
 1. Create a build directory and compile:
    ```sh
-   make main
+   make stickfosh
    ```
 1. Run the program:
    ```sh
-   ./main
+   ./stickfosh
    ```
 
 ## Running the Application
