@@ -28,8 +28,8 @@ obj/%.o:
 	@mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS) -o $@ -c $<
 
-main: $(OBJFILES)
-	$(CXX) $(CXXFLAGS) $(OBJFILES) $(LOADLIBES) $(LDLIBS) -o main -lsfml-graphics -lsfml-window -lsfml-system
+stickfosh: $(OBJFILES)
+	$(CXX) $(CXXFLAGS) $(OBJFILES) $(LOADLIBES) $(LDLIBS) -o stickfosh -lsfml-graphics -lsfml-window -lsfml-system
 
 clean:
 	rm -rf obj/* $(DEPFILES) test_bin/

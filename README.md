@@ -60,13 +60,17 @@ This project has undergone multiple AI improvements, including:
    ./main
    ```
 
-## Running AI vs AI Matches
+## Running the Application
 
-To watch two AI versions play against each other, modify `main.cpp` to instantiate the desired AI versions and run:
+Stickfosh provides multiple execution modes, selectable via command-line arguments:
 
-```sh
-./main
-```
+| Mode | Description | Example Command |
+|------|------------|----------------|
+| **Human vs AI** | Play against the AI | `./stickfosh --mode human_vs_ai` |
+| **AI vs AI** | Watch two AI versions compete | `./stickfosh --mode ai_vs_ai --ai1 v3_AB_ordering --ai2 v6_iterative_deepening` |
+| **Human vs Human** | Manually input moves for both sides | `./stickfosh --mode human_vs_human` |
+| **Perft Testing** | Performance test move generation | `./stickfosh --mode perft` |
+| **Custom FEN** | Start from a custom position | `./stickfosh --mode ai_vs_ai --fen "rnbqkb1r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKB1R w KQkq - 0 1"` |
 
 ## Video Demo
 
