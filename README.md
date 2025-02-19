@@ -74,6 +74,9 @@ Stickfosh provides multiple execution modes, selectable via command-line argumen
 
 ## Video Demo
 
+![stickfosh.gif](./res/stickfosh.gif)
+
+
 <!-- [![AI vs AI Chess Match](https://img.youtube.com/vi/XXXXXXXXXX/0.jpg)](https://www.youtube.com/watch?v=XXXXXXXXXX) -->
 
 <!-- *Click the image above to watch a video of two AI versions competing!* -->
