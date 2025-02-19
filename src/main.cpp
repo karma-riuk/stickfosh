@@ -9,36 +9,73 @@
 #include "view/view.hpp"
 
 #include <chrono>
+#include <iostream>
+#include <string>
+
+void print_usage() {
+    std::cout << "Usage: chess_ai [OPTIONS]\n";
+    std::cout << "Options:\n";
+    std::cout
+        << "  --mode <human_vs_ai|ai_vs_ai|human_vs_human|perft>  Choose the "
+           "game mode.\n";
+    std::cout << "  --ai1 <version>  Choose the first AI version (for ai_vs_ai "
+                 "mode).\n";
+    std::cout << "  --ai2 <version>  Choose the second AI version (for "
+                 "ai_vs_ai mode).\n";
+    std::cout << "  --fen <FEN_STRING>  Set a custom FEN position.\n";
+    std::cout << "  --help  Show this help message.\n";
+}
 
 int main(int argc, char* argv[]) {
-    // std::string pos =
-    //     "r2qkb1r/2p1pppp/p1n1b3/1p6/B2P4/2P1P3/P4PPP/R1BQK1NR w KQkq - 0 9 ";
-    std::string pos = "3r4/3r4/3k4/8/3K4/8/8/8 w - - 0 1";
+    std::string mode = "human_vs_ai";
+    std::string ai1_version = "v0_random";
+    std::string ai2_version = "v6_iterative_deepening";
+    std::string fen =
+        "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
-    // pos for ai timing<
-    // std::string pos =
-    //     "r3k2r/p1ppqpb1/Bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPB1PPP/R3K2R b KQkq - 0
-    //     3";
+    for (int i = 1; i < argc; ++i) {
+        std::string arg = argv[i];
+        if (arg == "--mode" && i + 1 < argc) {
+            mode = argv[++i];
+        } else if (arg == "--ai1" && i + 1 < argc) {
+            ai1_version = argv[++i];
+        } else if (arg == "--ai2" && i + 1 < argc) {
+            ai2_version = argv[++i];
+        } else if (arg == "--fen" && i + 1 < argc) {
+            fen = argv[++i];
+        } else if (arg == "--help") {
+            print_usage();
+            return 0;
+        } else {
+            std::cerr << "Unknown option: " << arg << "\n";
+            print_usage();
+            return 1;
+        }
+    }
 
-    Board b = Board::setup_fen_position(pos);
-
-    ai::v0_random p1(true, std::chrono::milliseconds(1000));
-    // ai::v1_pure_minimax p2(false, std::chrono::milliseconds(20000));
-    // ai::v2_alpha_beta p2(false, std::chrono::milliseconds(20000));
-    // ai::v3_AB_ordering p2(false, std::chrono::milliseconds(20000));
-    // ai::v4_search_captures p2(false, std::chrono::milliseconds(20000));
-    // ai::v5_better_endgame p2(false, std::chrono::milliseconds(20000));
-    ai::v6_iterative_deepening p2(false, std::chrono::milliseconds(2000));
-
+    Board board = Board::setup_fen_position(fen);
     GUI gui;
-    // NoOpView gui;
-    // AIvsAIController manual(b, gui, p1, p2);
-    HumanVsAIController manual(b, gui, p2);
+    Controller* controller = nullptr;
 
-    Controller& controller = manual;
+    if (mode == "human_vs_ai") {
+        ai::v6_iterative_deepening ai(false, std::chrono::milliseconds(2000));
+        controller = new HumanVsAIController(board, gui, ai);
+    } else if (mode == "ai_vs_ai") {
+        ai::v0_random p1(true, std::chrono::milliseconds(1000));
+        ai::v6_iterative_deepening p2(false, std::chrono::milliseconds(2000));
+        controller = new AIvsAIController(board, gui, p1, p2);
+    } else if (mode == "human_vs_human") {
+        controller = new ManualController(board, gui);
+    } else if (mode == "perft") {
+        perft();
+        return 0;
+    } else {
+        std::cerr << "Invalid mode selected!\n";
+        print_usage();
+        return 1;
+    }
 
-    controller.start();
-
-    // perft();
+    controller->start();
+    delete controller;
     return 0;
 }
